@@ -53,7 +53,7 @@ public class EncryptedFileController : ControllerBase
         return Ok(DtoConverter<EncryptedFile, EncryptedFileDto>.FromList(files));
     }
 
-    // GET api/EncryptedFile/create
+    // POST api/EncryptedFile/create
     [HttpPost("create")]
     [Authorize]
     public async Task<ActionResult<EncryptedFileDto>> CreateFile([FromBody] Guid userGuid,[FromBody] EncryptedFileDtoNoGuid encryptedFileDtoNoGuid)
@@ -72,7 +72,7 @@ public class EncryptedFileController : ControllerBase
         return BadRequest();
     }
 
-    // GET api/EncryptedFile/share
+    // POST api/EncryptedFile/share
     [HttpPost("share")]
     [Authorize]
     public async Task<ActionResult<EncryptedFileDto>> ShareFile([FromBody] Guid userGuid, [FromBody] Guid encryptedFileGuid)
