@@ -34,8 +34,8 @@ public class EncryptedFileController : ControllerBase
             return validationErrors;
         }
 
-        var files = await _encryptedFileRepo.GetAsync(ownerGuid);
-        return Ok(DtoConverter<EncryptedFile[], EncryptedFileDto[]>.From(files));
+        var files = await _encryptedFileRepo.GetUserFilesAsync(ownerGuid);
+        return Ok(DtoConverter<EncryptedFile, EncryptedFileDto>.FromList(files));
     }
 
     // GET api/EncryptedFile/getShared/<guid>
@@ -49,37 +49,28 @@ public class EncryptedFileController : ControllerBase
             return validationErrors;
         }
 
-        var files = await _encryptedFileRepo.GetAsync(ownerGuid);
-        return Ok(DtoConverter<EncryptedFile[], EncryptedFileDto[]>.From(files));
+        var files = await _encryptedFileRepo.GetSharedFilesAsync(ownerGuid);
+        return Ok(DtoConverter<EncryptedFile, EncryptedFileDto>.FromList(files));
     }
 
-    // PUT api/EncryptedFile/<guid>
-    [HttpPut("{ownerGuid}")]
+    // GET api/EncryptedFile/create
+    [HttpPost("create")]
     [Authorize]
-    public async Task<IActionResult> Put(Guid ownerGuid, [FromBody] EncryptedFileDto encryptedFileDto)
+    public async Task<ActionResult<EncryptedFileDto>> CreateFile([FromBody] UserDto userDto,[FromBody] EncryptedFileDtoNoGuid encryptedFileDtoNoGuid)
     {
-        if(ownerGuid != encryptedFileDto.OwnerGuid)
+        if (encryptedFileDtoNoGuid.OwnerGuid == Guid.Empty || encryptedFileDtoNoGuid.EncryptedFile == null)
         {
-            return BadRequest();
+            return BadRequest("Owner or file was empty, this is not allowed.");
         }
 
-        var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
-        if(validationErrors != null)
+        var encryptedFile = DtoConverter<EncryptedFileDtoNoGuid, EncryptedFile>.From(encryptedFileDtoNoGuid);
+        var user = DtoConverter<UserDto, User>.From(userDto);
+        Guid? returnedGuid = await _encryptedFileRepo.CreateAsync(encryptedFile, user);
+        if (returnedGuid.HasValue && returnedGuid != Guid.Empty)
         {
-            return validationErrors;
+            return Ok(returnedGuid);
         }
-
-        var encyptedfile = DtoConverter<EncryptedFile, EncryptedFileDto>(encryptedFileDto);
-        var file = new EncryptedFile() {OwnerGuid = encryptedFileDto.OwnerGuid, Encryptedfile = encyptedfile};
-        var result = await _encryptedFileRepo.UpdateAsync(ownerGuid, file);
-
-        if(!result)
-        {
-            // Something went wrong in the DAL and file wasn't updated
-            return BadRequest();
-        }
-
-        return Ok(result);
+        return BadRequest();
     }
 
     private ActionResult? GetValidationErrors(Guid ownerGuid, IEnumerable<Claim> claims, IHeaderDictionary headers)
