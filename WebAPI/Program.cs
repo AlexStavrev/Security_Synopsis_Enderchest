@@ -14,7 +14,7 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 builder.Services.AddScoped((repo) => ReposFactory.GetRepository<IUserRepo>(connectionString)!);
-builder.Services.AddScoped((repo) => ReposFactory.GetRepository<IPasswordVaultRepo>(connectionString)!);
+builder.Services.AddScoped((repo) => ReposFactory.GetRepository<IEncryptedFileRepo>(connectionString)!);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
