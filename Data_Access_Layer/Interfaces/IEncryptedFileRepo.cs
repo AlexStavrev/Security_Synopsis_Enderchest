@@ -1,6 +1,6 @@
-﻿using Security_Synopsis_Enderchest.Models;
+﻿using Data_Access_Layer.Models;
 
-namespace Security_Synopsis_Enderchest.Interfaces;
+namespace Data_Access_Layer.Interfaces;
 public interface IEncryptedFileRepo
 {
     Task<IEnumerable<EncryptedFile>> GetUserFilesAsync(Guid ownerGuid);

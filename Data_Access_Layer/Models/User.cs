@@ -1,4 +1,4 @@
-﻿namespace Security_Synopsis_Enderchest.Models;
+﻿namespace Data_Access_Layer.Models;
 
 public sealed record User
 {

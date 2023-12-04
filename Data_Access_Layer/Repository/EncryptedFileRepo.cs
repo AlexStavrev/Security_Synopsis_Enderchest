@@ -1,10 +1,10 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using Dapper;
-using Security_Synopsis_Enderchest.Interfaces;
-using Security_Synopsis_Enderchest.Models;
+using Data_Access_Layer.Interfaces;
+using Data_Access_Layer.Models;
 
-namespace Security_Synopsis_Enderchest.Repository;
+namespace Data_Access_Layer.Repository;
 
 internal class EncryptedFileRepo : IEncryptedFileRepo
 {
