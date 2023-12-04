@@ -34,16 +34,31 @@ public class EncryptedFileController : ControllerBase
             return validationErrors;
         }
 
-        var vault = await _encryptedFileRepo.GetAsync(ownerGuid);
-        return Ok(DtoConverter<EncryptedFile, EncryptedFileDto>.From(vault));
+        var files = await _encryptedFileRepo.GetAsync(ownerGuid);
+        return Ok(DtoConverter<EncryptedFile[], EncryptedFileDto[]>.From(files));
+    }
+
+    // GET api/EncryptedFile/getShared/<guid>
+    [HttpGet("getShared/{ownerGuid}")]
+    [Authorize]
+    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid ownerGuid)
+    {
+        var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
+        if (validationErrors != null)
+        {
+            return validationErrors;
+        }
+
+        var files = await _encryptedFileRepo.GetAsync(ownerGuid);
+        return Ok(DtoConverter<EncryptedFile[], EncryptedFileDto[]>.From(files));
     }
 
     // PUT api/EncryptedFile/<guid>
     [HttpPut("{ownerGuid}")]
     [Authorize]
-    public async Task<IActionResult> Put(Guid ownerGuid, [FromBody] EncryptedFileDto vaultDto)
+    public async Task<IActionResult> Put(Guid ownerGuid, [FromBody] EncryptedFileDto encryptedFileDto)
     {
-        if(ownerGuid != vaultDto.OwnerGuid)
+        if(ownerGuid != encryptedFileDto.OwnerGuid)
         {
             return BadRequest();
         }
@@ -54,13 +69,13 @@ public class EncryptedFileController : ControllerBase
             return validationErrors;
         }
 
-        var encyptedVault = DtoConverter<HashedCredentialsDto, HashedCredentials>.FromList(vaultDto.EncryptedVault);
-        var vault = new EncryptedFile() {OwnerGuid = vaultDto.OwnerGuid, EncryptedVault = encyptedVault};
-        var result = await _encryptedFileRepo.UpdateAsync(ownerGuid, vault);
+        var encyptedfile = DtoConverter<EncryptedFile, EncryptedFileDto>(encryptedFileDto);
+        var file = new EncryptedFile() {OwnerGuid = encryptedFileDto.OwnerGuid, Encryptedfile = encyptedfile};
+        var result = await _encryptedFileRepo.UpdateAsync(ownerGuid, file);
 
         if(!result)
         {
-            // Something went wrong in the DAL and vault wasn't updated
+            // Something went wrong in the DAL and file wasn't updated
             return BadRequest();
         }
 
