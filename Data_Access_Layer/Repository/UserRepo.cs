@@ -1,10 +1,10 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using Dapper;
-using Security_Synopsis_Enderchest.Interfaces;
-using Security_Synopsis_Enderchest.Models;
+using Data_Access_Layer.Interfaces;
+using Data_Access_Layer.Models;
 
-namespace Security_Synopsis_Enderchest.Repository;
+namespace Data_Access_Layer.Repository;
 
 internal class UserRepo : IUserRepo
 {
@@ -29,17 +29,17 @@ internal class UserRepo : IUserRepo
     public async Task<Guid?> CreateAsync(User user)
     {
         Guid generatedGuid = Guid.NewGuid();
-        
+
         try
         {
             var saving = Convert.ToBase64String(user.Password!);
             var slat = Convert.ToBase64String(user.Password!.Take(16).ToArray());
 
-            var parameters = new DynamicParameters(); 
+            var parameters = new DynamicParameters();
             parameters.Add("Guid", generatedGuid);
-            parameters.Add("Email", user.Email);  
-            parameters.Add("Password", user.Password); 
-                
+            parameters.Add("Email", user.Email);
+            parameters.Add("Password", user.Password);
+
             await _connection.QueryAsync("USER_MASTER_CREATE", parameters, commandType: CommandType.StoredProcedure);
 
             return generatedGuid;
@@ -59,7 +59,7 @@ internal class UserRepo : IUserRepo
 
         //Execute stored procedure and map the returned result to a Customer object  
         var returnedPasswordKey = await _connection.QuerySingleOrDefaultAsync<byte[]?>("GET_SALT", parameters, commandType: CommandType.StoredProcedure);
-        if(returnedPasswordKey != null)
+        if (returnedPasswordKey != null)
         {
             var salt = returnedPasswordKey.Take(16).ToArray();
             return salt;

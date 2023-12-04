@@ -1,9 +1,15 @@
-﻿namespace WebAPI.DTOs
+﻿namespace WebAPI.DTOs;
+
+public sealed record EncryptedFileDto
 {
-    public class EncryptedFileDto
-    {
-        public Guid Guid { get; set; }
-        public Guid OwnerGuid { get; set; }
-        public byte[]? EncryptedFile { get; set; }
-    }
+    public Guid Guid { get; set; }
+    public Guid OwnerGuid { get; set; }
+    public byte[]? EncryptedFile { get; set; }
+}
+
+public sealed record EncryptedFileDtoNoGuid   
+{
+    //public Guid Guid { get; set; }
+    public Guid OwnerGuid { get; set; }
+    public byte[]? EncryptedFile { get; set; }
 }

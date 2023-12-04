@@ -1,6 +1,6 @@
-﻿using Security_Synopsis_Enderchest.Repository;
+﻿using Data_Access_Layer.Repository;
 
-namespace Security_Synopsis_Enderchest.Factories;
+namespace Data_Access_Layer.Factories;
 public static class ReposFactory
 {
     public static T? GetRepository<T>(string connectionString) where T : class
