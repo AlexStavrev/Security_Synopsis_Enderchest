@@ -56,7 +56,7 @@ public class EncryptedFileController : ControllerBase
     // GET api/EncryptedFile/create
     [HttpPost("create")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> CreateFile([FromBody] UserDto userDto,[FromBody] EncryptedFileDtoNoGuid encryptedFileDtoNoGuid)
+    public async Task<ActionResult<EncryptedFileDto>> CreateFile([FromBody] Guid userGuid,[FromBody] EncryptedFileDtoNoGuid encryptedFileDtoNoGuid)
     {
         if (encryptedFileDtoNoGuid.OwnerGuid == Guid.Empty || encryptedFileDtoNoGuid.EncryptedFile == null)
         {
@@ -64,14 +64,32 @@ public class EncryptedFileController : ControllerBase
         }
 
         var encryptedFile = DtoConverter<EncryptedFileDtoNoGuid, EncryptedFile>.From(encryptedFileDtoNoGuid);
-        var user = DtoConverter<UserDto, User>.From(userDto);
-        Guid? returnedGuid = await _encryptedFileRepo.CreateAsync(encryptedFile, user);
+        Guid? returnedGuid = await _encryptedFileRepo.CreateAsync(encryptedFile, userGuid);
         if (returnedGuid.HasValue && returnedGuid != Guid.Empty)
         {
             return Ok(returnedGuid);
         }
         return BadRequest();
     }
+
+    // GET api/EncryptedFile/share
+    [HttpPost("share")]
+    [Authorize]
+    public async Task<ActionResult<EncryptedFileDto>> ShareFile([FromBody] Guid userGuid, [FromBody] Guid encryptedFileGuid)
+    {
+        if (userGuid == Guid.Empty || encryptedFileGuid == Guid.Empty)
+        {
+            return BadRequest("OwnerId or fileId was empty, this is not allowed.");
+        }
+
+        bool isFileShared = await _encryptedFileRepo.ShareFileAsync(encryptedFileGuid, userGuid);
+        if (isFileShared)
+        {
+            return Ok(isFileShared);
+        }
+        return BadRequest();
+    }
+
 
     private ActionResult? GetValidationErrors(Guid ownerGuid, IEnumerable<Claim> claims, IHeaderDictionary headers)
     {

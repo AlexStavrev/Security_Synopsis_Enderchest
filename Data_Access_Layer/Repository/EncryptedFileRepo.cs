@@ -31,7 +31,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         return await _connection.QueryAsync<EncryptedFile>("GET_SHARED_FILES", parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<Guid> CreateAsync(EncryptedFile file, User user)
+    public async Task<Guid> CreateAsync(EncryptedFile file, Guid userGuid)
     {
         Guid generatedGuid = Guid.NewGuid();
         file.Guid = generatedGuid;
@@ -39,7 +39,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         var parameters = new DynamicParameters();
         parameters.Add("FileGuid", file.Guid);
         parameters.Add("File", file.File);
-        parameters.Add("OwnerGuid", user.Guid);
+        parameters.Add("OwnerGuid", userGuid);
 
         return await _connection.QuerySingleOrDefaultAsync<Guid>("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
     }
