@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>Web_Client</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.0" />
+      <PackageReference Include="RestSharp" Version="110.2.0" />
+    </ItemGroup>
+
+</Project>
