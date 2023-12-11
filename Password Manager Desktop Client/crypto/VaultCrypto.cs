@@ -7,94 +7,40 @@ namespace Password_Manager_Desktop_Client.crypto;
 public class VaultCrypto : IVaultCrypto
 {
 
-    public PasswordVaultDto EncryptVault(PasswordVaultDto vault, string username, string password)
+    public EncryptedFileDtoNoGuid EncryptFile(DecryptedFileDtoNoGuid file, string username, string password)
     {
-            if (vault != null || vault.DecryptedVault.Any())
+        if (file != null)
+        {
+            var salt = GenerateSalt();
+            var secretKey = DeriveSecterKey(username, password, salt);
+            var encryptedFile = EncryptFile(file.DecryptedFile, secretKey, salt);
+
+            return new EncryptedFileDtoNoGuid
             {
-            List<HashedCredentialsDto> encrypedCredentialsDtos = new();
-
-                foreach (var credentials in vault.DecryptedVault)
-                {
-                var encryptedCredential = new HashedCredentialsDto();
-
-                    foreach (var property in typeof(DecryptedCredentialsDto).GetProperties())
-                    {
-                    var propertyName = property.Name;
-                    if (property.PropertyType == typeof(int?))
-                        {
-                            if(property.GetValue(credentials) == null)
-                            {
-                                continue;
-                            }
-                            encryptedCredential.Vaultid = (int)property.GetValue(credentials);
-                            continue;
-                        }
-                        var salt = GenerateSalt();
-                        var secretKey = DeriveSecterKey(username, password, salt);
-                        var propertyValue = (string)property.GetValue(credentials);
-
-                        if(propertyValue != null)
-                        {
-                        var encryptedProperty = EncryptProperty(propertyValue, secretKey, salt);
-                        typeof(HashedCredentialsDto).GetProperty(propertyName)?.SetValue(encryptedCredential, encryptedProperty);
-                        }
-
-                    }
-                encrypedCredentialsDtos.Add(encryptedCredential);
-                
-                }
-            vault.EncryptedVault = encrypedCredentialsDtos;
-            return vault;
-            }
-            else
-            {
-                return new PasswordVaultDto();
-            }
+                OwnerGuid = file.OwnerGuid,
+                EncryptedFile = encryptedFile
+            };
+        }
+        return new EncryptedFileDtoNoGuid();
     }
 
-    public PasswordVaultDto DecryptVault(PasswordVaultDto vault, string username, string password)
+    public DecryptedFileDto DecryptFile(EncryptedFileDto file, string username, string password)
     {
-        if (vault != null || vault.EncryptedVault.Any())
+        if (file != null)
         {
-            List<DecryptedCredentialsDto> decrypredCredentialsDtos = new();
-            foreach (var credentials in vault.EncryptedVault)
+
+            var salt = RetrieveSalt(file.EncryptedFile);
+            var secretKey = DeriveSecterKey(username, password, salt);
+            var decryptedPropertyByteArr = DecryptProperty(file.EncryptedFile, secretKey);
+            string decryptedProperty = Encoding.UTF8.GetString(decryptedPropertyByteArr);
+
+            return new DecryptedFileDto
             {
-                var decryptedCredential = new DecryptedCredentialsDto();
-
-                foreach (var property in typeof(HashedCredentialsDto).GetProperties())
-                {
-                    if (property.PropertyType != typeof(byte[]))
-                    {
-                        if (property.GetValue(credentials) == null)
-                        {
-                            continue;
-                        }
-                        decryptedCredential.Vaultid = (int)property.GetValue(credentials);
-                        continue;
-                    }
-                    var encryptedProp = (byte[])property.GetValue(credentials);
-
-                    if(encryptedProp != null)
-                    {
-                        var salt = RetrieveSalt(encryptedProp);
-                        var secretKey = DeriveSecterKey(username, password, salt);
-
-                        var decryptedPropertyByteArr = DecryptProperty(encryptedProp, secretKey);
-
-                        string decryptedProperty = Encoding.UTF8.GetString(decryptedPropertyByteArr);
-                        var propertyName = property.Name;
-                        typeof(DecryptedCredentialsDto).GetProperty(propertyName)?.SetValue(decryptedCredential, decryptedProperty);
-                    }
-                }
-                decrypredCredentialsDtos.Add(decryptedCredential);
-            }
-            vault.DecryptedVault = decrypredCredentialsDtos;
-            return vault;
+                Guid = file.Guid,
+                DecryptedFile = decryptedProperty
+            };
         }
-        else
-        {
-            return new PasswordVaultDto();
-        }
+        return new DecryptedFileDto();
     }
 
     public byte[] RetrieveSalt(byte[] property)
@@ -109,7 +55,7 @@ public class VaultCrypto : IVaultCrypto
         return secretKey;
     }
 
-    public byte[] EncryptProperty(string plainText, byte[] key, byte[] salt)
+    public byte[] EncryptFile(string plainText, byte[] key, byte[] salt)
     {
         using var aes = new AesGcm(key);
 

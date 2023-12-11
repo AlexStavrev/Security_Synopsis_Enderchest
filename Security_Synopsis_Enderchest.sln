@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data_Access_Layer", "Data_A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web Client", "Web Client\Web Client.csproj", "{0B772726-B1FF-4EAB-8ACA-D6C1B97AEA89}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Password Manager Desktop Client", "Password Manager Desktop Client\Password Manager Desktop Client.csproj", "{E831A067-C554-442C-84A2-506344A4F3CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0B772726-B1FF-4EAB-8ACA-D6C1B97AEA89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B772726-B1FF-4EAB-8ACA-D6C1B97AEA89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B772726-B1FF-4EAB-8ACA-D6C1B97AEA89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E831A067-C554-442C-84A2-506344A4F3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E831A067-C554-442C-84A2-506344A4F3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E831A067-C554-442C-84A2-506344A4F3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E831A067-C554-442C-84A2-506344A4F3CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
