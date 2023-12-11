@@ -7,7 +7,7 @@ namespace Password_Manager_Desktop_Client.crypto;
 public class VaultCrypto : IVaultCrypto
 {
 
-    public EncryptedFileDtoNoGuid EncryptFile(DecryptedFileDtoNoGuid file, string username, string password)
+    public EncryptedFileDtoNoGuid EncryptSingleFile(DecryptedFileDto file, string username, string password)
     {
         if (file != null)
         {
@@ -24,14 +24,14 @@ public class VaultCrypto : IVaultCrypto
         return new EncryptedFileDtoNoGuid();
     }
 
-    public DecryptedFileDto DecryptFile(EncryptedFileDto file, string username, string password)
+    public DecryptedFileDto DecryptSingleFile(EncryptedFileDto file, string username, string password)
     {
         if (file != null)
         {
 
             var salt = RetrieveSalt(file.EncryptedFile);
             var secretKey = DeriveSecterKey(username, password, salt);
-            var decryptedPropertyByteArr = DecryptProperty(file.EncryptedFile, secretKey);
+            var decryptedPropertyByteArr = DecryptFile(file.EncryptedFile, secretKey);
             string decryptedProperty = Encoding.UTF8.GetString(decryptedPropertyByteArr);
 
             return new DecryptedFileDto
@@ -41,6 +41,68 @@ public class VaultCrypto : IVaultCrypto
             };
         }
         return new DecryptedFileDto();
+    }
+
+    public SharedFolderDto EncryptSharedFolder(SharedFolderDto folder, string ownerUsername, string shareCode)
+    {
+        if (folder != null)
+        {
+            var salt = GenerateSalt();
+            var secretKey = DeriveSecterKey(ownerUsername, shareCode, salt);
+            var encryptedFiles = new List<EncryptedFileDto>();
+            for (var i = 0; i < folder.DecryptedFiles.Count(); i++){
+                var ecryptedFileDto = new EncryptedFileDto
+                {
+                    Guid = folder.DecryptedFiles.ElementAt(i).Guid,
+                    OwnerGuid = folder.DecryptedFiles.ElementAt(i).OwnerGuid,
+                    EncryptedFile = EncryptFile(folder.DecryptedFiles.ElementAt(i).DecryptedFile, secretKey, salt)
+                };  
+
+                encryptedFiles.Add(ecryptedFileDto);
+            }
+            
+
+            return new SharedFolderDto
+            {
+                Guid = folder.Guid,
+                OwenerGuid = folder.OwenerGuid,
+                HashedShareCode = secretKey,
+                EncryptedFiles = encryptedFiles
+            };
+        }
+        return new SharedFolderDto();
+    }
+
+    public SharedFolderDto DecryptSharedFolder(SharedFolderDto folder, string ownerUsername, string shareCode)
+    {
+        if (folder != null)
+        {
+            var salt = RetrieveSalt(folder.EncryptedFiles.FirstOrDefault().EncryptedFile);
+            var secretKey = DeriveSecterKey(ownerUsername, shareCode, salt);
+            var decryptedFiles = new List<DecryptedFileDto>();
+            for (var i = 0; i < folder.DecryptedFiles.Count(); i++)
+            {
+                
+                var deryptedFileDto = new DecryptedFileDto
+                {
+                    Guid = folder.DecryptedFiles.ElementAt(i).Guid,
+                    OwnerGuid = folder.DecryptedFiles.ElementAt(i).OwnerGuid,
+                    DecryptedFile = Encoding.UTF8.GetString(DecryptFile(folder.EncryptedFiles.ElementAt(i).EncryptedFile, secretKey))
+                };
+
+                decryptedFiles.Add(deryptedFileDto);
+            }
+
+
+            return new SharedFolderDto
+            {
+                Guid = folder.Guid,
+                OwenerGuid = folder.OwenerGuid,
+                HashedShareCode = secretKey,
+                DecryptedFiles = decryptedFiles
+            };
+        }
+        return new SharedFolderDto();
     }
 
     public byte[] RetrieveSalt(byte[] property)
@@ -70,7 +132,7 @@ public class VaultCrypto : IVaultCrypto
         return encryptedProp;
     }
 
-    public byte[] DecryptProperty(byte[] encryptedProp, byte[] key)
+    public byte[] DecryptFile(byte[] encryptedProp, byte[] key)
     {
         using var aes = new AesGcm(key);
 
