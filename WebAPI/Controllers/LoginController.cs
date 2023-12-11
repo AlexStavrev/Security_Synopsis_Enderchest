@@ -28,9 +28,9 @@ public class LoginController : ControllerBase
     [Route("Login")]
     public async Task<ActionResult<UserDto?>> PostAsync([FromBody] UserDto userDto)
     {
-        if (userDto.Password == null || userDto.Username == null)
+        if (userDto.Password == null || userDto.Email == null)
         {
-            return BadRequest("Username or Password cannot be null");
+            return BadRequest("Email or Password cannot be null");
         }
 
         var user = DtoConverter<UserDto, User>.From(userDto);
@@ -51,7 +51,7 @@ public class LoginController : ControllerBase
         }
         else
         {
-            return NotFound("Invalid username or password");
+            return NotFound("Invalid email or password");
         }
     }
 
@@ -59,9 +59,9 @@ public class LoginController : ControllerBase
     [Route("Create")]
     public async Task<ActionResult<Guid?>> CreateAsync([FromBody] UserDtoNoGuid userDtoNoGuid)
     {
-        if (userDtoNoGuid.Password == null || userDtoNoGuid.Username == null)
+        if (userDtoNoGuid.Password == null || userDtoNoGuid.Email == null)
         {
-            return BadRequest("Username or Password cannot be null");
+            return BadRequest("Email or Password cannot be null");
         }
 
         var user = DtoConverter<UserDtoNoGuid, User>.From(userDtoNoGuid);
@@ -73,15 +73,15 @@ public class LoginController : ControllerBase
         return BadRequest();
     }
 
-    [HttpGet("Salt/{username}")]
-    public async Task<ActionResult<byte[]>> GetSaltAsync(string username)
+    [HttpGet("Salt/{email}")]
+    public async Task<ActionResult<byte[]>> GetSaltAsync(string email)
     {
-        if (username.IsNullOrEmpty())
+        if (email.IsNullOrEmpty())
         {
-            return BadRequest("Username cannot be null");
+            return BadRequest("Email cannot be null");
         }
 
-        byte[]? returnedSalt = await _userRepo.GetSaltAsync(username);
+        byte[]? returnedSalt = await _userRepo.GetSaltAsync(email);
         if (returnedSalt != null && returnedSalt.Length == 16)
         {
             return Ok(returnedSalt);

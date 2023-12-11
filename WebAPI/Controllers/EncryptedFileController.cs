@@ -54,9 +54,9 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/create
-    [HttpPost("create")]
+    [HttpPost("create/{userGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> CreateFile([FromBody] Guid userGuid,[FromBody] EncryptedFileDtoNoGuid encryptedFileDtoNoGuid)
+    public async Task<ActionResult<EncryptedFileDto>> CreateFile(Guid userGuid,[FromBody] EncryptedFileDtoNoGuid encryptedFileDtoNoGuid)
     {
         if (encryptedFileDtoNoGuid.OwnerGuid == Guid.Empty || encryptedFileDtoNoGuid.EncryptedFile == null)
         {
@@ -73,9 +73,9 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/share
-    [HttpPost("share")]
+    [HttpPost("share/{userGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> ShareFile([FromBody] Guid userGuid, [FromBody] Guid encryptedFileGuid)
+    public async Task<ActionResult<EncryptedFileDto>> ShareFile(Guid userGuid, [FromBody] Guid encryptedFileGuid)
     {
         if (userGuid == Guid.Empty || encryptedFileGuid == Guid.Empty)
         {
