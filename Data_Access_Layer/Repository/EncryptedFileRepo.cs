@@ -23,12 +23,14 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         return await _connection.QueryAsync<EncryptedFile>("GET_USER_FILES", parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<IEnumerable<EncryptedFile>> GetSharedFilesAsync(Guid userGuid)
+    public async Task<IEnumerable<SharedFolder>> GetSharedFilesAsync(Guid userGuid)
     {
-        var parameters = new DynamicParameters();
+        /*var parameters = new DynamicParameters();
         parameters.Add("UserGuid", userGuid);
 
         return await _connection.QueryAsync<EncryptedFile>("GET_SHARED_FILES", parameters, commandType: CommandType.StoredProcedure);
+    */
+        throw new NotImplementedException();
     }
 
     public async Task<Guid> CreateAsync(EncryptedFile file, Guid userGuid)
@@ -44,7 +46,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         return await _connection.QuerySingleOrDefaultAsync<Guid>("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<bool> ShareFileAsync(Guid userGuid, Guid fileGuid)
+    public async Task<bool> ShareFileAsync(Guid userGuid, EncryptedFile fileGuid, byte[] shareCode)
     {
         var parameters = new DynamicParameters();
         parameters.Add("UserGuid", userGuid);
@@ -52,5 +54,10 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
 
         var result = await _connection.ExecuteAsync("SHARE_FILE", parameters, commandType: CommandType.StoredProcedure);
         return result > 0;
+    }
+
+    public async Task<byte[]> GetSharedCodeSaltAsync(Guid sharedFolderGuid)
+    {
+        throw new NotImplementedException();
     }
 }
