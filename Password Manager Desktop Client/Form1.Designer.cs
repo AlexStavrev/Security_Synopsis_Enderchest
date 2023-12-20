@@ -83,7 +83,7 @@ partial class Form1
         // 
         imageAppIcon.BackColor = Color.Transparent;
         imageAppIcon.Dock = DockStyle.Left;
-        imageAppIcon.Image = Properties.Resources.appIcon;
+        imageAppIcon.Image = Properties.Resources.enderchest;
         imageAppIcon.InitialImage = null;
         imageAppIcon.Location = new Point(10, 3);
         imageAppIcon.Margin = new Padding(0);
