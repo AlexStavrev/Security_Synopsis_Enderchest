@@ -97,12 +97,8 @@ internal class WebClient : IWebClient
         {
             throw new Exception("You need to be authentificated to call this endpoint!");
         }
-        var body = new
-        {
-            userGuid = userGuid,
-            encryptedFileDtoNoGuid = file
-        };
-        var response = await _client.RequestAsync<Guid>(Method.Post, $"EncryptedFile/create", body, jwt: _jwt);
+
+        var response = await _client.RequestAsync<Guid>(Method.Post, $"EncryptedFile/create/{userGuid}", file, jwt: _jwt);
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
         return response.Data!;
     }
@@ -113,11 +109,7 @@ internal class WebClient : IWebClient
         {
             throw new Exception("You need to be authentificated to call this endpoint!");
         }
-        var body = new {
-            userGuid = userGuid,
-            encryptedFileGuid = fileGuid
-        };
-        var response = await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/share", body, jwt: _jwt);
+        var response = await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/share/{userGuid}", fileGuid, jwt: _jwt);
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
         return response.Data!;
     }
