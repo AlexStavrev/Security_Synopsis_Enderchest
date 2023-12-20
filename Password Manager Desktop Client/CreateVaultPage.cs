@@ -27,9 +27,7 @@ public partial class CreateVaultPage : UserControl
         _parent = parent;
         InitializeComponent();
         listView1.View = View.Details;
-        listView1.Columns.Add("Sitename");
-        listView1.Columns.Add("Username");
-        listView1.Columns.Add("Password");
+        listView1.Columns.Add("Files");
 
         listView1.Columns[0].Width = 130; 
         listView1.Columns[1].Width = 130; 
@@ -75,14 +73,14 @@ public partial class CreateVaultPage : UserControl
             DecryptedFileDto decryptedFileDto = new DecryptedFileDto
             {
                 OwnerGuid = _userId,
-                DecryptedFile = fileText
+                File = fileText
             };
 
             var encryptedFile = _vaultCryptoService.EncryptSingleFile(decryptedFileDto, _email, _password);
             try
             {
                 var response = await _client.CreateFileAsync(encryptedFile, _userId);
-                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, DecryptedFile = fileText, Guid = response };
+                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, File = fileText, Guid = response };
                 UpdateListView(newDecryptedFile);
                 _ = _parent.ShowSuccess("File created!");
             }

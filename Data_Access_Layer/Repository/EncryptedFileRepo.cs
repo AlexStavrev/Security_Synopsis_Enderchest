@@ -26,14 +26,21 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
     public async Task<Guid> CreateAsync(EncryptedFile file, Guid userGuid)
     {
         Guid generatedGuid = Guid.NewGuid();
-        file.Guid = generatedGuid;
+        try
+        {
+            file.Guid = generatedGuid;
 
-        var parameters = new DynamicParameters();
-        parameters.Add("FileGuid", file.Guid);
-        parameters.Add("File", file.File);
-        parameters.Add("UserGuid", userGuid);
+            var parameters = new DynamicParameters();
+            parameters.Add("FileGuid", file.Guid);
+            parameters.Add("File", file.File);
+            parameters.Add("UserGuid", userGuid);
 
-        return await _connection.QuerySingleOrDefaultAsync<Guid>("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
+            await _connection.QueryAsync("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
+            return generatedGuid;
+        }catch
+        {
+            return Guid.Empty;
+        }
     }
 
     public async Task<Guid?> CreateShareFolderAsync(Guid ownerGuid, Guid userGuid, byte[] shareCode)
