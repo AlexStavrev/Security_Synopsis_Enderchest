@@ -18,17 +18,9 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
     public async Task<IEnumerable<EncryptedFile>> GetUserFilesAsync(Guid ownerGuid)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("OwnerGuid", ownerGuid);
+        parameters.Add("UserGuid", ownerGuid);
 
         return await _connection.QueryAsync<EncryptedFile>("GET_USER_FILES", parameters, commandType: CommandType.StoredProcedure);
-    }
-
-    public async Task<IEnumerable<EncryptedFile>> GetSharedFilesAsync(Guid userGuid)
-    {
-        var parameters = new DynamicParameters();
-        parameters.Add("UserGuid", userGuid);
-
-        return await _connection.QueryAsync<EncryptedFile>("GET_SHARED_FILES", parameters, commandType: CommandType.StoredProcedure);
     }
 
     public async Task<Guid> CreateAsync(EncryptedFile file, Guid userGuid)
@@ -39,19 +31,39 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         var parameters = new DynamicParameters();
         parameters.Add("FileGuid", file.Guid);
         parameters.Add("File", file.File);
-        parameters.Add("OwnerGuid", userGuid);
+        parameters.Add("UserGuid", userGuid);
 
         return await _connection.QuerySingleOrDefaultAsync<Guid>("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<bool> ShareFileAsync(Guid userGuid, Guid fileGuid)
+    public async Task<Guid?> CreateShareFolderAsync(Guid ownerGuid, Guid userGuid, byte[] shareCode)
+    {
+        Guid newFolderGuid = Guid.NewGuid();
+
+        try
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("ShareFolderGuid", newFolderGuid);
+            parameters.Add("OwnerGuid", ownerGuid);
+            parameters.Add("ShareCode", shareCode);
+            parameters.Add("UserGuid", userGuid);
+
+            await _connection.QueryAsync("CREATE_SHARE_FOLDER", parameters, commandType: CommandType.StoredProcedure);
+
+            return newFolderGuid;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<IEnumerable<Guid>> GetSharedFolderGuidsAsync(Guid userGuid)
     {
         var parameters = new DynamicParameters();
         parameters.Add("UserGuid", userGuid);
-        parameters.Add("FileGuid", fileGuid);
 
-        var result = await _connection.ExecuteAsync("SHARE_FILE", parameters, commandType: CommandType.StoredProcedure);
-        return result > 0;
+        return await _connection.QueryAsync<Guid>("GET_SHARED_FOLDER_GUIDS", parameters, commandType: CommandType.StoredProcedure);
     }
 
     public async Task<byte[]> GetSaltAsync(Guid sharedFolderGuid)

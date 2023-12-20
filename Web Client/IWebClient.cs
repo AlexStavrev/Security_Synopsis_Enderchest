@@ -11,6 +11,6 @@ public interface IWebClient
     // File
     Task<IEnumerable<EncryptedFileDto>> GetUserFilesAsync(Guid ownerGuid);
     Task<IEnumerable<EncryptedFileDto>> GetSharedFilesAsync(Guid userGuid);
-    Task<Guid> CreateFileAsync(EncryptedFileDtoNoGuid file, Guid userGuid);
+    Task<Guid> CreateFileAsync(EncryptedFileDto file, Guid userGuid);
     Task<bool> ShareFileAsync(Guid userGuid, Guid fileGuid);
 }

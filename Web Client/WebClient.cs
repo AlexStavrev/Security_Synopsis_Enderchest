@@ -91,7 +91,7 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<Guid> CreateFileAsync(EncryptedFileDtoNoGuid file, Guid userGuid)
+    public async Task<Guid> CreateFileAsync(EncryptedFileDto file, Guid userGuid)
     {
         if (_jwt == null)
         {
