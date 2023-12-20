@@ -54,8 +54,9 @@ public partial class CreateVaultPage : UserControl
         
     }
 
-    private void AddNewFile_Click(object sender, EventArgs e)
+    private async void AddNewFile_ClickAsync(object sender, EventArgs e)
     {
+        var fileText = "";
         int size = -1;
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
         DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
@@ -64,17 +65,30 @@ public partial class CreateVaultPage : UserControl
             string file = openFileDialog1.FileName;
             try
             {
-                string text = File.ReadAllText(file);
-                size = text.Length;
+                fileText = File.ReadAllText(file);
+                size = fileText.Length;
             }
             catch (IOException)
             {
             }
+
+            DecryptedFileDto decryptedFileDto = new DecryptedFileDto
+            {
+                OwnerGuid = _userId,
+                DecryptedFile = fileText
+            };
+
+            var encryptedFile = _vaultCryptoService.EncryptSingleFile(decryptedFileDto, _email, _password);
+            try
+            {
+                var response = await _client.CreateFileAsync(encryptedFile, _userId);
+                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, DecryptedFile = fileText, Guid = response };
+                UpdateListView(newDecryptedFile);
+                _ = _parent.ShowSuccess("File created!");
+            }
+            catch(Exception ex) 
+            { _ = _parent.ShowError("Unable to upload the file!"); }
         }
-        Console.WriteLine(size); // <-- Shows file size in debugging mode.
-        Console.WriteLine(result); // <-- For debugging use.
-
-
     }
 
 
