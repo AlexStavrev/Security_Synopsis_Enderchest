@@ -28,10 +28,10 @@ public partial class CreateVaultPage : UserControl
         InitializeComponent();
         listView1.View = View.Details;
         listView1.Columns.Add("Files");
+        _decryptedFiles = new List<DecryptedFileDto?> { };
+        _encryptedFiles = new List<EncryptedFileDto?> { };  
 
-        listView1.Columns[0].Width = 130; 
-        listView1.Columns[1].Width = 130; 
-        listView1.Columns[2].Width = 130; 
+        listView1.Columns[0].Width = 130;
     }
 
     private async void CreateVaultPage_Load(object sender, EventArgs e)
@@ -73,14 +73,14 @@ public partial class CreateVaultPage : UserControl
             DecryptedFileDto decryptedFileDto = new DecryptedFileDto
             {
                 OwnerGuid = _userId,
-                File = fileText
+                EncryptedFile = fileText
             };
 
             var encryptedFile = _vaultCryptoService.EncryptSingleFile(decryptedFileDto, _email, _password);
             try
             {
                 var response = await _client.CreateFileAsync(encryptedFile, _userId);
-                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, File = fileText, Guid = response };
+                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, EncryptedFile = fileText, Guid = response };
                 UpdateListView(newDecryptedFile);
                 _ = _parent.ShowSuccess("File created!");
             }

@@ -35,7 +35,7 @@ public class EncryptedFileController : ControllerBase
         }
 
         var files = await _encryptedFileRepo.GetUserFilesAsync(ownerGuid);
-        return Ok(DtoConverter<EncryptedFile, EncryptedFileDto>.FromList(files));
+        return Ok(DtoConverter<EncryptedFileModel, EncryptedFileDto>.FromList(files));
     }
 
     // GET api/EncryptedFile/getShared/<guid>
@@ -50,7 +50,7 @@ public class EncryptedFileController : ControllerBase
         }
 
         var files = await _encryptedFileRepo.GetSharedFolderFiles(folderGuid, shareCode);
-        return Ok(DtoConverter<EncryptedFile, EncryptedFileDto>.FromList(files));
+        return Ok(DtoConverter<EncryptedFileModel, EncryptedFileDto>.FromList(files));
     }
 
     // POST api/EncryptedFile/create
@@ -64,12 +64,12 @@ public class EncryptedFileController : ControllerBase
             return validationErrors;
         }
         
-        if (encryptedFileDto.OwnerGuid == Guid.Empty || encryptedFileDto.File == null)
+        if (encryptedFileDto.OwnerGuid == Guid.Empty || encryptedFileDto.EncryptedFile == null)
         {
             return BadRequest("Owner or file was empty, this is not allowed.");
         }
 
-        var encryptedFile = DtoConverter<EncryptedFileDto, EncryptedFile>.From(encryptedFileDto);
+        var encryptedFile = DtoConverter<EncryptedFileDto, EncryptedFileModel>.From(encryptedFileDto);
         Guid? returnedGuid = await _encryptedFileRepo.CreateAsync(encryptedFile, userGuid);
         if (returnedGuid.HasValue && returnedGuid != Guid.Empty)
         {

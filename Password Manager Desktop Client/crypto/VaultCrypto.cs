@@ -13,12 +13,12 @@ public class VaultCrypto : IVaultCrypto
         {
             var salt = GenerateSalt();
             var secretKey = DeriveSecterKey(username, password, salt);
-            var encryptedFile = EncryptFile(file.File, secretKey, salt);
+            var encryptedFile = EncryptFile(file.EncryptedFile, secretKey, salt);
 
             return new EncryptedFileDto
             {
                 OwnerGuid = file.OwnerGuid,
-                File = encryptedFile
+                EncryptedFile = encryptedFile
             };
         }
         return new EncryptedFileDto();
@@ -29,15 +29,15 @@ public class VaultCrypto : IVaultCrypto
         if (file != null)
         {
 
-            var salt = RetrieveSalt(file.File);
+            var salt = RetrieveSalt(file.EncryptedFile);
             var secretKey = DeriveSecterKey(username, password, salt);
-            var decryptedPropertyByteArr = DecryptFile(file.File, secretKey);
+            var decryptedPropertyByteArr = DecryptFile(file.EncryptedFile, secretKey);
             string decryptedProperty = Encoding.UTF8.GetString(decryptedPropertyByteArr);
 
             return new DecryptedFileDto
             {
                 Guid = file.Guid,
-                File = decryptedProperty
+                EncryptedFile = decryptedProperty
             };
         }
         return new DecryptedFileDto();
@@ -55,7 +55,7 @@ public class VaultCrypto : IVaultCrypto
                 {
                     Guid = folder.DecryptedFiles.ElementAt(i).Guid,
                     OwnerGuid = folder.DecryptedFiles.ElementAt(i).OwnerGuid,
-                    File = EncryptFile(folder.DecryptedFiles.ElementAt(i).File, secretKey, salt)
+                    EncryptedFile = EncryptFile(folder.DecryptedFiles.ElementAt(i).EncryptedFile, secretKey, salt)
                 };  
 
                 encryptedFiles.Add(ecryptedFileDto);
@@ -77,7 +77,7 @@ public class VaultCrypto : IVaultCrypto
     {
         if (folder != null)
         {
-            var salt = RetrieveSalt(folder.EncryptedFiles.FirstOrDefault().File);
+            var salt = RetrieveSalt(folder.EncryptedFiles.FirstOrDefault().EncryptedFile);
             var secretKey = DeriveSecterKey(ownerUsername, shareCode, salt);
             var decryptedFiles = new List<DecryptedFileDto>();
             for (var i = 0; i < folder.DecryptedFiles.Count(); i++)
@@ -87,7 +87,7 @@ public class VaultCrypto : IVaultCrypto
                 {
                     Guid = folder.DecryptedFiles.ElementAt(i).Guid,
                     OwnerGuid = folder.DecryptedFiles.ElementAt(i).OwnerGuid,
-                    File = Encoding.UTF8.GetString(DecryptFile(folder.EncryptedFiles.ElementAt(i).File, secretKey))
+                    EncryptedFile = Encoding.UTF8.GetString(DecryptFile(folder.EncryptedFiles.ElementAt(i).EncryptedFile, secretKey))
                 };
 
                 decryptedFiles.Add(deryptedFileDto);

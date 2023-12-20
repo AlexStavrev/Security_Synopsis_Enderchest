@@ -15,15 +15,15 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         _connection = new SqlConnection(connectionString);
     }
 
-    public async Task<IEnumerable<EncryptedFile>> GetUserFilesAsync(Guid ownerGuid)
+    public async Task<IEnumerable<EncryptedFileModel>> GetUserFilesAsync(Guid ownerGuid)
     {
         var parameters = new DynamicParameters();
         parameters.Add("UserGuid", ownerGuid);
-
-        return await _connection.QueryAsync<EncryptedFile>("GET_USER_FILES", parameters, commandType: CommandType.StoredProcedure);
+        var files = await _connection.QueryAsync<EncryptedFileModel>("GET_USER_FILES", parameters, commandType: CommandType.StoredProcedure);
+        return files;
     }
 
-    public async Task<Guid> CreateAsync(EncryptedFile file, Guid userGuid)
+    public async Task<Guid> CreateAsync(EncryptedFileModel file, Guid userGuid)
     {
         Guid generatedGuid = Guid.NewGuid();
         try
@@ -32,7 +32,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
 
             var parameters = new DynamicParameters();
             parameters.Add("FileGuid", file.Guid);
-            parameters.Add("File", file.File);
+            parameters.Add("File", file.EncryptedFile);
             parameters.Add("UserGuid", userGuid);
 
             await _connection.QueryAsync("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
@@ -108,12 +108,12 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         }
     }
 
-    public async Task<IEnumerable<EncryptedFile>> GetSharedFolderFiles(Guid folderGuid, byte[] shareCode)
+    public async Task<IEnumerable<EncryptedFileModel>> GetSharedFolderFiles(Guid folderGuid, byte[] shareCode)
     {
         var parameters = new DynamicParameters();
         parameters.Add("FolderGuid", folderGuid);
         parameters.Add("ShareCode", shareCode);
 
-        return await _connection.QueryAsync<EncryptedFile>("GET_SHARED_FOLDER", parameters, commandType: CommandType.StoredProcedure);
+        return await _connection.QueryAsync<EncryptedFileModel>("GET_SHARED_FOLDER", parameters, commandType: CommandType.StoredProcedure);
     }
 }
