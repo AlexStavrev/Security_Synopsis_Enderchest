@@ -3,11 +3,14 @@ using Data_Access_Layer.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text;
+using WebAPI.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Configuration.AddUserSecrets<JWT_Helper>();
+builder.Configuration.AddUserSecrets<Program>();
 // Add services to the container.
 
 // TODO use DI for repos and implement a repo factory in the DAL
@@ -19,7 +22,33 @@ builder.Services.AddScoped((repo) => ReposFactory.GetRepository<IEncryptedFileRe
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+    {
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+        });
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
+    }
+);
 
 builder.Services.AddAuthentication(auth =>
 {
@@ -36,36 +65,10 @@ builder.Services.AddAuthentication(auth =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"], //TODO see how to check audience since it comes from Windows Forms app
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSecretKey"]!))
     };
     options.SaveToken = true;
-    // Allows the API to accept requests where the JWT is stored in a cookie named X-Access-Token instead of Authorization Header in the request
-    //options.Events = new JwtBearerEvents
-    //{
-    //    OnMessageReceived = context =>
-    //    {
-
-    //        if (context.Request.Cookies.ContainsKey("X-Access-Token"))
-    //        {
-    //            context.Token = context.Request.Cookies["X-Access-Token"];
-    //        }
-    //        return Task.CompletedTask;
-    //    }
-    //};
 });
-
-// builder.Services.AddSwaggerGen(c =>
-// {
-//     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//     {
-//         In = ParameterLocation.Header,
-//         Description = "Please insert JWT with Bearer into field",
-//         Name = "Authorization", //perhaps X-Access-Token
-//         Type = SecuritySchemeType.Http,
-//         Scheme = "Bearer",
-//         BearerFormat = "JWT"
-//     });
-// })
 
 builder.Services.AddAuthorization(options =>
 {
@@ -78,7 +81,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JWTAuth v1"));
 }
 
 app.UseHttpsRedirection();
