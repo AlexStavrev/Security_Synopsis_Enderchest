@@ -57,7 +57,7 @@
             this.AddNewPassword_Button.TabIndex = 1;
             this.AddNewPassword_Button.Text = "Add new";
             this.AddNewPassword_Button.UseVisualStyleBackColor = false;
-            this.AddNewPassword_Button.Click += new System.EventHandler(this.AddNewPassword_Click);
+            this.AddNewPassword_Button.Click += new System.EventHandler(this.AddNewFile_Click);
             // 
             // logOut_Button
             // 

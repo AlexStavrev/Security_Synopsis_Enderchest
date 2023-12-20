@@ -7,7 +7,7 @@ namespace Password_Manager_Desktop_Client.crypto;
 public class VaultCrypto : IVaultCrypto
 {
 
-    public EncryptedFileDtoNoGuid EncryptSingleFile(DecryptedFileDto file, string username, string password)
+    public EncryptedFileDto EncryptSingleFile(DecryptedFileDto file, string username, string password)
     {
         if (file != null)
         {
@@ -15,13 +15,13 @@ public class VaultCrypto : IVaultCrypto
             var secretKey = DeriveSecterKey(username, password, salt);
             var encryptedFile = EncryptFile(file.DecryptedFile, secretKey, salt);
 
-            return new EncryptedFileDtoNoGuid
+            return new EncryptedFileDto
             {
                 OwnerGuid = file.OwnerGuid,
                 EncryptedFile = encryptedFile
             };
         }
-        return new EncryptedFileDtoNoGuid();
+        return new EncryptedFileDto();
     }
 
     public DecryptedFileDto DecryptSingleFile(EncryptedFileDto file, string username, string password)

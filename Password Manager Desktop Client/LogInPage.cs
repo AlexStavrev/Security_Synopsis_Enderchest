@@ -34,7 +34,7 @@ public partial class LogInPage : UserControl
             }
             else
             {
-                var createVaultPage = new CreateVaultPage(_client, _vaultCryptoHelper, userId, username, password, _parent);
+                var createVaultPage = new CreateVaultPage(_client, _vaultCryptoHelper, userId.Value, username, password, _parent);
                 _parent.SetPage(createVaultPage);
                 _ = _parent.ShowSuccess("Logged In!");
                 Dispose();

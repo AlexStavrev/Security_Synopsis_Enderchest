@@ -83,7 +83,7 @@ partial class Form1
         // 
         imageAppIcon.BackColor = Color.Transparent;
         imageAppIcon.Dock = DockStyle.Left;
-        imageAppIcon.Image = Properties.Resources.appIcon;
+        imageAppIcon.Image = Properties.Resources.enderchest;
         imageAppIcon.InitialImage = null;
         imageAppIcon.Location = new Point(10, 3);
         imageAppIcon.Margin = new Padding(0);
@@ -162,7 +162,7 @@ partial class Form1
         Margin = new Padding(3, 4, 3, 4);
         MinimumSize = new Size(450, 600);
         Name = "Form1";
-        Text = "Password Manager";
+        Text = "Enderchest";
         Load += Form1_Load;
         panel2.ResumeLayout(false);
         panel2.PerformLayout();
