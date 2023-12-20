@@ -39,9 +39,9 @@ public class EncryptedFileController : ControllerBase
     }
 
     // GET api/EncryptedFile/getShared/<guid>
-    [HttpGet("getShared/{ownerGuid}")]
+    [HttpGet("GetShared/{ownerGuid}/folder/{folderGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> GetSharedFolderFiles(Guid ownerGuid, Guid folderGuid, byte[] shareCode)
+    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid ownerGuid, Guid folderGuid,[FromBody] byte[] shareCode)
     {
         var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
@@ -54,10 +54,16 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/create
-    [HttpPost("create/{userGuid}")]
+    [HttpPost("Create/{userGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> CreateFileForOwner(Guid userGuid,[FromBody] EncryptedFileDto encryptedFileDto)
+    public async Task<ActionResult<Guid>> CreateFileForOwner(Guid userGuid,[FromBody] EncryptedFileDto encryptedFileDto)
     {
+        var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
+        if (validationErrors != null)
+        {
+            return validationErrors;
+        }
+        
         if (encryptedFileDto.OwnerGuid == Guid.Empty || encryptedFileDto.EncryptedFile == null)
         {
             return BadRequest("Owner or file was empty, this is not allowed.");
@@ -73,16 +79,21 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/share
-    [HttpPost("share/{userGuid}")]
+    [HttpPost("Share/{userGuid}/folder/{sharedFolderGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> ShareFileToShareFolder(Guid userGuid, [FromBody] Guid encryptedFileGuid, byte[] file, Guid sharedFolderGuid)
+    public async Task<ActionResult<bool>> ShareFileToShareFolder(Guid userGuid,[FromBody] byte[] file, Guid sharedFolderGuid)
     {
-        if (userGuid == Guid.Empty || encryptedFileGuid == Guid.Empty)
+        var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
+        if (validationErrors != null)
         {
-            return BadRequest("OwnerId or fileId was empty, this is not allowed.");
+            return validationErrors;
+        }
+        if (userGuid == Guid.Empty)
+        {
+            return BadRequest("user guid or encrypted file guid was empty, this is not allowed.");
         }
 
-        bool isFileShared = await _encryptedFileRepo.AddFileToSharedFolder(file, sharedFolderGuid);
+        bool isFileShared = await _encryptedFileRepo.AddFileToSharedFolder(file, sharedFolderGuid );
         if (isFileShared)
         {
             return Ok(isFileShared);
@@ -90,19 +101,65 @@ public class EncryptedFileController : ControllerBase
         return BadRequest();
     }
 
+    
     // POST api/EncryptedFile/share
-    [HttpGet("getSharedFolderGuids/{userGuid}")]
+    [HttpGet("GetSharedFolderGuids/{userGuid}")]
     [Authorize]
     public async Task<ActionResult<IEnumerable<Guid>>> GetShareFolderGuids(Guid userGuid, [FromBody] Guid encryptedFileGuid)
     {
+        var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
+        if (validationErrors != null)
+        {
+            return validationErrors;
+        }
         if (userGuid == Guid.Empty || encryptedFileGuid == Guid.Empty)
         {
-            return BadRequest("OwnerId or fileId was empty, this is not allowed.");
+            return BadRequest("user guid or encrypted file guid was empty, this is not allowed.");
         }
         var files = await _encryptedFileRepo.GetSharedFolderGuidsAsync(userGuid);
         return Ok(files);
     }
+    
+    
+    [HttpGet("Salt/{Guid}")]
+    public async Task<ActionResult<byte[]>> GetSaltAsync(Guid sharedFolderGuid)
+    {
+        if (sharedFolderGuid == Guid.Empty)
+        {
+            return BadRequest("shared folder guid cannot be null");
+        }
 
+        byte[]? returnedSalt = await _encryptedFileRepo.GetSaltAsync(sharedFolderGuid);
+        if (returnedSalt != null && returnedSalt.Length == 16)
+        {
+            return Ok(returnedSalt);
+        }
+        return BadRequest();
+    }
+
+    // POST api/EncryptedFile/create
+    [HttpPost("CreateSharedFolder/{userGuid}/owner/{ownerGuid}")]
+    [Authorize]
+    public async Task<ActionResult<Guid>> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid,[FromBody] byte[] shareCode)
+    {
+        var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
+        if (validationErrors != null)
+        {
+            return validationErrors;
+        }
+        if (userGuid == Guid.Empty || ownerGuid == Guid.Empty) 
+        {
+            return BadRequest("Could not create a shared folder, user or owner guid is empty");
+        }
+
+        Guid? returnedGuid = await _encryptedFileRepo.CreateShareFolderAsync(ownerGuid, userGuid, shareCode);
+        if (returnedGuid.HasValue && returnedGuid != Guid.Empty)
+        {
+            return Ok(returnedGuid);
+        }
+        return BadRequest();
+    }
+    
     private ActionResult? GetValidationErrors(Guid ownerGuid, IEnumerable<Claim> claims, IHeaderDictionary headers)
     {
         // Validate the JWT
@@ -113,6 +170,7 @@ public class EncryptedFileController : ControllerBase
         {
             return Unauthorized();
         }
+        
 
         // Validate that user guid is in claims
         var userGuidClaim = claims.FirstOrDefault(c => c.Type == "user_guid");
