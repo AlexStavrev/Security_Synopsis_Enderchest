@@ -27,7 +27,7 @@ internal class JWT_Helper
             claims: claims,
             expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["DurationMinutes"])),
             signingCredentials: new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]!)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSecretKey"]!)),
                 SecurityAlgorithms.HmacSha256
             )
         );
@@ -42,7 +42,7 @@ internal class JWT_Helper
         {
             return false;
         }
-        var mySecret = Encoding.UTF8.GetBytes(_configuration["SecretKey"]!);
+        var mySecret = Encoding.UTF8.GetBytes(_configuration["JWTSecretKey"]!);
         var mySecurityKey = new SymmetricSecurityKey(mySecret);
         var tokenHandler = new JwtSecurityTokenHandler();
         try
