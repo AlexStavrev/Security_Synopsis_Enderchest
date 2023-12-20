@@ -55,9 +55,9 @@ public partial class LogInPage : UserControl
 
 
 
-    private UserDto CreateUserDTO(string username, byte[] password)
+    private UserDto CreateUserDTO(string email, byte[] password)
     {
-        return new UserDto() { Username = username, Password = password };
+        return new UserDto() { Email = email, Password = password };
     }
 
     private async void createAcc_Click(object sender, EventArgs e)
