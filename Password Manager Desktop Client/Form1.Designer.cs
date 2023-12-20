@@ -162,7 +162,7 @@ partial class Form1
         Margin = new Padding(3, 4, 3, 4);
         MinimumSize = new Size(450, 600);
         Name = "Form1";
-        Text = "Password Manager";
+        Text = "Enderchest";
         Load += Form1_Load;
         panel2.ResumeLayout(false);
         panel2.PerformLayout();
