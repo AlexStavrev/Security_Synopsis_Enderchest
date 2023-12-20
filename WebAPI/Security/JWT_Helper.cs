@@ -11,7 +11,7 @@ internal class JWT_Helper
     private readonly IConfiguration _configuration;
     public JWT_Helper(IConfiguration configuration)
     {
-        _configuration = configuration.GetSection("JwtSettings");
+        _configuration = configuration;
     }
 
     public string GenerateToken(UserDto user)
@@ -22,10 +22,10 @@ internal class JWT_Helper
         };
 
         var token = new JwtSecurityToken(
-            issuer: _configuration["Issuer"],
-            audience: _configuration["Audience"],
+            issuer: _configuration["JwtSettings:Issuer"],
+            audience: _configuration["JwtSettings:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["DurationMinutes"])),
+            expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:DurationMinutes"])),
             signingCredentials: new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSecretKey"]!)),
                 SecurityAlgorithms.HmacSha256
@@ -52,8 +52,8 @@ internal class JWT_Helper
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidIssuer = _configuration["Issuer"]!.ToString(),
-                ValidAudience = _configuration["Audience"]!.ToString(),
+                ValidIssuer = _configuration["JwtSettings:Issuer"]!.ToString(),
+                ValidAudience = _configuration["JwtSettings:Audience"]!.ToString(),
                 IssuerSigningKey = mySecurityKey,
             }, out SecurityToken validatedToken);
             var temp = (JwtSecurityToken)validatedToken;
@@ -67,6 +67,6 @@ internal class JWT_Helper
 
     public double GetTokenMinutesDuration()
     {
-        return Convert.ToDouble(_configuration["DurationMinutes"]);
+        return Convert.ToDouble(_configuration["JwtSettings:DurationMinutes"]);
     }
 }
