@@ -27,9 +27,7 @@ public partial class CreateVaultPage : UserControl
         _parent = parent;
         InitializeComponent();
         listView1.View = View.Details;
-        listView1.Columns.Add("Sitename");
-        listView1.Columns.Add("Username");
-        listView1.Columns.Add("Password");
+        listView1.Columns.Add("Files");
 
         listView1.Columns[0].Width = 130; 
         listView1.Columns[1].Width = 130; 

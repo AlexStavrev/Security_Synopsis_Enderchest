@@ -64,7 +64,7 @@ public class EncryptedFileController : ControllerBase
             return validationErrors;
         }
         
-        if (encryptedFileDto.OwnerGuid == Guid.Empty || encryptedFileDto.EncryptedFile == null)
+        if (encryptedFileDto.OwnerGuid == Guid.Empty || encryptedFileDto.File == null)
         {
             return BadRequest("Owner or file was empty, this is not allowed.");
         }
