@@ -18,7 +18,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
     public async Task<IEnumerable<EncryptedFile>> GetUserFilesAsync(Guid ownerGuid)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("OwnerGuid", ownerGuid);
+        parameters.Add("UserGuid", ownerGuid);
 
         return await _connection.QueryAsync<EncryptedFile>("GET_USER_FILES", parameters, commandType: CommandType.StoredProcedure);
     }
@@ -31,7 +31,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         var parameters = new DynamicParameters();
         parameters.Add("FileGuid", file.Guid);
         parameters.Add("File", file.File);
-        parameters.Add("OwnerGuid", userGuid);
+        parameters.Add("UserGuid", userGuid);
 
         return await _connection.QuerySingleOrDefaultAsync<Guid>("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
     }
@@ -48,7 +48,7 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
             parameters.Add("ShareCode", shareCode);
             parameters.Add("UserGuid", userGuid);
 
-            await _connection.QueryAsync("USER_MASTER_CREATE", parameters, commandType: CommandType.StoredProcedure);
+            await _connection.QueryAsync("CREATE_SHARE_FOLDER", parameters, commandType: CommandType.StoredProcedure);
 
             return newFolderGuid;
         }
@@ -58,9 +58,12 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         }
     }
 
-    public Task<IEnumerable<Guid>> GetSharedFolderGuidsAsync(Guid userGuid)
+    public async Task<IEnumerable<Guid>> GetSharedFolderGuidsAsync(Guid userGuid)
     {
-        throw new NotImplementedException();
+        var parameters = new DynamicParameters();
+        parameters.Add("UserGuid", userGuid);
+
+        return await _connection.QueryAsync<Guid>("GET_SHARED_FOLDER_GUIDS", parameters, commandType: CommandType.StoredProcedure);
     }
 
     public async Task<byte[]> GetSaltAsync(Guid sharedFolderGuid)
@@ -80,13 +83,31 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         return new byte[0];
     }
 
-    public Task<bool> AddFileToSharedFolder(byte[] file, Guid sharedFolderGuid)
+    public async Task<bool> AddFileToSharedFolder(byte[] file, Guid sharedFolderGuid)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("EncryptedFile", file);
+            parameters.Add("FolderGuid", sharedFolderGuid);
+
+            await _connection.QueryAsync("ADD_FILE_TO_SHARED_FOLDER", parameters, commandType: CommandType.StoredProcedure);
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
-    public Task<IEnumerable<EncryptedFile>> GetSharedFolderFiles(Guid folderGuid, byte[] shareCode)
+    public async Task<IEnumerable<EncryptedFile>> GetSharedFolderFiles(Guid folderGuid, byte[] shareCode)
     {
-        throw new NotImplementedException();
+        var parameters = new DynamicParameters();
+        parameters.Add("FolderGuid", folderGuid);
+        parameters.Add("ShareCode", shareCode);
+
+        return await _connection.QueryAsync<EncryptedFile>("GET_SHARED_FOLDER", parameters, commandType: CommandType.StoredProcedure);
     }
+}
 }
