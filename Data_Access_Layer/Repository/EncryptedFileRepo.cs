@@ -23,16 +23,6 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         return await _connection.QueryAsync<EncryptedFile>("GET_USER_FILES", parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<IEnumerable<SharedFolder>> GetSharedFilesAsync(Guid userGuid)
-    {
-        /*var parameters = new DynamicParameters();
-        parameters.Add("UserGuid", userGuid);
-
-        return await _connection.QueryAsync<EncryptedFile>("GET_SHARED_FILES", parameters, commandType: CommandType.StoredProcedure);
-    */
-        throw new NotImplementedException();
-    }
-
     public async Task<Guid> CreateAsync(EncryptedFile file, Guid userGuid)
     {
         Guid generatedGuid = Guid.NewGuid();
@@ -46,17 +36,56 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
         return await _connection.QuerySingleOrDefaultAsync<Guid>("CREATE_FILE", parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<bool> ShareFileAsync(Guid userGuid, EncryptedFile fileGuid, byte[] shareCode)
+    public async Task<Guid?> CreateShareFolderAsync(Guid ownerGuid, Guid userGuid, byte[] shareCode)
     {
-        var parameters = new DynamicParameters();
-        parameters.Add("UserGuid", userGuid);
-        parameters.Add("FileGuid", fileGuid);
+        Guid newFolderGuid = Guid.NewGuid();
 
-        var result = await _connection.ExecuteAsync("SHARE_FILE", parameters, commandType: CommandType.StoredProcedure);
-        return result > 0;
+        try
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("ShareFolderGuid", newFolderGuid);
+            parameters.Add("OwnerGuid", ownerGuid);
+            parameters.Add("ShareCode", shareCode);
+            parameters.Add("UserGuid", userGuid);
+
+            await _connection.QueryAsync("USER_MASTER_CREATE", parameters, commandType: CommandType.StoredProcedure);
+
+            return newFolderGuid;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
-    public async Task<byte[]> GetSharedCodeSaltAsync(Guid sharedFolderGuid)
+    public Task<IEnumerable<Guid>> GetSharedFolderGuidsAsync(Guid userGuid)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<byte[]> GetSaltAsync(Guid sharedFolderGuid)
+    {
+        //Set up DynamicParameters object to pass parameters  
+        var parameters = new DynamicParameters();
+
+        parameters.Add("ShareFolderGuid", sharedFolderGuid);
+
+        //Execute stored procedure and map the returned result to a Customer object  
+        var returnedPasswordKey = await _connection.QuerySingleOrDefaultAsync<byte[]>("GET_SALT_SHARED_FOLDER", parameters, commandType: CommandType.StoredProcedure);
+        if (returnedPasswordKey != null)
+        {
+            var salt = returnedPasswordKey.Take(16).ToArray();
+            return salt;
+        }
+        return new byte[0];
+    }
+
+    public Task<bool> AddFileToSharedFolder(byte[] file, Guid sharedFolderGuid)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<EncryptedFile>> GetSharedFolderFiles(Guid folderGuid, byte[] shareCode)
     {
         throw new NotImplementedException();
     }
