@@ -75,14 +75,14 @@ public partial class CreateVaultPage : UserControl
             DecryptedFileDto decryptedFileDto = new DecryptedFileDto
             {
                 OwnerGuid = _userId,
-                DecryptedFile = fileText
+                File = fileText
             };
 
             var encryptedFile = _vaultCryptoService.EncryptSingleFile(decryptedFileDto, _email, _password);
             try
             {
                 var response = await _client.CreateFileAsync(encryptedFile, _userId);
-                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, DecryptedFile = fileText, Guid = response };
+                DecryptedFileDto newDecryptedFile = new DecryptedFileDto { OwnerGuid = _userId, File = fileText, Guid = response };
                 UpdateListView(newDecryptedFile);
                 _ = _parent.ShowSuccess("File created!");
             }
