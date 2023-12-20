@@ -39,9 +39,9 @@ public class EncryptedFileController : ControllerBase
     }
 
     // GET api/EncryptedFile/getShared/<guid>
-    [HttpGet("getShared/{ownerGuid}")]
+    [HttpGet("GetShared/{ownerGuid}/folder/{folderGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid ownerGuid, Guid folderGuid, byte[] shareCode)
+    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid ownerGuid, Guid folderGuid,[FromBody] byte[] shareCode)
     {
         var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
@@ -54,7 +54,7 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/create
-    [HttpPost("create/{userGuid}")]
+    [HttpPost("Create/{userGuid}")]
     [Authorize]
     public async Task<ActionResult<Guid>> CreateFileForOwner(Guid userGuid,[FromBody] EncryptedFileDto encryptedFileDto)
     {
@@ -79,9 +79,9 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/share
-    [HttpPost("share/{userGuid}")]
+    [HttpPost("Share/{userGuid}/folder/{sharedFolderGuid}")]
     [Authorize]
-    public async Task<ActionResult<bool>> ShareFileToShareFolder(Guid userGuid, byte[] file, Guid sharedFolderGuid)
+    public async Task<ActionResult<bool>> ShareFileToShareFolder(Guid userGuid,[FromBody] byte[] file, Guid sharedFolderGuid)
     {
         var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
@@ -103,7 +103,7 @@ public class EncryptedFileController : ControllerBase
 
     
     // POST api/EncryptedFile/share
-    [HttpGet("getSharedFolderGuids/{userGuid}")]
+    [HttpGet("GetSharedFolderGuids/{userGuid}")]
     [Authorize]
     public async Task<ActionResult<IEnumerable<Guid>>> GetShareFolderGuids(Guid userGuid, [FromBody] Guid encryptedFileGuid)
     {
@@ -138,9 +138,9 @@ public class EncryptedFileController : ControllerBase
     }
 
     // POST api/EncryptedFile/create
-    [HttpPost("createSharedFolder/{userGuid}")]
+    [HttpPost("CreateSharedFolder/{userGuid}/owner/{ownerGuid}")]
     [Authorize]
-    public async Task<ActionResult<Guid>> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode)
+    public async Task<ActionResult<Guid>> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid,[FromBody] byte[] shareCode)
     {
         var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
