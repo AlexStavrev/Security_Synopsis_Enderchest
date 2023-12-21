@@ -47,9 +47,9 @@
             userName_label.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
             userName_label.Location = new Point(50, 100);
             userName_label.Name = "userName_label";
-            userName_label.Size = new Size(117, 31);
+            userName_label.Size = new Size(70, 31);
             userName_label.TabIndex = 0;
-            userName_label.Text = "Username";
+            userName_label.Text = "Email";
             // 
             // masterPassword_label
             // 
@@ -74,7 +74,7 @@
             usernameTextBox.Location = new Point(50, 131);
             usernameTextBox.MaximumSize = new Size(250, 31);
             usernameTextBox.Name = "usernameTextBox";
-            usernameTextBox.PlaceholderText = "Name";
+            usernameTextBox.PlaceholderText = "email@example.com";
             usernameTextBox.Size = new Size(250, 30);
             usernameTextBox.TabIndex = 2;
             // 

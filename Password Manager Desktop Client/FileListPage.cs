@@ -166,7 +166,6 @@ public partial class FileListPage : UserControl
             {
                 using var fileViewDialogBox = new FileViewDialogBox(file, _client, this);
                 fileViewDialogBox.ShowDialog();
-                fileViewDialogBox.Focus();
             }
         }
     }
