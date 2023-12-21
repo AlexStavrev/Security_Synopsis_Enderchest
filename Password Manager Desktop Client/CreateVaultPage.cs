@@ -1,5 +1,5 @@
 ﻿using Password_Manager_Desktop_Client.crypto;
-using System.Net;
+using System.Windows.Forms;
 using Web_Client;
 using Web_Client.DTOs;
 
@@ -26,12 +26,15 @@ public partial class CreateVaultPage : UserControl
         _vaultCryptoService = vaultCryptoService;
         _parent = parent;
         InitializeComponent();
-        listView1.View = View.Details;
-        listView1.Columns.Add("Files");
+        listView1.Columns.Add("Id");
+        listView1.Columns.Add("Name");
+        imageList.Images.Add("fileIcon", Properties.Resources.fileIcon);
+        listView1.SmallImageList = imageList;
         _decryptedFiles = new List<DecryptedFileDto?> { };
-        _encryptedFiles = new List<EncryptedFileDto?> { };  
+        _encryptedFiles = new List<EncryptedFileDto?> { };
 
-        listView1.Columns[0].Width = 130;
+        listView1.Columns[0].Width = 100;
+        listView1.Columns[1].Width = 1080;
     }
 
     private async void CreateVaultPage_Load(object sender, EventArgs e)
@@ -39,17 +42,18 @@ public partial class CreateVaultPage : UserControl
         try
         {
             var newEncryptedFiles = await _client.GetUserFilesAsync(_userId);
-            foreach(var file in newEncryptedFiles) {
+            foreach (var file in newEncryptedFiles)
+            {
                 var newDecryptedFile = _vaultCryptoService.DecryptSingleFile(file, _email, _password);
-                _decryptedFiles.Add(newDecryptedFile);
                 UpdateListView(newDecryptedFile);
             }
 
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _ = _parent.ShowError($"Unable to retrieve the vault: {ex}", 5000);
         }
-        
+
     }
 
     private async void AddNewFile_ClickAsync(object sender, EventArgs e)
@@ -57,20 +61,24 @@ public partial class CreateVaultPage : UserControl
         var fileText = "";
         int size = -1;
         OpenFileDialog openFileDialog1 = new OpenFileDialog();
+        openFileDialog1.DefaultExt = ".txt";
+        openFileDialog1.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
         DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
         if (result == DialogResult.OK) // Test result.
         {
             string file = openFileDialog1.FileName;
+            string fileName = Path.GetFileName(file);
             try
             {
-                fileText = File.ReadAllText(file);
+                fileText = $"{fileName}{Environment.NewLine}{File.ReadAllText(file)}";
                 size = fileText.Length;
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                await _parent.ShowError("Unable to read the file!");
             }
 
-            DecryptedFileDto decryptedFileDto = new DecryptedFileDto
+            var decryptedFileDto = new DecryptedFileDto
             {
                 OwnerGuid = _userId,
                 EncryptedFile = fileText
@@ -84,7 +92,7 @@ public partial class CreateVaultPage : UserControl
                 UpdateListView(newDecryptedFile);
                 _ = _parent.ShowSuccess("File created!");
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             { _ = _parent.ShowError("Unable to upload the file!"); }
         }
     }
@@ -92,10 +100,12 @@ public partial class CreateVaultPage : UserControl
 
     private void UpdateListView(DecryptedFileDto decryptedFileDto)
     {
-         ListViewItem item = new ListViewItem(decryptedFileDto.Guid.ToString());
-         item.SubItems.Add(decryptedFileDto.Guid.ToString());
-         
-         listView1.Items.Add(item);
+        _decryptedFiles.Add(decryptedFileDto);
+        ListViewItem item = new ListViewItem(decryptedFileDto.Guid.ToString());
+        item.SubItems.Add(GetFileName(decryptedFileDto.EncryptedFile));
+        // Set item image to icon from resources
+        item.ImageIndex = 0;
+        listView1.Items.Add(item);
     }
 
     private void HideItems()
@@ -115,10 +125,11 @@ public partial class CreateVaultPage : UserControl
 
     private void InitListView()
     {
-        foreach (var file in _decryptedFiles) {
+        foreach (var file in _decryptedFiles)
+        {
             if (file != null) { UpdateListView(file); }
         }
-  
+
     }
 
     private async void LogOut_Button_Click(object sender, EventArgs e)
@@ -133,15 +144,44 @@ public partial class CreateVaultPage : UserControl
         //TODO change this 
         foreach (var file in _decryptedFiles)
         {
-            var encryptedFile= _vaultCryptoService.EncryptSingleFile(file, _email, _password);
+            var encryptedFile = _vaultCryptoService.EncryptSingleFile(file, _email, _password);
             _encryptedFiles.Add(encryptedFile);
         }
-        
+
     }
     //TODO DELETE
     private void Decrypt_Click(object sender, EventArgs e)
     {
         ClearListView();
         InitListView();
+    }
+
+    private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(listView1.SelectedItems.Count > 0)
+        {
+            var selectedGuid = listView1.SelectedItems[0].Text;
+            var file = _decryptedFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
+            if(file != null)
+            {
+                var fileViewDialogBox = new FileViewDialogBox(file, _client, this);
+                fileViewDialogBox.ShowDialog();
+                fileViewDialogBox.Focus();
+            }
+        }
+    }
+
+    public Form1 GetMainForm()
+    {
+        return _parent;
+    }
+
+    private string? GetFileName(string fileText)
+    {
+        using var reader = new StringReader(fileText);
+        // Read the first line from the StringReader
+        string firstLine = reader.ReadLine();
+
+        return firstLine;
     }
 }

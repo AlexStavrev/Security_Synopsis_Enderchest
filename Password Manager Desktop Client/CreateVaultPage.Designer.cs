@@ -28,151 +28,165 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AddNewPassword_Button = new System.Windows.Forms.Button();
-            this.logOut_Button = new System.Windows.Forms.Button();
-            this.Encrypt = new System.Windows.Forms.Button();
-            this.decrypt = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonsPanel = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
-            this.buttonsPanel.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            AddNewPassword_Button = new Button();
+            logOut_Button = new Button();
+            Encrypt = new Button();
+            decrypt = new Button();
+            listView1 = new ListView();
+            panel1 = new Panel();
+            buttonsPanel = new Panel();
+            imageList = new ImageList(components);
+            panel1.SuspendLayout();
+            buttonsPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // AddNewPassword_Button
             // 
-            this.AddNewPassword_Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.AddNewPassword_Button.Dock = System.Windows.Forms.DockStyle.Left;
-            this.AddNewPassword_Button.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.AddNewPassword_Button.FlatAppearance.BorderSize = 0;
-            this.AddNewPassword_Button.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.AddNewPassword_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.AddNewPassword_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddNewPassword_Button.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AddNewPassword_Button.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.AddNewPassword_Button.Location = new System.Drawing.Point(0, 20);
-            this.AddNewPassword_Button.Margin = new System.Windows.Forms.Padding(0);
-            this.AddNewPassword_Button.Name = "AddNewPassword_Button";
-            this.AddNewPassword_Button.Size = new System.Drawing.Size(94, 32);
-            this.AddNewPassword_Button.TabIndex = 1;
-            this.AddNewPassword_Button.Text = "Add new";
-            this.AddNewPassword_Button.UseVisualStyleBackColor = false;
-            this.AddNewPassword_Button.Click += new System.EventHandler(this.AddNewFile_ClickAsync);
+            AddNewPassword_Button.BackColor = Color.FromArgb(33, 33, 37);
+            AddNewPassword_Button.Dock = DockStyle.Left;
+            AddNewPassword_Button.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            AddNewPassword_Button.FlatAppearance.BorderSize = 0;
+            AddNewPassword_Button.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            AddNewPassword_Button.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            AddNewPassword_Button.FlatStyle = FlatStyle.Flat;
+            AddNewPassword_Button.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            AddNewPassword_Button.ForeColor = Color.FromArgb(230, 230, 230);
+            AddNewPassword_Button.Location = new Point(0, 20);
+            AddNewPassword_Button.Margin = new Padding(0);
+            AddNewPassword_Button.Name = "AddNewPassword_Button";
+            AddNewPassword_Button.Size = new Size(94, 32);
+            AddNewPassword_Button.TabIndex = 1;
+            AddNewPassword_Button.Text = "Add new";
+            AddNewPassword_Button.UseVisualStyleBackColor = false;
+            AddNewPassword_Button.Click += AddNewFile_ClickAsync;
             // 
             // logOut_Button
             // 
-            this.logOut_Button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.logOut_Button.Dock = System.Windows.Forms.DockStyle.Left;
-            this.logOut_Button.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.logOut_Button.FlatAppearance.BorderSize = 0;
-            this.logOut_Button.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.logOut_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.logOut_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.logOut_Button.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.logOut_Button.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.logOut_Button.Location = new System.Drawing.Point(282, 20);
-            this.logOut_Button.Margin = new System.Windows.Forms.Padding(0);
-            this.logOut_Button.Name = "logOut_Button";
-            this.logOut_Button.Size = new System.Drawing.Size(94, 32);
-            this.logOut_Button.TabIndex = 2;
-            this.logOut_Button.Text = "Log out";
-            this.logOut_Button.UseVisualStyleBackColor = false;
-            this.logOut_Button.Click += new System.EventHandler(this.LogOut_Button_Click);
+            logOut_Button.BackColor = Color.FromArgb(33, 33, 37);
+            logOut_Button.Dock = DockStyle.Left;
+            logOut_Button.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            logOut_Button.FlatAppearance.BorderSize = 0;
+            logOut_Button.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            logOut_Button.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            logOut_Button.FlatStyle = FlatStyle.Flat;
+            logOut_Button.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            logOut_Button.ForeColor = Color.FromArgb(230, 230, 230);
+            logOut_Button.Location = new Point(282, 20);
+            logOut_Button.Margin = new Padding(0);
+            logOut_Button.Name = "logOut_Button";
+            logOut_Button.Size = new Size(94, 32);
+            logOut_Button.TabIndex = 2;
+            logOut_Button.Text = "Log out";
+            logOut_Button.UseVisualStyleBackColor = false;
+            logOut_Button.Click += LogOut_Button_Click;
             // 
             // Encrypt
             // 
-            this.Encrypt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.Encrypt.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Encrypt.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.Encrypt.FlatAppearance.BorderSize = 0;
-            this.Encrypt.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.Encrypt.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.Encrypt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Encrypt.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Encrypt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.Encrypt.Location = new System.Drawing.Point(94, 20);
-            this.Encrypt.Margin = new System.Windows.Forms.Padding(0);
-            this.Encrypt.Name = "Encrypt";
-            this.Encrypt.Size = new System.Drawing.Size(94, 32);
-            this.Encrypt.TabIndex = 3;
-            this.Encrypt.Text = "Encrypt";
-            this.Encrypt.UseVisualStyleBackColor = false;
-            this.Encrypt.Click += new System.EventHandler(this.Encrypt_Click);
+            Encrypt.BackColor = Color.FromArgb(33, 33, 37);
+            Encrypt.Dock = DockStyle.Left;
+            Encrypt.Enabled = false;
+            Encrypt.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            Encrypt.FlatAppearance.BorderSize = 0;
+            Encrypt.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            Encrypt.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            Encrypt.FlatStyle = FlatStyle.Flat;
+            Encrypt.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            Encrypt.ForeColor = Color.FromArgb(230, 230, 230);
+            Encrypt.Location = new Point(94, 20);
+            Encrypt.Margin = new Padding(0);
+            Encrypt.Name = "Encrypt";
+            Encrypt.Size = new Size(94, 32);
+            Encrypt.TabIndex = 3;
+            Encrypt.Text = "Encrypt";
+            Encrypt.UseVisualStyleBackColor = false;
+            Encrypt.Click += Encrypt_Click;
             // 
             // decrypt
             // 
-            this.decrypt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.decrypt.Dock = System.Windows.Forms.DockStyle.Left;
-            this.decrypt.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.decrypt.FlatAppearance.BorderSize = 0;
-            this.decrypt.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.decrypt.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.decrypt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.decrypt.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.decrypt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.decrypt.Location = new System.Drawing.Point(188, 20);
-            this.decrypt.Margin = new System.Windows.Forms.Padding(0);
-            this.decrypt.Name = "decrypt";
-            this.decrypt.Size = new System.Drawing.Size(94, 32);
-            this.decrypt.TabIndex = 4;
-            this.decrypt.Text = "Decrypt";
-            this.decrypt.UseVisualStyleBackColor = false;
-            this.decrypt.Click += new System.EventHandler(this.Decrypt_Click);
+            decrypt.BackColor = Color.FromArgb(33, 33, 37);
+            decrypt.Dock = DockStyle.Left;
+            decrypt.Enabled = false;
+            decrypt.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            decrypt.FlatAppearance.BorderSize = 0;
+            decrypt.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            decrypt.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            decrypt.FlatStyle = FlatStyle.Flat;
+            decrypt.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            decrypt.ForeColor = Color.FromArgb(230, 230, 230);
+            decrypt.Location = new Point(188, 20);
+            decrypt.Margin = new Padding(0);
+            decrypt.Name = "decrypt";
+            decrypt.Size = new Size(94, 32);
+            decrypt.TabIndex = 4;
+            decrypt.Text = "Decrypt";
+            decrypt.UseVisualStyleBackColor = false;
+            decrypt.Click += Decrypt_Click;
             // 
             // listView1
             // 
-            this.listView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(65)))));
-            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.listView1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.listView1.Location = new System.Drawing.Point(20, 87);
-            this.listView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(377, 374);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            listView1.BackColor = Color.FromArgb(60, 60, 65);
+            listView1.BorderStyle = BorderStyle.FixedSingle;
+            listView1.Cursor = Cursors.Hand;
+            listView1.Dock = DockStyle.Fill;
+            listView1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            listView1.ForeColor = Color.FromArgb(230, 230, 230);
+            listView1.FullRowSelect = true;
+            listView1.Location = new Point(20, 87);
+            listView1.Margin = new Padding(3, 4, 3, 4);
+            listView1.MultiSelect = false;
+            listView1.Name = "listView1";
+            listView1.Size = new Size(377, 374);
+            listView1.TabIndex = 5;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.Details;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(50)))));
-            this.panel1.Controls.Add(this.listView1);
-            this.panel1.Controls.Add(this.buttonsPanel);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(10, 10);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(20);
-            this.panel1.Size = new System.Drawing.Size(417, 481);
-            this.panel1.TabIndex = 6;
+            panel1.BackColor = Color.FromArgb(45, 45, 50);
+            panel1.Controls.Add(listView1);
+            panel1.Controls.Add(buttonsPanel);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(10, 10);
+            panel1.Name = "panel1";
+            panel1.Padding = new Padding(20);
+            panel1.Size = new Size(417, 481);
+            panel1.TabIndex = 6;
             // 
             // buttonsPanel
             // 
-            this.buttonsPanel.Controls.Add(this.logOut_Button);
-            this.buttonsPanel.Controls.Add(this.decrypt);
-            this.buttonsPanel.Controls.Add(this.Encrypt);
-            this.buttonsPanel.Controls.Add(this.AddNewPassword_Button);
-            this.buttonsPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonsPanel.Location = new System.Drawing.Point(20, 20);
-            this.buttonsPanel.Margin = new System.Windows.Forms.Padding(10, 20, 10, 20);
-            this.buttonsPanel.Name = "buttonsPanel";
-            this.buttonsPanel.Padding = new System.Windows.Forms.Padding(0, 20, 0, 15);
-            this.buttonsPanel.Size = new System.Drawing.Size(377, 67);
-            this.buttonsPanel.TabIndex = 6;
+            buttonsPanel.Controls.Add(logOut_Button);
+            buttonsPanel.Controls.Add(decrypt);
+            buttonsPanel.Controls.Add(Encrypt);
+            buttonsPanel.Controls.Add(AddNewPassword_Button);
+            buttonsPanel.Dock = DockStyle.Top;
+            buttonsPanel.Location = new Point(20, 20);
+            buttonsPanel.Margin = new Padding(10, 20, 10, 20);
+            buttonsPanel.Name = "buttonsPanel";
+            buttonsPanel.Padding = new Padding(0, 20, 0, 15);
+            buttonsPanel.Size = new Size(377, 67);
+            buttonsPanel.TabIndex = 6;
+            // 
+            // imageList
+            // 
+            imageList.ColorDepth = ColorDepth.Depth8Bit;
+            imageList.ImageSize = new Size(16, 16);
+            imageList.TransparentColor = Color.Transparent;
             // 
             // CreateVaultPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))));
-            this.Controls.Add(this.panel1);
-            this.Name = "CreateVaultPage";
-            this.Padding = new System.Windows.Forms.Padding(10);
-            this.Size = new System.Drawing.Size(437, 501);
-            this.Load += new System.EventHandler(this.CreateVaultPage_Load);
-            this.panel1.ResumeLayout(false);
-            this.buttonsPanel.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(28, 28, 32);
+            Controls.Add(panel1);
+            Name = "CreateVaultPage";
+            Padding = new Padding(10);
+            Size = new Size(437, 501);
+            Load += CreateVaultPage_Load;
+            panel1.ResumeLayout(false);
+            buttonsPanel.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
@@ -183,5 +197,6 @@
         private ListView listView1;
         private Panel panel1;
         private Panel buttonsPanel;
+        private ImageList imageList;
     }
 }
