@@ -1,12 +1,11 @@
 ﻿using Konscious.Security.Cryptography;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Password_Manager_Desktop_Client.crypto;
 
-internal static class VaultKeyGenerator
+internal static class KeyGenerator
 {
-    public static byte[] GenerateVaultKey(string username, string password, byte[] salt)
+    public static byte[] GenerateKey(string username, string password, byte[] salt)
     {
         byte[] usernameBytes = Encoding.UTF8.GetBytes(username);
         byte[] passwordBytes = Encoding.UTF8.GetBytes(password);

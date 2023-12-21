@@ -32,7 +32,7 @@ internal static class Program
     {
         string webApiUri = ConfigurationManager.ConnectionStrings["webApiUri"].ConnectionString;
         services.AddSingleton((desktopApiClient) => WebClientFactory.GetWebClient<IWebClient>(webApiUri));
-        services.AddSingleton<IVaultCrypto>((vault) => new VaultCrypto());
+        services.AddSingleton<ICryptoHelper>((vault) => new CryptoHelper());
         services.AddScoped<Form1>();
     }
 }

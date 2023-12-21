@@ -4,7 +4,7 @@ using Web_Client.DTOs;
 
 namespace Password_Manager_Desktop_Client.crypto;
 
-public class VaultCrypto : IVaultCrypto
+public class CryptoHelper : ICryptoHelper
 {
 
     public EncryptedFileDto EncryptSingleFile(DecryptedFileDto file, string username, string password)
@@ -113,7 +113,7 @@ public class VaultCrypto : IVaultCrypto
 
     public byte[] DeriveSecterKey(string username, string password, byte[] salt)
     {
-        var secretKey = VaultKeyGenerator.GenerateVaultKey(username, password, salt);
+        var secretKey = KeyGenerator.GenerateKey(username, password, salt);
         return secretKey;
     }
 

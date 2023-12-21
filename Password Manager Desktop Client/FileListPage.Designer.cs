@@ -1,6 +1,6 @@
 ﻿namespace Password_Manager_Desktop_Client
 {
-    partial class CreateVaultPage
+    partial class FileListPage
     {
         /// <summary> 
         /// Required designer variable.

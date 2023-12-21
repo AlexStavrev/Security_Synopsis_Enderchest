@@ -7,10 +7,10 @@ namespace Password_Manager_Desktop_Client;
 public partial class LogInPage : UserControl
 {
     private readonly IWebClient _client;
-    private readonly IVaultCrypto _vaultCryptoHelper;
+    private readonly ICryptoHelper _vaultCryptoHelper;
     private readonly Form1 _parent;
 
-    public LogInPage(IWebClient client, IVaultCrypto vaultCryptoHelper, Form1 parent)
+    public LogInPage(IWebClient client, ICryptoHelper vaultCryptoHelper, Form1 parent)
     {
         _client = client;
         _vaultCryptoHelper = vaultCryptoHelper;
@@ -34,7 +34,7 @@ public partial class LogInPage : UserControl
             }
             else
             {
-                var createVaultPage = new CreateVaultPage(_client, _vaultCryptoHelper, userId.Value, username, password, _parent);
+                var createVaultPage = new FileListPage(_client, _vaultCryptoHelper, userId.Value, username, password, _parent);
                 _parent.SetPage(createVaultPage);
                 _ = _parent.ShowSuccess("Logged In!");
                 Dispose();

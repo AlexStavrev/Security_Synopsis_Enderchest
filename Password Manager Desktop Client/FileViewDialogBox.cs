@@ -9,8 +9,8 @@ public partial class FileViewDialogBox : Form
     private int _borderSize;
     private DecryptedFileDto _file;
     private IWebClient _client;
-    private CreateVaultPage _parent;
-    public FileViewDialogBox(DecryptedFileDto file, IWebClient client, CreateVaultPage parent)
+    private FileListPage _parent;
+    public FileViewDialogBox(DecryptedFileDto file, IWebClient client, FileListPage parent)
     {
         _borderSize = 2;
         _file = file;

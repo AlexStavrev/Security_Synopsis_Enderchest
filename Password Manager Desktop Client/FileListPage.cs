@@ -5,7 +5,7 @@ using Web_Client.DTOs;
 
 namespace Password_Manager_Desktop_Client;
 
-public partial class CreateVaultPage : UserControl
+public partial class FileListPage : UserControl
 {
     private string _email;
     private string _password;
@@ -14,10 +14,10 @@ public partial class CreateVaultPage : UserControl
     private List<EncryptedFileDto?> _encryptedFiles;
     private List<DecryptedFileDto?> _decryptedFiles;
 
-    private IVaultCrypto _vaultCryptoService;
+    private ICryptoHelper _vaultCryptoService;
     private Form1 _parent;
 
-    public CreateVaultPage(IWebClient client, IVaultCrypto vaultCryptoService, Guid userId, string username, string password, Form1 parent)
+    public FileListPage(IWebClient client, ICryptoHelper vaultCryptoService, Guid userId, string username, string password, Form1 parent)
     {
         _client = client;
         _userId = userId;
@@ -164,7 +164,7 @@ public partial class CreateVaultPage : UserControl
             var file = _decryptedFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
             if(file != null)
             {
-                var fileViewDialogBox = new FileViewDialogBox(file, _client, this);
+                using var fileViewDialogBox = new FileViewDialogBox(file, _client, this);
                 fileViewDialogBox.ShowDialog();
                 fileViewDialogBox.Focus();
             }

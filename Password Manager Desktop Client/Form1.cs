@@ -11,8 +11,8 @@ public partial class Form1 : Form
     private readonly int _borderSize;
 
     private readonly IWebClient _client;
-    private readonly IVaultCrypto _vaultCryptoHelper;
-    public Form1(IWebClient client, IVaultCrypto vaultCryptoHelper)
+    private readonly ICryptoHelper _vaultCryptoHelper;
+    public Form1(IWebClient client, ICryptoHelper vaultCryptoHelper)
     {
         _borderSize = 2;
         _client = client;
