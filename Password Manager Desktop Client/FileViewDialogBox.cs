@@ -22,9 +22,14 @@ public partial class FileViewDialogBox : Form
     private void FileViewDialogBox_Load(object sender, EventArgs e)
     {
         string[] lines = _file.EncryptedFile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        string text = string.Join(Environment.NewLine, lines.Skip(1));
         Text = lines[0];
         titleLbl.Text = lines[0];
-        fileViewTextBox.Text = string.Join(Environment.NewLine, lines.Skip(1));
+        fileViewTextBox.Text = text;
+
+        characterCount_Label.Text = $"Characters: {text.Length}";
+        linesCount_Label.Text = $"Lines: {lines.Length-1}";
+        worldCount_Label.Text = $"Words: {text.Split(' ', '\t', '\n', '\r').Length}";
     }
 
     private void DownloadFile()

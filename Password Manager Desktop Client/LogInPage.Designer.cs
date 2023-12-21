@@ -28,164 +28,158 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.userName_label = new System.Windows.Forms.Label();
-            this.masterPassword_label = new System.Windows.Forms.Label();
-            this.usernameTextBox = new System.Windows.Forms.TextBox();
-            this.passwordTextBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.mainPanel = new System.Windows.Forms.Panel();
-            this.createAcc = new System.Windows.Forms.Button();
-            this.lineBreak2 = new System.Windows.Forms.Label();
-            this.lineBreak = new System.Windows.Forms.Label();
-            this.mainPanel.SuspendLayout();
-            this.SuspendLayout();
+            userName_label = new Label();
+            masterPassword_label = new Label();
+            usernameTextBox = new TextBox();
+            passwordTextBox = new TextBox();
+            button1 = new Button();
+            mainPanel = new Panel();
+            createAcc = new Button();
+            lineBreak2 = new Label();
+            lineBreak = new Label();
+            mainPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // userName_label
             // 
-            this.userName_label.AutoSize = true;
-            this.userName_label.Dock = System.Windows.Forms.DockStyle.Top;
-            this.userName_label.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.userName_label.Location = new System.Drawing.Point(44, 75);
-            this.userName_label.Name = "userName_label";
-            this.userName_label.Size = new System.Drawing.Size(97, 25);
-            this.userName_label.TabIndex = 0;
-            this.userName_label.Text = "Username";
+            userName_label.AutoSize = true;
+            userName_label.Dock = DockStyle.Top;
+            userName_label.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            userName_label.Location = new Point(50, 100);
+            userName_label.Name = "userName_label";
+            userName_label.Size = new Size(117, 31);
+            userName_label.TabIndex = 0;
+            userName_label.Text = "Username";
             // 
             // masterPassword_label
             // 
-            this.masterPassword_label.AutoSize = true;
-            this.masterPassword_label.Dock = System.Windows.Forms.DockStyle.Top;
-            this.masterPassword_label.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.masterPassword_label.Location = new System.Drawing.Point(44, 126);
-            this.masterPassword_label.Name = "masterPassword_label";
-            this.masterPassword_label.Size = new System.Drawing.Size(154, 25);
-            this.masterPassword_label.TabIndex = 1;
-            this.masterPassword_label.Text = "Master Password";
+            masterPassword_label.AutoSize = true;
+            masterPassword_label.Dock = DockStyle.Top;
+            masterPassword_label.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            masterPassword_label.Location = new Point(50, 161);
+            masterPassword_label.Name = "masterPassword_label";
+            masterPassword_label.Size = new Size(187, 31);
+            masterPassword_label.TabIndex = 1;
+            masterPassword_label.Text = "Master Password";
             // 
             // usernameTextBox
             // 
-            this.usernameTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.usernameTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
-            this.usernameTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(65)))));
-            this.usernameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.usernameTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.usernameTextBox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.usernameTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.usernameTextBox.Location = new System.Drawing.Point(44, 100);
-            this.usernameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.usernameTextBox.MaximumSize = new System.Drawing.Size(219, 31);
-            this.usernameTextBox.Name = "usernameTextBox";
-            this.usernameTextBox.PlaceholderText = "Name";
-            this.usernameTextBox.Size = new System.Drawing.Size(219, 26);
-            this.usernameTextBox.TabIndex = 2;
+            usernameTextBox.AutoCompleteMode = AutoCompleteMode.Suggest;
+            usernameTextBox.AutoCompleteSource = AutoCompleteSource.HistoryList;
+            usernameTextBox.BackColor = Color.FromArgb(60, 60, 65);
+            usernameTextBox.BorderStyle = BorderStyle.FixedSingle;
+            usernameTextBox.Dock = DockStyle.Top;
+            usernameTextBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            usernameTextBox.ForeColor = Color.FromArgb(230, 230, 230);
+            usernameTextBox.Location = new Point(50, 131);
+            usernameTextBox.MaximumSize = new Size(250, 31);
+            usernameTextBox.Name = "usernameTextBox";
+            usernameTextBox.PlaceholderText = "Name";
+            usernameTextBox.Size = new Size(250, 30);
+            usernameTextBox.TabIndex = 2;
             // 
             // passwordTextBox
             // 
-            this.passwordTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(65)))));
-            this.passwordTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.passwordTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.passwordTextBox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.passwordTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.passwordTextBox.Location = new System.Drawing.Point(44, 151);
-            this.passwordTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.passwordTextBox.MaximumSize = new System.Drawing.Size(219, 31);
-            this.passwordTextBox.Name = "passwordTextBox";
-            this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.PlaceholderText = "Password";
-            this.passwordTextBox.Size = new System.Drawing.Size(219, 26);
-            this.passwordTextBox.TabIndex = 3;
-            this.passwordTextBox.UseSystemPasswordChar = true;
+            passwordTextBox.BackColor = Color.FromArgb(60, 60, 65);
+            passwordTextBox.BorderStyle = BorderStyle.FixedSingle;
+            passwordTextBox.Dock = DockStyle.Top;
+            passwordTextBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            passwordTextBox.ForeColor = Color.FromArgb(230, 230, 230);
+            passwordTextBox.Location = new Point(50, 192);
+            passwordTextBox.MaximumSize = new Size(250, 31);
+            passwordTextBox.Name = "passwordTextBox";
+            passwordTextBox.PasswordChar = '*';
+            passwordTextBox.PlaceholderText = "Password";
+            passwordTextBox.Size = new Size(250, 30);
+            passwordTextBox.TabIndex = 3;
+            passwordTextBox.UseSystemPasswordChar = true;
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(44, 192);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(672, 26);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Log In";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.LogInButton_Clicked);
+            button1.BackColor = Color.FromArgb(33, 33, 37);
+            button1.Dock = DockStyle.Top;
+            button1.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            button1.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            button1.Location = new Point(50, 242);
+            button1.Name = "button1";
+            button1.Size = new Size(769, 35);
+            button1.TabIndex = 4;
+            button1.Text = "Log In";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += LogInButton_Clicked;
             // 
             // mainPanel
             // 
-            this.mainPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(50)))));
-            this.mainPanel.Controls.Add(this.createAcc);
-            this.mainPanel.Controls.Add(this.lineBreak2);
-            this.mainPanel.Controls.Add(this.button1);
-            this.mainPanel.Controls.Add(this.lineBreak);
-            this.mainPanel.Controls.Add(this.passwordTextBox);
-            this.mainPanel.Controls.Add(this.masterPassword_label);
-            this.mainPanel.Controls.Add(this.usernameTextBox);
-            this.mainPanel.Controls.Add(this.userName_label);
-            this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(9, 8);
-            this.mainPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Padding = new System.Windows.Forms.Padding(44, 75, 44, 75);
-            this.mainPanel.Size = new System.Drawing.Size(760, 442);
-            this.mainPanel.TabIndex = 5;
+            mainPanel.BackColor = Color.FromArgb(45, 45, 50);
+            mainPanel.Controls.Add(createAcc);
+            mainPanel.Controls.Add(lineBreak2);
+            mainPanel.Controls.Add(button1);
+            mainPanel.Controls.Add(lineBreak);
+            mainPanel.Controls.Add(passwordTextBox);
+            mainPanel.Controls.Add(masterPassword_label);
+            mainPanel.Controls.Add(usernameTextBox);
+            mainPanel.Controls.Add(userName_label);
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(10, 11);
+            mainPanel.Margin = new Padding(0);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Padding = new Padding(50, 100, 50, 100);
+            mainPanel.Size = new Size(869, 589);
+            mainPanel.TabIndex = 5;
             // 
             // createAcc
             // 
-            this.createAcc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.createAcc.Dock = System.Windows.Forms.DockStyle.Top;
-            this.createAcc.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(37)))));
-            this.createAcc.FlatAppearance.BorderSize = 0;
-            this.createAcc.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Highlight;
-            this.createAcc.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.createAcc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.createAcc.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.createAcc.Location = new System.Drawing.Point(44, 233);
-            this.createAcc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.createAcc.Name = "createAcc";
-            this.createAcc.Size = new System.Drawing.Size(672, 26);
-            this.createAcc.TabIndex = 6;
-            this.createAcc.Text = "Create Account";
-            this.createAcc.UseVisualStyleBackColor = false;
-            this.createAcc.Click += new System.EventHandler(this.createAcc_Click);
+            createAcc.BackColor = Color.FromArgb(33, 33, 37);
+            createAcc.Dock = DockStyle.Top;
+            createAcc.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            createAcc.FlatAppearance.BorderSize = 0;
+            createAcc.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            createAcc.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            createAcc.FlatStyle = FlatStyle.Flat;
+            createAcc.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            createAcc.Location = new Point(50, 297);
+            createAcc.Name = "createAcc";
+            createAcc.Size = new Size(769, 35);
+            createAcc.TabIndex = 6;
+            createAcc.Text = "Create Account";
+            createAcc.UseVisualStyleBackColor = false;
+            createAcc.Click += createAcc_Click;
             // 
             // lineBreak2
             // 
-            this.lineBreak2.AutoSize = true;
-            this.lineBreak2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lineBreak2.Location = new System.Drawing.Point(44, 218);
-            this.lineBreak2.Name = "lineBreak2";
-            this.lineBreak2.Size = new System.Drawing.Size(0, 15);
-            this.lineBreak2.TabIndex = 7;
+            lineBreak2.AutoSize = true;
+            lineBreak2.Dock = DockStyle.Top;
+            lineBreak2.Location = new Point(50, 277);
+            lineBreak2.Name = "lineBreak2";
+            lineBreak2.Size = new Size(0, 20);
+            lineBreak2.TabIndex = 7;
             // 
             // lineBreak
             // 
-            this.lineBreak.AutoSize = true;
-            this.lineBreak.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lineBreak.Location = new System.Drawing.Point(44, 177);
-            this.lineBreak.Name = "lineBreak";
-            this.lineBreak.Size = new System.Drawing.Size(0, 15);
-            this.lineBreak.TabIndex = 5;
+            lineBreak.AutoSize = true;
+            lineBreak.Dock = DockStyle.Top;
+            lineBreak.Location = new Point(50, 222);
+            lineBreak.Name = "lineBreak";
+            lineBreak.Size = new Size(0, 20);
+            lineBreak.TabIndex = 5;
             // 
             // LogInPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))));
-            this.Controls.Add(this.mainPanel);
-            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "LogInPage";
-            this.Padding = new System.Windows.Forms.Padding(9, 8, 9, 8);
-            this.Size = new System.Drawing.Size(778, 458);
-            this.mainPanel.ResumeLayout(false);
-            this.mainPanel.PerformLayout();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(28, 28, 32);
+            Controls.Add(mainPanel);
+            ForeColor = Color.FromArgb(230, 230, 230);
+            Name = "LogInPage";
+            Padding = new Padding(10, 11, 10, 11);
+            Size = new Size(889, 611);
+            mainPanel.ResumeLayout(false);
+            mainPanel.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion

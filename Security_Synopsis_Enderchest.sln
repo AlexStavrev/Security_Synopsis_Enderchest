@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data_Access_Layer", "Data_A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web Client", "Web Client\Web Client.csproj", "{0B772726-B1FF-4EAB-8ACA-D6C1B97AEA89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Password Manager Desktop Client", "Password Manager Desktop Client\Password Manager Desktop Client.csproj", "{E831A067-C554-442C-84A2-506344A4F3CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Desktop Client", "Password Manager Desktop Client\Desktop Client.csproj", "{E831A067-C554-442C-84A2-506344A4F3CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

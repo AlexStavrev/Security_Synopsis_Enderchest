@@ -45,7 +45,7 @@ partial class Form1
         panel1.Dock = DockStyle.Fill;
         panel1.Location = new Point(0, 40);
         panel1.Name = "panel1";
-        panel1.Size = new Size(432, 513);
+        panel1.Size = new Size(832, 513);
         panel1.TabIndex = 0;
         // 
         // panel2
@@ -62,7 +62,7 @@ partial class Form1
         panel2.MinimumSize = new Size(0, 40);
         panel2.Name = "panel2";
         panel2.Padding = new Padding(10, 3, 8, 0);
-        panel2.Size = new Size(432, 40);
+        panel2.Size = new Size(832, 40);
         panel2.TabIndex = 0;
         panel2.MouseDown += TitleBar_MouseDown;
         // 
@@ -104,7 +104,7 @@ partial class Form1
         minimizeBtn.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
         minimizeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(65, 65, 70);
         minimizeBtn.FlatStyle = FlatStyle.Flat;
-        minimizeBtn.Location = new Point(304, 3);
+        minimizeBtn.Location = new Point(704, 3);
         minimizeBtn.MaximumSize = new Size(40, 30);
         minimizeBtn.MinimumSize = new Size(40, 30);
         minimizeBtn.Name = "minimizeBtn";
@@ -122,7 +122,7 @@ partial class Form1
         maximizeBtn.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
         maximizeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(65, 65, 70);
         maximizeBtn.FlatStyle = FlatStyle.Flat;
-        maximizeBtn.Location = new Point(344, 3);
+        maximizeBtn.Location = new Point(744, 3);
         maximizeBtn.MaximumSize = new Size(40, 30);
         maximizeBtn.MinimumSize = new Size(40, 30);
         maximizeBtn.Name = "maximizeBtn";
@@ -140,7 +140,7 @@ partial class Form1
         closeBtn.FlatAppearance.MouseDownBackColor = Color.Crimson;
         closeBtn.FlatAppearance.MouseOverBackColor = Color.FromArgb(65, 65, 70);
         closeBtn.FlatStyle = FlatStyle.Flat;
-        closeBtn.Location = new Point(384, 3);
+        closeBtn.Location = new Point(784, 3);
         closeBtn.MaximumSize = new Size(40, 30);
         closeBtn.MinimumSize = new Size(40, 30);
         closeBtn.Name = "closeBtn";
@@ -155,12 +155,12 @@ partial class Form1
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(45, 45, 50);
-        ClientSize = new Size(432, 553);
+        ClientSize = new Size(832, 553);
         Controls.Add(panel1);
         Controls.Add(panel2);
         Icon = (Icon)resources.GetObject("$this.Icon");
         Margin = new Padding(3, 4, 3, 4);
-        MinimumSize = new Size(450, 600);
+        MinimumSize = new Size(850, 600);
         Name = "Form1";
         Text = "Enderchest";
         Load += Form1_Load;

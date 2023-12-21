@@ -40,16 +40,22 @@ partial class FileViewDialogBox
         minimizeBtn = new Button();
         maximizeBtn = new Button();
         closeBtn = new Button();
+        panel1 = new Panel();
+        characterCount_Label = new Label();
+        linesCount_Label = new Label();
+        worldCount_Label = new Label();
         MainPanel.SuspendLayout();
         BottomPanel.SuspendLayout();
         panel2.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)imageAppIcon).BeginInit();
+        panel1.SuspendLayout();
         SuspendLayout();
         // 
         // MainPanel
         // 
         MainPanel.BackColor = Color.FromArgb(45, 45, 50);
         MainPanel.Controls.Add(fileViewTextBox);
+        MainPanel.Controls.Add(panel1);
         MainPanel.Dock = DockStyle.Fill;
         MainPanel.Location = new Point(0, 40);
         MainPanel.Name = "MainPanel";
@@ -68,7 +74,7 @@ partial class FileViewDialogBox
         fileViewTextBox.Name = "fileViewTextBox";
         fileViewTextBox.ReadOnly = true;
         fileViewTextBox.ScrollBars = ScrollBars.Vertical;
-        fileViewTextBox.Size = new Size(800, 369);
+        fileViewTextBox.Size = new Size(800, 346);
         fileViewTextBox.TabIndex = 0;
         // 
         // BottomPanel
@@ -87,8 +93,8 @@ partial class FileViewDialogBox
         // 
         shareButton.BackColor = Color.FromArgb(33, 33, 37);
         shareButton.Dock = DockStyle.Right;
-        shareButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
-        shareButton.FlatAppearance.BorderSize = 0;
+        shareButton.FlatAppearance.BorderColor = Color.FromArgb(45, 45, 50);
+        shareButton.FlatAppearance.BorderSize = 3;
         shareButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
         shareButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
         shareButton.FlatStyle = FlatStyle.Flat;
@@ -106,8 +112,8 @@ partial class FileViewDialogBox
         // 
         downloadButton.BackColor = Color.FromArgb(33, 33, 37);
         downloadButton.Dock = DockStyle.Right;
-        downloadButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
-        downloadButton.FlatAppearance.BorderSize = 0;
+        downloadButton.FlatAppearance.BorderColor = Color.FromArgb(45, 45, 50);
+        downloadButton.FlatAppearance.BorderSize = 3;
         downloadButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
         downloadButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
         downloadButton.FlatStyle = FlatStyle.Flat;
@@ -125,8 +131,8 @@ partial class FileViewDialogBox
         // 
         closeButton.BackColor = Color.FromArgb(33, 33, 37);
         closeButton.Dock = DockStyle.Right;
-        closeButton.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
-        closeButton.FlatAppearance.BorderSize = 0;
+        closeButton.FlatAppearance.BorderColor = Color.FromArgb(45, 45, 50);
+        closeButton.FlatAppearance.BorderSize = 3;
         closeButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
         closeButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
         closeButton.FlatStyle = FlatStyle.Flat;
@@ -240,6 +246,51 @@ partial class FileViewDialogBox
         closeBtn.UseVisualStyleBackColor = false;
         closeBtn.Click += closeBtn_Click_1;
         // 
+        // panel1
+        // 
+        panel1.BackColor = Color.FromArgb(33, 33, 37);
+        panel1.Controls.Add(worldCount_Label);
+        panel1.Controls.Add(linesCount_Label);
+        panel1.Controls.Add(characterCount_Label);
+        panel1.Dock = DockStyle.Bottom;
+        panel1.Location = new Point(0, 346);
+        panel1.Name = "panel1";
+        panel1.Size = new Size(800, 23);
+        panel1.TabIndex = 2;
+        // 
+        // characterCount_Label
+        // 
+        characterCount_Label.AutoSize = true;
+        characterCount_Label.Dock = DockStyle.Right;
+        characterCount_Label.ForeColor = Color.FromArgb(230, 230, 230);
+        characterCount_Label.Location = new Point(719, 0);
+        characterCount_Label.Name = "characterCount_Label";
+        characterCount_Label.Size = new Size(81, 20);
+        characterCount_Label.TabIndex = 0;
+        characterCount_Label.Text = "Characters:";
+        // 
+        // linesCount_Label
+        // 
+        linesCount_Label.AutoSize = true;
+        linesCount_Label.Dock = DockStyle.Right;
+        linesCount_Label.ForeColor = Color.FromArgb(230, 230, 230);
+        linesCount_Label.Location = new Point(674, 0);
+        linesCount_Label.Name = "linesCount_Label";
+        linesCount_Label.Size = new Size(45, 20);
+        linesCount_Label.TabIndex = 1;
+        linesCount_Label.Text = "Lines:";
+        // 
+        // worldCount_Label
+        // 
+        worldCount_Label.AutoSize = true;
+        worldCount_Label.Dock = DockStyle.Right;
+        worldCount_Label.ForeColor = Color.FromArgb(230, 230, 230);
+        worldCount_Label.Location = new Point(620, 0);
+        worldCount_Label.Name = "worldCount_Label";
+        worldCount_Label.Size = new Size(54, 20);
+        worldCount_Label.TabIndex = 2;
+        worldCount_Label.Text = "Words:";
+        // 
         // FileViewDialogBox
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -259,6 +310,8 @@ partial class FileViewDialogBox
         panel2.ResumeLayout(false);
         panel2.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)imageAppIcon).EndInit();
+        panel1.ResumeLayout(false);
+        panel1.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -276,4 +329,8 @@ partial class FileViewDialogBox
     private Button closeBtn;
     private Button downloadButton;
     private Button shareButton;
+    private Panel panel1;
+    private Label worldCount_Label;
+    private Label linesCount_Label;
+    private Label characterCount_Label;
 }
