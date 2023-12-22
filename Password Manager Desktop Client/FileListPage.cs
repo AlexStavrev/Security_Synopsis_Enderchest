@@ -139,7 +139,7 @@ public partial class FileListPage : UserControl
         Dispose();
     }
 
-    private async void Encrypt_Click(object sender, EventArgs e)
+    private async void CreateSharedFolder_Click(object sender, EventArgs e)
     {
         //TODO change this 
         foreach (var file in _decryptedFiles)

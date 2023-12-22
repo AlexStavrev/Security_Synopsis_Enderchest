@@ -113,6 +113,17 @@ internal class WebClient : IWebClient
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
         return response.Data!;
     }
+
+    public async Task<bool> CreateSharedFolder(Guid userGuid, Guid ownerGuid, byte[] shareCode)
+    {
+        if (_jwt == null)
+        {
+            throw new Exception("You need to be authentificated to call this endpoint!");
+        }
+        var response = await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/CreateSharedFolder/{userGuid}/owner/{ownerGuid}", shareCode, jwt: _jwt);
+        if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
+        return response.Data!;
+    }
 }
 
 

@@ -31,8 +31,7 @@
             components = new System.ComponentModel.Container();
             AddNewPassword_Button = new Button();
             logOut_Button = new Button();
-            Encrypt = new Button();
-            decrypt = new Button();
+            CreateSharedFolder = new Button();
             listView1 = new ListView();
             panel1 = new Panel();
             buttonsPanel = new Panel();
@@ -52,10 +51,10 @@
             AddNewPassword_Button.FlatStyle = FlatStyle.Flat;
             AddNewPassword_Button.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
             AddNewPassword_Button.ForeColor = Color.FromArgb(230, 230, 230);
-            AddNewPassword_Button.Location = new Point(0, 20);
+            AddNewPassword_Button.Location = new Point(0, 15);
             AddNewPassword_Button.Margin = new Padding(0);
             AddNewPassword_Button.Name = "AddNewPassword_Button";
-            AddNewPassword_Button.Size = new Size(94, 32);
+            AddNewPassword_Button.Size = new Size(82, 24);
             AddNewPassword_Button.TabIndex = 1;
             AddNewPassword_Button.Text = "Add new";
             AddNewPassword_Button.UseVisualStyleBackColor = false;
@@ -72,56 +71,35 @@
             logOut_Button.FlatStyle = FlatStyle.Flat;
             logOut_Button.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
             logOut_Button.ForeColor = Color.FromArgb(230, 230, 230);
-            logOut_Button.Location = new Point(282, 20);
+            logOut_Button.Location = new Point(242, 15);
             logOut_Button.Margin = new Padding(0);
             logOut_Button.Name = "logOut_Button";
-            logOut_Button.Size = new Size(94, 32);
+            logOut_Button.Size = new Size(82, 24);
             logOut_Button.TabIndex = 2;
             logOut_Button.Text = "Log out";
             logOut_Button.UseVisualStyleBackColor = false;
             logOut_Button.Click += LogOut_Button_Click;
             // 
-            // Encrypt
+            // CreateSharedFolder
             // 
-            Encrypt.BackColor = Color.FromArgb(33, 33, 37);
-            Encrypt.Dock = DockStyle.Left;
-            Encrypt.Enabled = false;
-            Encrypt.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
-            Encrypt.FlatAppearance.BorderSize = 0;
-            Encrypt.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
-            Encrypt.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
-            Encrypt.FlatStyle = FlatStyle.Flat;
-            Encrypt.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            Encrypt.ForeColor = Color.FromArgb(230, 230, 230);
-            Encrypt.Location = new Point(94, 20);
-            Encrypt.Margin = new Padding(0);
-            Encrypt.Name = "Encrypt";
-            Encrypt.Size = new Size(94, 32);
-            Encrypt.TabIndex = 3;
-            Encrypt.Text = "Encrypt";
-            Encrypt.UseVisualStyleBackColor = false;
-            Encrypt.Click += Encrypt_Click;
-            // 
-            // decrypt
-            // 
-            decrypt.BackColor = Color.FromArgb(33, 33, 37);
-            decrypt.Dock = DockStyle.Left;
-            decrypt.Enabled = false;
-            decrypt.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
-            decrypt.FlatAppearance.BorderSize = 0;
-            decrypt.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
-            decrypt.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
-            decrypt.FlatStyle = FlatStyle.Flat;
-            decrypt.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            decrypt.ForeColor = Color.FromArgb(230, 230, 230);
-            decrypt.Location = new Point(188, 20);
-            decrypt.Margin = new Padding(0);
-            decrypt.Name = "decrypt";
-            decrypt.Size = new Size(94, 32);
-            decrypt.TabIndex = 4;
-            decrypt.Text = "Decrypt";
-            decrypt.UseVisualStyleBackColor = false;
-            decrypt.Click += Decrypt_Click;
+            CreateSharedFolder.BackColor = Color.FromArgb(33, 33, 37);
+            CreateSharedFolder.Dock = DockStyle.Left;
+            CreateSharedFolder.Enabled = false;
+            CreateSharedFolder.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
+            CreateSharedFolder.FlatAppearance.BorderSize = 0;
+            CreateSharedFolder.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            CreateSharedFolder.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            CreateSharedFolder.FlatStyle = FlatStyle.Flat;
+            CreateSharedFolder.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            CreateSharedFolder.ForeColor = Color.FromArgb(230, 230, 230);
+            CreateSharedFolder.Location = new Point(82, 15);
+            CreateSharedFolder.Margin = new Padding(0);
+            CreateSharedFolder.Name = "CreateSharedFolder";
+            CreateSharedFolder.Size = new Size(160, 24);
+            CreateSharedFolder.TabIndex = 3;
+            CreateSharedFolder.Text = "Create shared folder";
+            CreateSharedFolder.UseVisualStyleBackColor = false;
+            CreateSharedFolder.Click += CreateSharedFolder_Click;
             // 
             // listView1
             // 
@@ -132,11 +110,10 @@
             listView1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             listView1.ForeColor = Color.FromArgb(230, 230, 230);
             listView1.FullRowSelect = true;
-            listView1.Location = new Point(20, 87);
-            listView1.Margin = new Padding(3, 4, 3, 4);
+            listView1.Location = new Point(18, 65);
             listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(377, 374);
+            listView1.Size = new Size(328, 280);
             listView1.TabIndex = 5;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -148,24 +125,24 @@
             panel1.Controls.Add(listView1);
             panel1.Controls.Add(buttonsPanel);
             panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(10, 10);
+            panel1.Location = new Point(9, 8);
+            panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Padding = new Padding(20);
-            panel1.Size = new Size(417, 481);
+            panel1.Padding = new Padding(18, 15, 18, 15);
+            panel1.Size = new Size(364, 360);
             panel1.TabIndex = 6;
             // 
             // buttonsPanel
             // 
             buttonsPanel.Controls.Add(logOut_Button);
-            buttonsPanel.Controls.Add(decrypt);
-            buttonsPanel.Controls.Add(Encrypt);
+            buttonsPanel.Controls.Add(CreateSharedFolder);
             buttonsPanel.Controls.Add(AddNewPassword_Button);
             buttonsPanel.Dock = DockStyle.Top;
-            buttonsPanel.Location = new Point(20, 20);
-            buttonsPanel.Margin = new Padding(10, 20, 10, 20);
+            buttonsPanel.Location = new Point(18, 15);
+            buttonsPanel.Margin = new Padding(9, 15, 9, 15);
             buttonsPanel.Name = "buttonsPanel";
-            buttonsPanel.Padding = new Padding(0, 20, 0, 15);
-            buttonsPanel.Size = new Size(377, 67);
+            buttonsPanel.Padding = new Padding(0, 15, 0, 11);
+            buttonsPanel.Size = new Size(328, 50);
             buttonsPanel.TabIndex = 6;
             // 
             // imageList
@@ -174,15 +151,16 @@
             imageList.ImageSize = new Size(16, 16);
             imageList.TransparentColor = Color.Transparent;
             // 
-            // CreateVaultPage
+            // FileListPage
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(28, 28, 32);
             Controls.Add(panel1);
-            Name = "CreateVaultPage";
-            Padding = new Padding(10);
-            Size = new Size(437, 501);
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "FileListPage";
+            Padding = new Padding(9, 8, 9, 8);
+            Size = new Size(382, 376);
             Load += CreateVaultPage_Load;
             panel1.ResumeLayout(false);
             buttonsPanel.ResumeLayout(false);
@@ -192,8 +170,7 @@
         #endregion
         private Button AddNewPassword_Button;
         private Button logOut_Button;
-        private Button Encrypt;
-        private Button decrypt;
+        private Button CreateSharedFolder;
         private ListView listView1;
         private Panel panel1;
         private Panel buttonsPanel;
