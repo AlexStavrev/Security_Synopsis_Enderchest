@@ -19,6 +19,7 @@ namespace Password_Manager_Desktop_Client
             _parent = parent;
             _borderSize = 2;
             _client = client;
+            _vaultCryptoHelper = vaultCryptoHelper;
             InitializeComponent();
         }
 
@@ -135,7 +136,7 @@ namespace Password_Manager_Desktop_Client
             Close();
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
+        private async void button2_Click_1(object sender, EventArgs e)
         {
             var password = passwordBox.Text;
             var email = emailTextBox.Text;
@@ -147,13 +148,41 @@ namespace Password_Manager_Desktop_Client
             }
             try
             {
-                var salt = _vaultCryptoHelper.GenerateSalt();
-                var passwordKey = MasterPasswrodHelper.DerivePasswordKey(salt, password);
-
+                Guid sharedWith = await _client.GetUserIdByEmail(email);
+                if (sharedWith == Guid.Empty)
+                {
+                    _ = ShowError("User not found!");
+                    return;
+                }
+                try
+                {
+                    var salt = _vaultCryptoHelper.GenerateSalt();
+                    var passwordKey = MasterPasswrodHelper.DerivePasswordKey(salt, password);
+                    
+                    Guid isCreated = await _client.CreateSharedFolder(sharedWith, _userId, passwordKey);
+                    if (isCreated != Guid.Empty)
+                    {
+                        _ = ShowSuccess("Shared folder created!");
+                        Close();
+                    }
+                    else
+                    {
+                        _ = ShowError("Error while creating the shared folder!");
+                        return;
+                    }   
+                }
+                catch
+                {
+                    _ = ShowError("Error while creating the shared folder!");
+                    return;
+                }
             }catch(Exception ex)
             {
-                _ = ShowError("Something went wrong!");
+                
+                _ = ShowError($"Error while finding the user! {ex}");
+                return;
             }
+
         }
     }
 }

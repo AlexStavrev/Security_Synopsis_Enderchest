@@ -231,7 +231,6 @@
             passwordBox.PlaceholderText = "VeryStrongPassword";
             passwordBox.Size = new Size(263, 26);
             passwordBox.TabIndex = 7;
-            passwordBox.TextChanged += passwordBox_TextChanged;
             // 
             // label1
             // 

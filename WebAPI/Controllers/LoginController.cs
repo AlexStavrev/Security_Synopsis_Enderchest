@@ -88,4 +88,20 @@ public class LoginController : ControllerBase
         }
         return BadRequest();
     }
+
+    [HttpGet("getUserIdByEmail/{email}")]
+    public async Task<ActionResult<Guid>> GetUserByEmail(string email)
+    {
+        if (email.IsNullOrEmpty())
+        {
+            return BadRequest("Email cannot be null");
+        }
+
+        var userId = await _userRepo.GetUserIdByEmail(email);
+        if (userId.HasValue)
+        {
+            return Ok(userId.Value);
+        }
+        return BadRequest();
+    }
 }
