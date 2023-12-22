@@ -141,13 +141,8 @@ public partial class FileListPage : UserControl
 
     private async void CreateSharedFolder_Click(object sender, EventArgs e)
     {
-        //TODO change this 
-        foreach (var file in _decryptedFiles)
-        {
-            var encryptedFile = _vaultCryptoService.EncryptSingleFile(file, _email, _password);
-            _encryptedFiles.Add(encryptedFile);
-        }
-
+        using var fileViewDialogBox = new CreateSharedFolderDialogBox(_client, _userId, this, _vaultCryptoService);
+        fileViewDialogBox.ShowDialog();
     }
     //TODO DELETE
     private void Decrypt_Click(object sender, EventArgs e)

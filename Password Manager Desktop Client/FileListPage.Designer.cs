@@ -84,7 +84,6 @@
             // 
             CreateSharedFolder.BackColor = Color.FromArgb(33, 33, 37);
             CreateSharedFolder.Dock = DockStyle.Left;
-            CreateSharedFolder.Enabled = false;
             CreateSharedFolder.FlatAppearance.BorderColor = Color.FromArgb(33, 33, 37);
             CreateSharedFolder.FlatAppearance.BorderSize = 0;
             CreateSharedFolder.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
