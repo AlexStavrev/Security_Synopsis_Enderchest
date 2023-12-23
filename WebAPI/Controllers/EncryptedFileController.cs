@@ -105,19 +105,19 @@ public class EncryptedFileController : ControllerBase
     // POST api/EncryptedFile/share
     [HttpGet("GetSharedFolderGuids/{userGuid}")]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<Guid>>> GetShareFolderGuids(Guid userGuid, [FromBody] Guid encryptedFileGuid)
+    public async Task<ActionResult<IEnumerable<Guid>>> GetShareFolderGuids(Guid userGuid)
     {
         var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
         {
             return validationErrors;
         }
-        if (userGuid == Guid.Empty || encryptedFileGuid == Guid.Empty)
+        if (userGuid == Guid.Empty)
         {
-            return BadRequest("user guid or encrypted file guid was empty, this is not allowed.");
+            return BadRequest("user guid was empty, this is not allowed.");
         }
-        var files = await _encryptedFileRepo.GetSharedFolderGuidsAsync(userGuid);
-        return Ok(files);
+        var folders = await _encryptedFileRepo.GetSharedFolderGuidsAsync(userGuid);
+        return Ok(folders);
     }
     
     

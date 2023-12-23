@@ -13,6 +13,7 @@ public partial class FileListPage : UserControl
     private Guid _userId;
     private List<EncryptedFileDto?> _encryptedFiles;
     private List<DecryptedFileDto?> _decryptedFiles;
+    private List<Guid> _sharedFolders;
 
     private ICryptoHelper _vaultCryptoService;
     private Form1 _parent;
@@ -28,10 +29,12 @@ public partial class FileListPage : UserControl
         InitializeComponent();
         listView1.Columns.Add("Id");
         listView1.Columns.Add("Name");
+        listView2.Columns.Add("Id");
         imageList.Images.Add("fileIcon", Properties.Resources.fileIcon);
         listView1.SmallImageList = imageList;
         _decryptedFiles = new List<DecryptedFileDto?> { };
         _encryptedFiles = new List<EncryptedFileDto?> { };
+        _sharedFolders = new List<Guid> { };
 
         listView1.Columns[0].Width = 100;
         listView1.Columns[1].Width = 1080;
@@ -47,11 +50,22 @@ public partial class FileListPage : UserControl
                 var newDecryptedFile = _vaultCryptoService.DecryptSingleFile(file, _email, _password);
                 UpdateListView(newDecryptedFile);
             }
-
+            try
+            {
+                var newSharedFolders = await _client.GetSharedFoldersAsync(_userId);
+                foreach (var folder in newSharedFolders)
+                {
+                    UpdateListView2(folder);
+                }
+            }
+            catch(Exception ex)
+            {
+                _ = _parent.ShowError($"Unable to retrieve shared folders: {ex}", 5000);
+            }
         }
         catch (Exception ex)
         {
-            _ = _parent.ShowError($"Unable to retrieve the vault: {ex}", 5000);
+            _ = _parent.ShowError($"Unable to retrieve files: {ex}", 5000);
         }
 
     }
@@ -108,6 +122,13 @@ public partial class FileListPage : UserControl
         listView1.Items.Add(item);
     }
 
+    private void UpdateListView2(Guid sharedFolder)
+    {
+        _sharedFolders.Add(sharedFolder);
+        ListViewItem item = new ListViewItem(sharedFolder.ToString());
+        listView2.Items.Add(item);
+    }
+
     private void HideItems()
     {
         foreach (ListViewItem item in listView1.Items)
@@ -153,11 +174,11 @@ public partial class FileListPage : UserControl
 
     private void listView1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if(listView1.SelectedItems.Count > 0)
+        if (listView1.SelectedItems.Count > 0)
         {
             var selectedGuid = listView1.SelectedItems[0].Text;
             var file = _decryptedFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
-            if(file != null)
+            if (file != null)
             {
                 using var fileViewDialogBox = new FileViewDialogBox(file, _client, this);
                 fileViewDialogBox.ShowDialog();
@@ -177,5 +198,15 @@ public partial class FileListPage : UserControl
         string firstLine = reader.ReadLine();
 
         return firstLine;
+    }
+
+    private void label1_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //TODO Open password dialog box and open folder
     }
 }

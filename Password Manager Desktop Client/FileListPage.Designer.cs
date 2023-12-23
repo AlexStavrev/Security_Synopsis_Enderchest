@@ -34,6 +34,8 @@
             CreateSharedFolder = new Button();
             listView1 = new ListView();
             panel1 = new Panel();
+            listView2 = new ListView();
+            userName_label = new Label();
             buttonsPanel = new Panel();
             imageList = new ImageList(components);
             panel1.SuspendLayout();
@@ -105,14 +107,14 @@
             listView1.BackColor = Color.FromArgb(60, 60, 65);
             listView1.BorderStyle = BorderStyle.FixedSingle;
             listView1.Cursor = Cursors.Hand;
-            listView1.Dock = DockStyle.Fill;
+            listView1.Dock = DockStyle.Top;
             listView1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             listView1.ForeColor = Color.FromArgb(230, 230, 230);
             listView1.FullRowSelect = true;
             listView1.Location = new Point(18, 65);
             listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(328, 280);
+            listView1.Size = new Size(328, 132);
             listView1.TabIndex = 5;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -121,6 +123,8 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(45, 45, 50);
+            panel1.Controls.Add(listView2);
+            panel1.Controls.Add(userName_label);
             panel1.Controls.Add(listView1);
             panel1.Controls.Add(buttonsPanel);
             panel1.Dock = DockStyle.Fill;
@@ -130,6 +134,36 @@
             panel1.Padding = new Padding(18, 15, 18, 15);
             panel1.Size = new Size(364, 360);
             panel1.TabIndex = 6;
+            // 
+            // listView2
+            // 
+            listView2.BackColor = Color.FromArgb(60, 60, 65);
+            listView2.BorderStyle = BorderStyle.FixedSingle;
+            listView2.Cursor = Cursors.Hand;
+            listView2.Dock = DockStyle.Top;
+            listView2.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            listView2.ForeColor = Color.FromArgb(230, 230, 230);
+            listView2.FullRowSelect = true;
+            listView2.Location = new Point(18, 222);
+            listView2.MultiSelect = false;
+            listView2.Name = "listView2";
+            listView2.Size = new Size(328, 120);
+            listView2.TabIndex = 8;
+            listView2.UseCompatibleStateImageBehavior = false;
+            listView2.View = View.Details;
+            listView2.SelectedIndexChanged += listView2_SelectedIndexChanged;
+            // 
+            // userName_label
+            // 
+            userName_label.AutoSize = true;
+            userName_label.Dock = DockStyle.Top;
+            userName_label.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            userName_label.ForeColor = Color.FromArgb(230, 230, 230);
+            userName_label.Location = new Point(18, 197);
+            userName_label.Name = "userName_label";
+            userName_label.Size = new Size(134, 25);
+            userName_label.TabIndex = 7;
+            userName_label.Text = "Shared folders";
             // 
             // buttonsPanel
             // 
@@ -162,6 +196,7 @@
             Size = new Size(382, 376);
             Load += CreateVaultPage_Load;
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             buttonsPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -174,5 +209,7 @@
         private Panel panel1;
         private Panel buttonsPanel;
         private ImageList imageList;
+        private Label userName_label;
+        private ListView listView2;
     }
 }

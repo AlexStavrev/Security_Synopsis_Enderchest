@@ -80,13 +80,13 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<IEnumerable<EncryptedFileDto>> GetSharedFilesAsync(Guid userGuid)
+    public async Task<IEnumerable<Guid>> GetSharedFoldersAsync(Guid userGuid)
     {
         if (_jwt == null)
         {
             throw new Exception("You need to be authentificated to call this endpoint!");
         }
-        var response = await _client.RequestAsync<IEnumerable<EncryptedFileDto>>(Method.Get, $"EncryptedFile/getShared/{userGuid}", jwt: _jwt);
+        var response = await _client.RequestAsync<IEnumerable<Guid>>(Method.Get, $"EncryptedFile/GetSharedFolderGuids/{userGuid}", jwt: _jwt);
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
         return response.Data!;
     }
