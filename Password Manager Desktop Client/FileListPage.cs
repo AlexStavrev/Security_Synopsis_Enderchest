@@ -5,7 +5,7 @@ using Web_Client.DTOs;
 
 namespace Password_Manager_Desktop_Client;
 
-public partial class FileListPage : UserControl
+public partial class FileListPage : UserControl, IFileListPage
 {
     private string _email;
     private string _password;
@@ -203,6 +203,25 @@ public partial class FileListPage : UserControl
 
     private void listView2_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //TODO Open password dialog box and open folder
+        if (listView2.SelectedItems.Count > 0)
+        {
+            var selectedGuid = listView2.SelectedItems[0].Text;
+            var folder = _sharedFolders.FirstOrDefault(f => f.ToString() == selectedGuid);
+            if (folder != Guid.Empty)
+            {
+                using var passwordDialogBox = new InputShareFolderPasswordDialogBox();
+                DialogResult result = passwordDialogBox.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    string shareCode = passwordDialogBox.Result;
+                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folder);
+                    _parent.SetPage(openedFolderListPage);
+                }
+                else
+                {
+                    _ = _parent.ShowError("Unable to open folder. Wrong password?");
+                }
+            }
+        }
     }
 }

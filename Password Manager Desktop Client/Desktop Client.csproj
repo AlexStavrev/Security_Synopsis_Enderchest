@@ -20,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="OpenedFolderListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="InputShareFolderPasswordDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="ShareFileDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>

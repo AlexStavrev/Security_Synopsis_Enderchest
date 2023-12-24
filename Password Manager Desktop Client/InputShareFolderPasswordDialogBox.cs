@@ -1,67 +1,76 @@
-﻿using System.Runtime.InteropServices;
-using Web_Client;
-using Web_Client.DTOs;
+using System.Runtime.InteropServices;
 
 namespace Password_Manager_Desktop_Client;
-public partial class FileViewDialogBox : Form
+
+public partial class InputShareFolderPasswordDialogBox : Form
 {
     private Size _formSize;
-    private int _borderSize;
-    private DecryptedFileDto _file;
-    private IWebClient _client;
-    private IFileListPage _parent;
-    public FileViewDialogBox(DecryptedFileDto file, IWebClient client, IFileListPage parent)
+    public string Result { get; set; }
+
+    private readonly int _borderSize;
+
+    public InputShareFolderPasswordDialogBox()
     {
+        Result = "";
         _borderSize = 2;
-        _file = file;
-        _client = client;
-        _parent = parent;
         InitializeComponent();
     }
 
-    private void FileViewDialogBox_Load(object sender, EventArgs e)
+    public async Task ShowError(string text, int delayInMilliseconds = 2000)
     {
-        string[] lines = _file.EncryptedFile.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-        string text = string.Join(Environment.NewLine, lines.Skip(1));
-        Text = lines[0];
-        titleLbl.Text = lines[0];
-        fileViewTextBox.Text = text;
-
-        characterCount_Label.Text = $"Characters: {text.Length}";
-        linesCount_Label.Text = $"Lines: {lines.Length - 1}";
-        worldCount_Label.Text = $"Words: {text.Split(' ', '\t', '\n', '\r').Length}";
-    }
-
-    private void DownloadFile()
-    {
-        using var saveFileDialog = new SaveFileDialog();
-        saveFileDialog.FileName = this.Text;
-        saveFileDialog.DefaultExt = ".txt";
-        saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        var errorBar = new CustomControls.NotificationLabelBar
         {
-            string fileName = saveFileDialog.FileName;
-            try
-            {
-                File.WriteAllText(fileName, fileViewTextBox.Text);
-                _ = _parent.GetMainForm().ShowSuccess("File downloaded successfully");
-            }
-            catch (Exception ex)
-            {
-                _ = _parent.GetMainForm().ShowError($"Unable to download file: {ex.GetType}", 5000);
-            }
-        }
+            BackColor = Color.IndianRed,
+            ButtonColor = Color.Maroon,
+            Dock = DockStyle.Top,
+            Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point),
+            ForeColor = Color.White,
+            Location = new Point(0, 40),
+            Margin = new Padding(5, 5, 5, 5),
+            Name = "notificationLblBar",
+            Size = new Size(884, 0),
+            TabIndex = 4,
+            Text = text
+        };
+        panel1.Controls.Add(errorBar);
+        errorBar.BringToFront();
+        await errorBar.ShowNotificationAsync(delayInMilliseconds);
     }
 
-    private void closeButton_Click(object sender, EventArgs e)
+
+    public async Task ShowSuccess(string text)
     {
-        Exit();
+        var sucessBar = new CustomControls.NotificationLabelBar
+        {
+            BackColor = Color.Green,
+            ButtonColor = Color.DarkGreen,
+            Dock = DockStyle.Top,
+            Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point),
+            ForeColor = Color.White,
+            Location = new Point(0, 40),
+            Margin = new Padding(5, 5, 5, 5),
+            Name = "notificationLblBar",
+            Size = new Size(884, 0),
+            TabIndex = 4,
+            Text = text
+        };
+
+        panel1.Controls.Add(sucessBar);
+        sucessBar.BringToFront();
+        await sucessBar.ShowNotificationAsync(2000);
     }
 
-    private void Exit()
+    private void Form1_Load(object sender, EventArgs e)
+    {
+        Padding = new(_borderSize);
+        titleLbl.Text = this.Text;
+        MaximizedBounds = Screen.FromHandle(Handle).WorkingArea;
+    }
+
+    private void Close()
     {
         Dispose();
+        this.DialogResult = DialogResult.Cancel;
     }
 
     private void Maximise()
@@ -111,7 +120,7 @@ public partial class FileViewDialogBox : Form
         }
     }
     private void OnForm_Resize(object sender, EventArgs e) => AdjustForm();
-    private void btnExit_Click(object sender, EventArgs e) => Exit();
+    private void btnExit_Click(object sender, EventArgs e) => Close();
     private void btnMaximise_Click(object sender, EventArgs e) => Maximise();
     private void btnMinimise_Click(object sender, EventArgs e) => Minimise();
     #endregion
@@ -221,9 +230,9 @@ public partial class FileViewDialogBox : Form
     }
     #endregion
 
-    private void closeBtn_Click_1(object sender, EventArgs e)
+    private void closeBtn_Click(object sender, EventArgs e)
     {
-        Exit();
+        Close();
     }
 
     private void maximizeBtn_Click(object sender, EventArgs e)
@@ -236,20 +245,24 @@ public partial class FileViewDialogBox : Form
         Minimise();
     }
 
-    private void FileViewDialogBox_Resize(object sender, EventArgs e)
+    private void button1_Click(object sender, EventArgs e)
     {
-        AdjustForm();
+        Close();
     }
 
-    private void downloadButton_Click(object sender, EventArgs e)
+    private void button2_Click(object sender, EventArgs e)
     {
-        DownloadFile();
+        if(Result != "" && Result != null)
+        {
+            DialogResult = DialogResult.OK;
+        } else
+        {
+            _ = this.ShowError("Please enter a password");
+        }
     }
 
-    private void shareButton_Click(object sender, EventArgs e)
+    private void passwordTextBox_TextChanged(object sender, EventArgs e)
     {
-        using var shareFileDialogBox = new ShareFileDialogBox(_client, _file, this);
-        shareFileDialogBox.ShowDialog();
-        shareFileDialogBox.Focus();
+        Result = passwordTextBox.Text;
     }
 }
