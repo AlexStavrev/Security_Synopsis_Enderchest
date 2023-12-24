@@ -220,6 +220,7 @@ partial class FileViewDialogBox
         titleLbl.Size = new Size(68, 30);
         titleLbl.TabIndex = 0;
         titleLbl.Text = "label1";
+        titleLbl.MouseDown += TitleBar_MouseDown;
         // 
         // imageAppIcon
         // 

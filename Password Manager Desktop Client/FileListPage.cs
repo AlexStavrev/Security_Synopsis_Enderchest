@@ -38,6 +38,7 @@ public partial class FileListPage : UserControl
 
         listView1.Columns[0].Width = 100;
         listView1.Columns[1].Width = 1080;
+        listView2.Columns[0].Width = 1080;
     }
 
     private async void CreateVaultPage_Load(object sender, EventArgs e)
@@ -198,11 +199,6 @@ public partial class FileListPage : UserControl
         string firstLine = reader.ReadLine();
 
         return firstLine;
-    }
-
-    private void label1_Click(object sender, EventArgs e)
-    {
-
     }
 
     private void listView2_SelectedIndexChanged(object sender, EventArgs e)
