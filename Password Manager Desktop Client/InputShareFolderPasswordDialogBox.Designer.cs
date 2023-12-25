@@ -30,6 +30,8 @@ partial class InputShareFolderPasswordDialogBox
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputShareFolderPasswordDialogBox));
         panel1 = new Panel();
+        panel4 = new Panel();
+        showPasswordButton = new Button();
         passwordTextBox = new TextBox();
         userName_label = new Label();
         panel3 = new Panel();
@@ -41,13 +43,11 @@ partial class InputShareFolderPasswordDialogBox
         minimizeBtn = new Button();
         maximizeBtn = new Button();
         closeBtn = new Button();
-        panel4 = new Panel();
-        showPasswordButton = new Button();
         panel1.SuspendLayout();
+        panel4.SuspendLayout();
         panel3.SuspendLayout();
         panel2.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)imageAppIcon).BeginInit();
-        panel4.SuspendLayout();
         SuspendLayout();
         // 
         // panel1
@@ -61,6 +61,35 @@ partial class InputShareFolderPasswordDialogBox
         panel1.Padding = new Padding(10, 11, 10, 11);
         panel1.Size = new Size(485, 111);
         panel1.TabIndex = 0;
+        // 
+        // panel4
+        // 
+        panel4.Controls.Add(showPasswordButton);
+        panel4.Controls.Add(passwordTextBox);
+        panel4.Dock = DockStyle.Top;
+        panel4.Location = new Point(10, 42);
+        panel4.Name = "panel4";
+        panel4.Size = new Size(465, 43);
+        panel4.TabIndex = 8;
+        // 
+        // showPasswordButton
+        // 
+        showPasswordButton.BackColor = Color.FromArgb(60, 60, 65);
+        showPasswordButton.Dock = DockStyle.Top;
+        showPasswordButton.FlatAppearance.BorderColor = Color.FromArgb(90, 90, 90);
+        showPasswordButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+        showPasswordButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+        showPasswordButton.FlatStyle = FlatStyle.Flat;
+        showPasswordButton.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+        showPasswordButton.ForeColor = Color.FromArgb(230, 230, 230);
+        showPasswordButton.Location = new Point(300, 0);
+        showPasswordButton.MaximumSize = new Size(30, 30);
+        showPasswordButton.Name = "showPasswordButton";
+        showPasswordButton.Size = new Size(30, 30);
+        showPasswordButton.TabIndex = 6;
+        showPasswordButton.Text = "👁";
+        showPasswordButton.UseVisualStyleBackColor = false;
+        showPasswordButton.Click += showPasswordButton_Click;
         // 
         // passwordTextBox
         // 
@@ -243,35 +272,6 @@ partial class InputShareFolderPasswordDialogBox
         closeBtn.UseVisualStyleBackColor = false;
         closeBtn.Click += closeBtn_Click;
         // 
-        // panel4
-        // 
-        panel4.Controls.Add(showPasswordButton);
-        panel4.Controls.Add(passwordTextBox);
-        panel4.Dock = DockStyle.Top;
-        panel4.Location = new Point(10, 42);
-        panel4.Name = "panel4";
-        panel4.Size = new Size(465, 43);
-        panel4.TabIndex = 8;
-        // 
-        // showPasswordButton
-        // 
-        showPasswordButton.BackColor = Color.FromArgb(60, 60, 65);
-        showPasswordButton.Dock = DockStyle.Top;
-        showPasswordButton.FlatAppearance.BorderColor = Color.FromArgb(90, 90, 90);
-        showPasswordButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
-        showPasswordButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
-        showPasswordButton.FlatStyle = FlatStyle.Flat;
-        showPasswordButton.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-        showPasswordButton.ForeColor = Color.FromArgb(230, 230, 230);
-        showPasswordButton.Location = new Point(300, 0);
-        showPasswordButton.MaximumSize = new Size(30, 30);
-        showPasswordButton.Name = "showPasswordButton";
-        showPasswordButton.Size = new Size(30, 30);
-        showPasswordButton.TabIndex = 6;
-        showPasswordButton.Text = "👁";
-        showPasswordButton.UseVisualStyleBackColor = false;
-        showPasswordButton.Click += showPasswordButton_Click;
-        // 
         // InputShareFolderPasswordDialogBox
         // 
         AcceptButton = button2;
@@ -290,12 +290,12 @@ partial class InputShareFolderPasswordDialogBox
         Load += Form1_Load;
         panel1.ResumeLayout(false);
         panel1.PerformLayout();
+        panel4.ResumeLayout(false);
+        panel4.PerformLayout();
         panel3.ResumeLayout(false);
         panel2.ResumeLayout(false);
         panel2.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)imageAppIcon).EndInit();
-        panel4.ResumeLayout(false);
-        panel4.PerformLayout();
         ResumeLayout(false);
     }
 
