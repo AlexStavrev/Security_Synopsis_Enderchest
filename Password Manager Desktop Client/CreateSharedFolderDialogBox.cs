@@ -14,6 +14,7 @@ namespace Password_Manager_Desktop_Client
         private readonly IWebClient _client;
         private readonly ICryptoHelper _vaultCryptoHelper;
         private IEnumerable<DecryptedFileDto> _files;
+        private bool _showPassword = false;
 
         public CreateSharedFolderDialogBox(IWebClient client, Guid userId, IFileListPage parent, ICryptoHelper vaultCryptoHelper, IEnumerable<DecryptedFileDto> files)
         {
@@ -162,7 +163,7 @@ namespace Password_Manager_Desktop_Client
         {
             List<DecryptedFileDto> selectedFiles = new();
 
-            foreach(ListViewItem item in listView1.CheckedItems)
+            foreach (ListViewItem item in listView1.CheckedItems)
             {
                 var file = _files.Where(x => x.Guid == Guid.Parse(item.SubItems[0].Text)).FirstOrDefault();
                 if (file != null)
@@ -238,6 +239,14 @@ namespace Password_Manager_Desktop_Client
             {
                 item.Checked = item.Selected;
             }
+        }
+
+
+        private void showPasswordButton_Click(object sender, EventArgs e)
+        {
+            _showPassword = !_showPassword;
+            passwordBox.UseSystemPasswordChar = !_showPassword;
+            showPasswordButton.Text = _showPassword ? "🗨️" : "👁";
         }
 
         #region Control Events
@@ -346,7 +355,6 @@ namespace Password_Manager_Desktop_Client
             }
             base.WndProc(ref m);
         }
-
 
         protected override CreateParams CreateParams
         {

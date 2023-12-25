@@ -36,8 +36,10 @@
             mainPanel = new Panel();
             createAcc = new Button();
             lineBreak2 = new Label();
-            lineBreak = new Label();
+            passwordPanel = new Panel();
+            showPasswordButton = new Button();
             mainPanel.SuspendLayout();
+            passwordPanel.SuspendLayout();
             SuspendLayout();
             // 
             // userName_label
@@ -82,13 +84,12 @@
             // 
             passwordTextBox.BackColor = Color.FromArgb(60, 60, 65);
             passwordTextBox.BorderStyle = BorderStyle.FixedSingle;
-            passwordTextBox.Dock = DockStyle.Top;
+            passwordTextBox.Dock = DockStyle.Left;
             passwordTextBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             passwordTextBox.ForeColor = Color.FromArgb(230, 230, 230);
-            passwordTextBox.Location = new Point(50, 192);
+            passwordTextBox.Location = new Point(0, 0);
             passwordTextBox.MaximumSize = new Size(250, 31);
             passwordTextBox.Name = "passwordTextBox";
-            passwordTextBox.PasswordChar = '*';
             passwordTextBox.PlaceholderText = "Password";
             passwordTextBox.Size = new Size(250, 30);
             passwordTextBox.TabIndex = 3;
@@ -104,7 +105,7 @@
             button1.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            button1.Location = new Point(50, 242);
+            button1.Location = new Point(50, 243);
             button1.Name = "button1";
             button1.Size = new Size(769, 35);
             button1.TabIndex = 4;
@@ -118,8 +119,7 @@
             mainPanel.Controls.Add(createAcc);
             mainPanel.Controls.Add(lineBreak2);
             mainPanel.Controls.Add(button1);
-            mainPanel.Controls.Add(lineBreak);
-            mainPanel.Controls.Add(passwordTextBox);
+            mainPanel.Controls.Add(passwordPanel);
             mainPanel.Controls.Add(masterPassword_label);
             mainPanel.Controls.Add(usernameTextBox);
             mainPanel.Controls.Add(userName_label);
@@ -141,7 +141,7 @@
             createAcc.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
             createAcc.FlatStyle = FlatStyle.Flat;
             createAcc.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            createAcc.Location = new Point(50, 297);
+            createAcc.Location = new Point(50, 298);
             createAcc.Name = "createAcc";
             createAcc.Size = new Size(769, 35);
             createAcc.TabIndex = 6;
@@ -153,19 +153,38 @@
             // 
             lineBreak2.AutoSize = true;
             lineBreak2.Dock = DockStyle.Top;
-            lineBreak2.Location = new Point(50, 277);
+            lineBreak2.Location = new Point(50, 278);
             lineBreak2.Name = "lineBreak2";
             lineBreak2.Size = new Size(0, 20);
             lineBreak2.TabIndex = 7;
             // 
-            // lineBreak
+            // passwordPanel
             // 
-            lineBreak.AutoSize = true;
-            lineBreak.Dock = DockStyle.Top;
-            lineBreak.Location = new Point(50, 222);
-            lineBreak.Name = "lineBreak";
-            lineBreak.Size = new Size(0, 20);
-            lineBreak.TabIndex = 5;
+            passwordPanel.Controls.Add(showPasswordButton);
+            passwordPanel.Controls.Add(passwordTextBox);
+            passwordPanel.Dock = DockStyle.Top;
+            passwordPanel.Location = new Point(50, 192);
+            passwordPanel.Name = "passwordPanel";
+            passwordPanel.Size = new Size(769, 51);
+            passwordPanel.TabIndex = 8;
+            // 
+            // showPasswordButton
+            // 
+            showPasswordButton.BackColor = Color.FromArgb(60, 60, 65);
+            showPasswordButton.Dock = DockStyle.Top;
+            showPasswordButton.FlatAppearance.BorderColor = Color.FromArgb(90, 90, 90);
+            showPasswordButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            showPasswordButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            showPasswordButton.FlatStyle = FlatStyle.Flat;
+            showPasswordButton.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            showPasswordButton.Location = new Point(250, 0);
+            showPasswordButton.MaximumSize = new Size(30, 30);
+            showPasswordButton.Name = "showPasswordButton";
+            showPasswordButton.Size = new Size(30, 30);
+            showPasswordButton.TabIndex = 5;
+            showPasswordButton.Text = "👁";
+            showPasswordButton.UseVisualStyleBackColor = false;
+            showPasswordButton.Click += button2_Click;
             // 
             // LogInPage
             // 
@@ -179,6 +198,8 @@
             Size = new Size(889, 611);
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
+            passwordPanel.ResumeLayout(false);
+            passwordPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -190,8 +211,9 @@
         private TextBox passwordTextBox;
         private Button button1;
         private Panel mainPanel;
-        private Label lineBreak;
         private Button createAcc;
         private Label lineBreak2;
+        private Panel passwordPanel;
+        private Button showPasswordButton;
     }
 }

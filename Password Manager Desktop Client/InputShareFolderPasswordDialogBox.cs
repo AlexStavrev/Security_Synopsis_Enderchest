@@ -1,4 +1,4 @@
-using Password_Manager_Desktop_Client.crypto;
+﻿using Password_Manager_Desktop_Client.crypto;
 using System.Runtime.InteropServices;
 using Web_Client;
 using Web_Client.DTOs;
@@ -14,6 +14,7 @@ public partial class InputShareFolderPasswordDialogBox : Form
     private Guid _folderId;
     private Guid _userId;
     private FileListPage _parent;
+    private bool _showPassword = false;
 
     private readonly int _borderSize;
 
@@ -264,7 +265,7 @@ public partial class InputShareFolderPasswordDialogBox : Form
 
     private async void button2_Click(object sender, EventArgs e)
     {
-        if(passwordTextBox.Text != string.Empty)
+        if (passwordTextBox.Text != string.Empty)
         {
             var password = passwordTextBox.Text;
             try
@@ -280,9 +281,10 @@ public partial class InputShareFolderPasswordDialogBox : Form
             {
                 _ = this.ShowError("Error getting the files!");
             }
-            
-           
-        } else
+
+
+        }
+        else
         {
             _ = this.ShowError("Please enter a password");
         }
@@ -290,5 +292,12 @@ public partial class InputShareFolderPasswordDialogBox : Form
 
     private void passwordTextBox_TextChanged(object sender, EventArgs e)
     {
+    }
+
+    private void showPasswordButton_Click(object sender, EventArgs e)
+    {
+        _showPassword = !_showPassword;
+        passwordTextBox.UseSystemPasswordChar = !_showPassword;
+        showPasswordButton.Text = _showPassword ? "🗨️" : "👁";
     }
 }

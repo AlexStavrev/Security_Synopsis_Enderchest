@@ -41,16 +41,18 @@
             panel1 = new Panel();
             listView1 = new ListView();
             label2 = new Label();
-            lineBreak = new Label();
             passwordBox = new TextBox();
             label1 = new Label();
             emailTextBox = new TextBox();
             userName_label = new Label();
             imageList = new ImageList(components);
+            panel4 = new Panel();
+            showPasswordButton = new Button();
             ((System.ComponentModel.ISupportInitialize)imageAppIcon).BeginInit();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // titleLbl
@@ -208,8 +210,7 @@
             panel1.BackColor = Color.FromArgb(28, 28, 32);
             panel1.Controls.Add(listView1);
             panel1.Controls.Add(label2);
-            panel1.Controls.Add(lineBreak);
-            panel1.Controls.Add(passwordBox);
+            panel1.Controls.Add(panel4);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(emailTextBox);
             panel1.Controls.Add(userName_label);
@@ -231,10 +232,10 @@
             listView1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             listView1.ForeColor = Color.FromArgb(230, 230, 230);
             listView1.FullRowSelect = true;
-            listView1.Location = new Point(10, 183);
+            listView1.Location = new Point(10, 174);
             listView1.Margin = new Padding(3, 4, 3, 4);
             listView1.Name = "listView1";
-            listView1.Size = new Size(615, 128);
+            listView1.Size = new Size(615, 137);
             listView1.TabIndex = 8;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -246,20 +247,11 @@
             label2.Dock = DockStyle.Top;
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.FromArgb(230, 230, 230);
-            label2.Location = new Point(10, 152);
+            label2.Location = new Point(10, 143);
             label2.Name = "label2";
             label2.Size = new Size(126, 31);
             label2.TabIndex = 10;
             label2.Text = "Select Files";
-            // 
-            // lineBreak
-            // 
-            lineBreak.AutoSize = true;
-            lineBreak.Dock = DockStyle.Top;
-            lineBreak.Location = new Point(10, 132);
-            lineBreak.Name = "lineBreak";
-            lineBreak.Size = new Size(0, 20);
-            lineBreak.TabIndex = 9;
             // 
             // passwordBox
             // 
@@ -267,15 +259,16 @@
             passwordBox.AutoCompleteSource = AutoCompleteSource.HistoryList;
             passwordBox.BackColor = Color.FromArgb(60, 60, 65);
             passwordBox.BorderStyle = BorderStyle.FixedSingle;
-            passwordBox.Dock = DockStyle.Top;
+            passwordBox.Dock = DockStyle.Left;
             passwordBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             passwordBox.ForeColor = Color.FromArgb(230, 230, 230);
-            passwordBox.Location = new Point(10, 102);
+            passwordBox.Location = new Point(0, 0);
             passwordBox.MaximumSize = new Size(300, 30);
             passwordBox.Name = "passwordBox";
             passwordBox.PlaceholderText = "VeryStrongPassword";
             passwordBox.Size = new Size(300, 30);
             passwordBox.TabIndex = 7;
+            passwordBox.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -323,6 +316,35 @@
             imageList.ImageSize = new Size(16, 16);
             imageList.TransparentColor = Color.Transparent;
             // 
+            // panel4
+            // 
+            panel4.Controls.Add(showPasswordButton);
+            panel4.Controls.Add(passwordBox);
+            panel4.Dock = DockStyle.Top;
+            panel4.Location = new Point(10, 102);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(615, 41);
+            panel4.TabIndex = 11;
+            // 
+            // showPasswordButton
+            // 
+            showPasswordButton.BackColor = Color.FromArgb(60, 60, 65);
+            showPasswordButton.Dock = DockStyle.Top;
+            showPasswordButton.FlatAppearance.BorderColor = Color.FromArgb(90, 90, 90);
+            showPasswordButton.FlatAppearance.MouseDownBackColor = SystemColors.Highlight;
+            showPasswordButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 25, 30);
+            showPasswordButton.FlatStyle = FlatStyle.Flat;
+            showPasswordButton.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            showPasswordButton.ForeColor = Color.FromArgb(230, 230, 230);
+            showPasswordButton.Location = new Point(300, 0);
+            showPasswordButton.MaximumSize = new Size(30, 30);
+            showPasswordButton.Name = "showPasswordButton";
+            showPasswordButton.Size = new Size(30, 30);
+            showPasswordButton.TabIndex = 8;
+            showPasswordButton.Text = "👁";
+            showPasswordButton.UseVisualStyleBackColor = false;
+            showPasswordButton.Click += showPasswordButton_Click;
+            // 
             // CreateSharedFolderDialogBox
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -345,6 +367,8 @@
             panel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -365,8 +389,9 @@
         private Label label1;
         private TextBox emailTextBox;
         private ListView listView1;
-        private Label lineBreak;
         private Label label2;
         private ImageList imageList;
+        private Panel panel4;
+        private Button showPasswordButton;
     }
 }

@@ -9,6 +9,7 @@ public partial class LogInPage : UserControl
     private readonly IWebClient _client;
     private readonly ICryptoHelper _vaultCryptoHelper;
     private readonly Form1 _parent;
+    private bool _showPassword = false;
 
     public LogInPage(IWebClient client, ICryptoHelper vaultCryptoHelper, Form1 parent)
     {
@@ -85,5 +86,12 @@ public partial class LogInPage : UserControl
         {
             _ = _parent.ShowError("Something went wrong! Check your connection\n and try again.");
         }
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+        _showPassword = !_showPassword;
+        passwordTextBox.UseSystemPasswordChar = !_showPassword;
+        showPasswordButton.Text = _showPassword ? "🗨️" : "👁";
     }
 }
