@@ -52,12 +52,12 @@ internal class UserRepo : IUserRepo
 
     public async Task<byte[]?> GetSaltAsync(string email)
     {
-        //Set up DynamicParameters object to pass parameters  
+        //Set up DynamicParameters object to pass parameters
         var parameters = new DynamicParameters();
 
         parameters.Add("Email", email);
 
-        //Execute stored procedure and map the returned result to a Customer object  
+        //Execute stored procedure and map the returned result to a Customer object
         var returnedPasswordKey = await _connection.QuerySingleOrDefaultAsync<byte[]?>("GET_SALT", parameters, commandType: CommandType.StoredProcedure);
         if (returnedPasswordKey != null)
         {
@@ -69,13 +69,26 @@ internal class UserRepo : IUserRepo
 
     public async Task<Guid?> GetUserIdByEmail(string email)
     {
-        //Set up DynamicParameters object to pass parameters  
+        //Set up DynamicParameters object to pass parameters
         var parameters = new DynamicParameters();
 
         parameters.Add("Email", email);
         
-        //Execute stored procedure and map the returned result to a Customer object  
+        //Execute stored procedure and map the returned result to a Customer object
         var returnedUserId = await _connection.QuerySingleOrDefaultAsync<Guid?>("GET_USERID", parameters, commandType: CommandType.StoredProcedure);
+
+        return returnedUserId;
+    }
+
+    public async Task<string?> GetEmailByUserId(Guid userId)
+    {
+        //Set up DynamicParameters object to pass parameters
+        var parameters = new DynamicParameters();
+
+        parameters.Add("Guid", userId);
+
+        //Execute stored procedure and map the returned result to a Customer object
+        var returnedUserId = await _connection.QuerySingleOrDefaultAsync<string?>("GET_EMAIL", parameters, commandType: CommandType.StoredProcedure);
 
         return returnedUserId;
     }

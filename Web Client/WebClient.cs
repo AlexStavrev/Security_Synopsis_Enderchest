@@ -155,6 +155,17 @@ internal class WebClient : IWebClient
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
         return response.Data!;
     }
+
+    public async Task<string> GetEmailByUserIdAsync(Guid userId)
+    {
+        if (_jwt == null)
+        {
+            throw new Exception("You need to be authentificated to call this endpoint!");
+        }
+        var response = await _client.RequestAsync<string>(Method.Get, $"Login/getEmailByUserId/{userId}", jwt: _jwt);
+        if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
+        return response.Data!;
+    }
 }
 
 
