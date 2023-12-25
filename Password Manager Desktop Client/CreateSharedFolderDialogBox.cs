@@ -84,7 +84,7 @@ namespace Password_Manager_Desktop_Client
             AddFilesToListView(_files);
         }
 
-        private void Close()
+        private void CloseDialog()
         {
             Dispose();
         }
@@ -128,7 +128,7 @@ namespace Password_Manager_Desktop_Client
 
         private void closeBtn_Click_1(object sender, EventArgs e)
         {
-            Close();
+            CloseDialog();
         }
 
         private void maximizeBtn_Click_1(object sender, EventArgs e)
@@ -143,7 +143,7 @@ namespace Password_Manager_Desktop_Client
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Close();
+            CloseDialog();
         }
 
         private void AddFilesToListView(IEnumerable<DecryptedFileDto> decryptedFileDtos)
@@ -189,11 +189,11 @@ namespace Password_Manager_Desktop_Client
                     var salt = _vaultCryptoHelper.GenerateSalt();
                     var passwordKey = MasterPasswrodHelper.DerivePasswordKey(salt, password);
 
-                    Guid isCreated = await _client.CreateSharedFolderAsync(sharedWith, _userId, passwordKey);
+                    Guid isCreated = await _client.CreateSharedFolderAsync(sharedWith, _userId, passwordKey, GetSelectedFiles());
                     if (isCreated != Guid.Empty)
                     {
                         _ = ShowSuccess("Shared folder created!");
-                        Close();
+                        CloseDialog();
                     }
                     else
                     {
@@ -234,7 +234,7 @@ namespace Password_Manager_Desktop_Client
             }
         }
         private void OnForm_Resize(object sender, EventArgs e) => AdjustForm();
-        private void btnExit_Click(object sender, EventArgs e) => Close();
+        private void btnExit_Click(object sender, EventArgs e) => CloseDialog();
         private void btnMaximise_Click(object sender, EventArgs e) => Maximise();
         private void btnMinimise_Click(object sender, EventArgs e) => Minimise();
         #endregion

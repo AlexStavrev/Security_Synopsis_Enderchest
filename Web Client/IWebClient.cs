@@ -16,6 +16,6 @@ public interface IWebClient
     Task<IEnumerable<Guid>> GetSharedFoldersAsync(Guid userGuid);
     Task<Guid> CreateFileAsync(EncryptedFileDto file, Guid userGuid);
     Task<bool> ShareFileAsync(Guid userGuid, Guid fileGuid);
-    Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode);
+    Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode, IEnumerable<DecryptedFileDto> files);
     Task<SharedFolderDto> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode);
 }

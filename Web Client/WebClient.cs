@@ -123,7 +123,7 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode)
+    public async Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode, IEnumerable<DecryptedFileDto> files)
     {
         if (_jwt == null)
         {
@@ -131,7 +131,15 @@ internal class WebClient : IWebClient
         }
         var response = await _client.RequestAsync<Guid>(Method.Post, $"EncryptedFile/CreateSharedFolder/{userGuid}/owner/{ownerGuid}", shareCode, jwt: _jwt);
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
-        return response.Data!;
+        var createdGuid = response.Data!;
+
+        // TODO: Change this to a single request
+        foreach(var file in files)
+        {
+            await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/AddFileToSharedFolder/{createdGuid}", file, jwt: _jwt);
+        }
+
+        return createdGuid;
     }
 
     public async Task<SharedFolderDto> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode)
@@ -177,7 +185,7 @@ internal class WebClient : IWebClient
 
 public static class RestExtentions
 {
-    public static async Task<RestResponse<T>> RequestAsync<T>(this IRestClient client, Method method, string? resource = null, object? body = null, string jwt = null)
+    public static async Task<RestResponse<T>> RequestAsync<T>(this IRestClient client, Method method, string? resource = null, object? body = null, string? jwt = null)
     {
         var request = new RestRequest(resource, method);
         if (jwt != null)
@@ -191,7 +199,7 @@ public static class RestExtentions
         return await client.ExecuteAsync<T>(request, method);
     }
 
-    public static async Task<RestResponse> RequestAsync(this IRestClient client, Method method, string? resource = null, object? body = null, string jwt = null)
+    public static async Task<RestResponse> RequestAsync(this IRestClient client, Method method, string? resource = null, object? body = null, string? jwt = null)
     {
         var request = new RestRequest(resource, method);
         if (jwt != null)
