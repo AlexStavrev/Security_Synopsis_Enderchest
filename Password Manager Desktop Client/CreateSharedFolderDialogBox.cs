@@ -158,12 +158,13 @@ namespace Password_Manager_Desktop_Client
             }
         }
 
-        private IEnumerable<DecryptedFileDto> GetSelectedFiles()
+        private List<DecryptedFileDto> GetSelectedFiles()
         {
-            return _files.Where(file => listView1.SelectedItems
+            var result = _files.Where(file => listView1.SelectedItems
                 .Cast<ListViewItem>().Where(item => item.Checked)
                 .Select(item => item.SubItems[0].Text)
-                .Contains(file.Guid.ToString()));
+                .Contains(file.Guid.ToString())).ToList();
+            return result;
         }
 
         private async void button2_Click_1(object sender, EventArgs e)
@@ -178,8 +179,9 @@ namespace Password_Manager_Desktop_Client
             }
             try
             {
+                string ownerEmail = await _client.GetEmailByUserIdAsync(_userId);
                 Guid sharedWith = await _client.GetUserIdByEmailAsync(email);
-                if (sharedWith == Guid.Empty)
+                if (ownerEmail == string.Empty || sharedWith == Guid.Empty)
                 {
                     _ = ShowError("User not found!");
                     return;
@@ -188,8 +190,15 @@ namespace Password_Manager_Desktop_Client
                 {
                     var salt = _vaultCryptoHelper.GenerateSalt();
                     var passwordKey = MasterPasswrodHelper.DerivePasswordKey(salt, password);
+                    List<DecryptedFileDto> decryptedFiles = GetSelectedFiles();
+                    var encryptedFiles = new List<EncryptedFileDto>();
+                    foreach (var file in decryptedFiles)
+                    {
+                        var encryptedFile = _vaultCryptoHelper.EncryptSingleFile(file, ownerEmail, password);
+                        encryptedFiles.Add(encryptedFile);
+                    }
 
-                    Guid isCreated = await _client.CreateSharedFolderAsync(sharedWith, _userId, passwordKey, GetSelectedFiles());
+                    Guid isCreated = await _client.CreateSharedFolderAsync(sharedWith, _userId, passwordKey, encryptedFiles);
                     if (isCreated != Guid.Empty)
                     {
                         _ = ShowSuccess("Shared folder created!");

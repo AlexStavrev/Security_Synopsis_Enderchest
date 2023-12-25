@@ -123,7 +123,7 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode, IEnumerable<DecryptedFileDto> files)
+    public async Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode, IEnumerable<EncryptedFileDto> files)
     {
         if (_jwt == null)
         {
@@ -136,7 +136,7 @@ internal class WebClient : IWebClient
         // TODO: Change this to a single request
         foreach(var file in files)
         {
-            await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/AddFileToSharedFolder/{createdGuid}", file, jwt: _jwt);
+            await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/Share/{userGuid}/folder/{createdGuid}", file, jwt: _jwt);
         }
 
         return createdGuid;
