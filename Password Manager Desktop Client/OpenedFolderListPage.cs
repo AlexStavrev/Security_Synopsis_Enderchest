@@ -14,11 +14,13 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
     private SharedFolderDto _sharedFolder;
     private FileListPage _backPage;
     private ICryptoHelper _vaultCryptoService;
+    private List<DecryptedFileDto> _folderFiles;
     private Form1 _parent;
 
     public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, string shareCode, Guid folderGuid, SharedFolderDto sharedFolder, Guid userId)
     {
         _shareCode = shareCode;
+        _folderFiles = new List<DecryptedFileDto> { };
         _folderGuid = folderGuid;
         _backPage = backPage;
         _client = client;
@@ -94,7 +96,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         if (listView1.SelectedItems.Count > 0)
         {
             var selectedGuid = listView1.SelectedItems[0].Text;
-            var file = _sharedFolder.DecryptedFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
+            var file = _folderFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
             if (file != null)
             {
                 using var fileViewDialogBox = new FileViewDialogBox(file, _client, this);

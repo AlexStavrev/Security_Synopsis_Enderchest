@@ -41,7 +41,7 @@ public class EncryptedFileController : ControllerBase
     // GET api/EncryptedFile/getShared/<guid>
     [HttpGet("GetShared/{userGuid}/folder/{folderGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid userGuid, Guid folderGuid,[FromBody] byte[] shareCode)
+    public async Task<ActionResult<IEnumerable<EncryptedFileDto>>> GetShared(Guid userGuid, Guid folderGuid,[FromBody] byte[] shareCode)
     {
         var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
