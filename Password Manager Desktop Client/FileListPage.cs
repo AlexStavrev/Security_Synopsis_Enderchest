@@ -165,7 +165,7 @@ public partial class FileListPage : UserControl, IFileListPage
 
     private async void CreateSharedFolder_Click(object sender, EventArgs e)
     {
-        using var fileViewDialogBox = new CreateSharedFolderDialogBox(_client, _userId, this, _vaultCryptoService);
+        using var fileViewDialogBox = new CreateSharedFolderDialogBox(_client, _userId, this, _vaultCryptoService, _decryptedFiles);
         fileViewDialogBox.ShowDialog();
     }
     //TODO DELETE
@@ -194,7 +194,7 @@ public partial class FileListPage : UserControl, IFileListPage
         return _parent;
     }
 
-    private string? GetFileName(string fileText)
+    public string? GetFileName(string fileText)
     {
         using var reader = new StringReader(fileText);
         // Read the first line from the StringReader

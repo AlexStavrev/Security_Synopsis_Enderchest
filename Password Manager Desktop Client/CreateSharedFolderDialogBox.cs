@@ -1,5 +1,6 @@
 ﻿using Password_Manager_Desktop_Client.crypto;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Web_Client;
 using Web_Client.DTOs;
 namespace Password_Manager_Desktop_Client
@@ -9,12 +10,14 @@ namespace Password_Manager_Desktop_Client
         private Size _formSize;
         private readonly int _borderSize;
         private Guid _userId;
-        private readonly FileListPage _parent;
+        private readonly IFileListPage _parent;
         private readonly IWebClient _client;
         private readonly ICryptoHelper _vaultCryptoHelper;
+        private IEnumerable<DecryptedFileDto> _files;
 
-        public CreateSharedFolderDialogBox(IWebClient client, Guid userId, FileListPage parent, ICryptoHelper vaultCryptoHelper)
+        public CreateSharedFolderDialogBox(IWebClient client, Guid userId, IFileListPage parent, ICryptoHelper vaultCryptoHelper, IEnumerable<DecryptedFileDto> files)
         {
+            _files = files;
             _userId = userId;
             _parent = parent;
             _borderSize = 2;
@@ -72,6 +75,13 @@ namespace Password_Manager_Desktop_Client
             Padding = new(_borderSize);
             titleLbl.Text = this.Text;
             MaximizedBounds = Screen.FromHandle(Handle).WorkingArea;
+
+            listView1.Columns.Add("Id");
+            listView1.Columns.Add("Name");
+            imageList.Images.Add("fileIcon", Properties.Resources.fileIcon);
+            listView1.Columns[0].Width = 100;
+            listView1.Columns[1].Width = 1080;
+            AddFilesToListView(_files);
         }
 
         private void Close()
@@ -136,6 +146,26 @@ namespace Password_Manager_Desktop_Client
             Close();
         }
 
+        private void AddFilesToListView(IEnumerable<DecryptedFileDto> decryptedFileDtos)
+        {
+            foreach (var decryptedFileDto in decryptedFileDtos)
+            {
+                ListViewItem item = new ListViewItem(decryptedFileDto.Guid.ToString());
+                item.SubItems.Add(_parent.GetFileName(decryptedFileDto.EncryptedFile));
+                // Set item image to icon from resources
+                item.ImageIndex = 0;
+                listView1.Items.Add(item);
+            }
+        }
+
+        private IEnumerable<DecryptedFileDto> GetSelectedFiles()
+        {
+            return _files.Where(file => listView1.SelectedItems
+                .Cast<ListViewItem>().Where(item => item.Checked)
+                .Select(item => item.SubItems[0].Text)
+                .Contains(file.Guid.ToString()));
+        }
+
         private async void button2_Click_1(object sender, EventArgs e)
         {
             var password = passwordBox.Text;
@@ -184,6 +214,14 @@ namespace Password_Manager_Desktop_Client
                 return;
             }
 
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listView1.Items)
+            {
+                item.Checked = item.Selected;
+            }
         }
 
         #region Control Events
@@ -292,6 +330,7 @@ namespace Password_Manager_Desktop_Client
             }
             base.WndProc(ref m);
         }
+
 
         protected override CreateParams CreateParams
         {

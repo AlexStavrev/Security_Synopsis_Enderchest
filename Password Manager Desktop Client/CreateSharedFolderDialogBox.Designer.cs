@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             titleLbl = new Label();
             imageAppIcon = new PictureBox();
             minimizeBtn = new Button();
@@ -38,10 +39,14 @@
             button1 = new Button();
             panel3 = new Panel();
             panel1 = new Panel();
+            listView1 = new ListView();
+            label2 = new Label();
+            lineBreak = new Label();
             passwordBox = new TextBox();
             label1 = new Label();
             emailTextBox = new TextBox();
             userName_label = new Label();
+            imageList = new ImageList(components);
             ((System.ComponentModel.ISupportInitialize)imageAppIcon).BeginInit();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -201,6 +206,9 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(28, 28, 32);
+            panel1.Controls.Add(listView1);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(lineBreak);
             panel1.Controls.Add(passwordBox);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(emailTextBox);
@@ -212,6 +220,46 @@
             panel1.Padding = new Padding(10);
             panel1.Size = new Size(635, 321);
             panel1.TabIndex = 10;
+            // 
+            // listView1
+            // 
+            listView1.BackColor = Color.FromArgb(60, 60, 65);
+            listView1.BorderStyle = BorderStyle.FixedSingle;
+            listView1.CheckBoxes = true;
+            listView1.Cursor = Cursors.Hand;
+            listView1.Dock = DockStyle.Fill;
+            listView1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            listView1.ForeColor = Color.FromArgb(230, 230, 230);
+            listView1.FullRowSelect = true;
+            listView1.Location = new Point(10, 183);
+            listView1.Margin = new Padding(3, 4, 3, 4);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(615, 128);
+            listView1.TabIndex = 8;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.Details;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Dock = DockStyle.Top;
+            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.ForeColor = Color.FromArgb(230, 230, 230);
+            label2.Location = new Point(10, 152);
+            label2.Name = "label2";
+            label2.Size = new Size(126, 31);
+            label2.TabIndex = 10;
+            label2.Text = "Select Files";
+            // 
+            // lineBreak
+            // 
+            lineBreak.AutoSize = true;
+            lineBreak.Dock = DockStyle.Top;
+            lineBreak.Location = new Point(10, 132);
+            lineBreak.Name = "lineBreak";
+            lineBreak.Size = new Size(0, 20);
+            lineBreak.TabIndex = 9;
             // 
             // passwordBox
             // 
@@ -269,6 +317,12 @@
             userName_label.TabIndex = 4;
             userName_label.Text = "Email";
             // 
+            // imageList
+            // 
+            imageList.ColorDepth = ColorDepth.Depth8Bit;
+            imageList.ImageSize = new Size(16, 16);
+            imageList.TransparentColor = Color.Transparent;
+            // 
             // CreateSharedFolderDialogBox
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -310,5 +364,9 @@
         private TextBox passwordBox;
         private Label label1;
         private TextBox emailTextBox;
+        private ListView listView1;
+        private Label lineBreak;
+        private Label label2;
+        private ImageList imageList;
     }
 }

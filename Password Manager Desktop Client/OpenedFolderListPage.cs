@@ -99,7 +99,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         return _parent;
     }
 
-    private string? GetFileName(string fileText)
+    public string? GetFileName(string fileText)
     {
         using var reader = new StringReader(fileText);
         // Read the first line from the StringReader
