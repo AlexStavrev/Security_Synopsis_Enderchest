@@ -11,7 +11,6 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
     private Guid _folderGuid;
     private Guid _userId;
     private IWebClient _client;
-    private List<DecryptedFileDto?> _folderFiles;
     private SharedFolderDto _sharedFolder;
     private FileListPage _backPage;
     private ICryptoHelper _vaultCryptoService;
@@ -32,7 +31,6 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         listView1.Columns.Add("Name");
         imageList.Images.Add("fileIcon", Properties.Resources.fileIcon);
         listView1.SmallImageList = imageList;
-        _folderFiles = new List<DecryptedFileDto?> { };
 
         listView1.Columns[0].Width = 100;
         listView1.Columns[1].Width = 1080;
@@ -93,7 +91,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         if (listView1.SelectedItems.Count > 0)
         {
             var selectedGuid = listView1.SelectedItems[0].Text;
-            var file = _folderFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
+            var file = _sharedFolder.DecryptedFiles.FirstOrDefault(file => file.Guid.ToString() == selectedGuid);
             if (file != null)
             {
                 using var fileViewDialogBox = new FileViewDialogBox(file, _client, this);
