@@ -79,4 +79,17 @@ internal class UserRepo : IUserRepo
 
         return returnedUserId;
     }
+
+    public async Task<string?> GetEmailByUserId(Guid userId)
+    {
+        //Set up DynamicParameters object to pass parameters  
+        var parameters = new DynamicParameters();
+
+        parameters.Add("Guid", userId);
+
+        //Execute stored procedure and map the returned result to a Customer object  
+        var returnedUserId = await _connection.QuerySingleOrDefaultAsync<string?>("GET_EMAIL", parameters, commandType: CommandType.StoredProcedure);
+
+        return returnedUserId;
+    }
 }

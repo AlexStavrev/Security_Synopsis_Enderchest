@@ -7,4 +7,5 @@ public interface IUserRepo
     Task<Guid?> CreateAsync(User user);
     Task<byte[]?> GetSaltAsync(string username);
     Task<Guid?> GetUserIdByEmail(string username);
+    Task<string?> GetEmailByUserId(Guid username);
 }

@@ -1,7 +1,9 @@
 ﻿using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using WebAPI.DTOs;
 using WebAPI.DTOs.Converters;
 using WebAPI.Security;
@@ -103,5 +105,57 @@ public class LoginController : ControllerBase
             return Ok(userId.Value);
         }
         return BadRequest();
+    }
+
+    [HttpGet("getEmailByUserId/{userId}")]
+    [Authorize]
+    public async Task<ActionResult<string>> GetEmailByUserId(Guid userId)
+    {
+        var validationErrors = GetValidationErrors(userId, User.Claims, Request.Headers);
+        if (validationErrors != null)
+        {
+            return validationErrors;
+        }
+        if (userId == Guid.Empty || userId == Guid.Empty)
+        {
+            return BadRequest("Could not create a shared folder, user or owner guid is empty");
+        }
+
+        var email = await _userRepo.GetEmailByUserId(userId);
+        if (email != null)
+        {
+            return Ok(email);
+        }
+        return BadRequest();
+    }
+
+    private ActionResult? GetValidationErrors(Guid ownerGuid, IEnumerable<Claim> claims, IHeaderDictionary headers)
+    {
+        // Validate the JWT
+        var getCookiesResult = headers.TryGetValue("Authorization", out var headerValues);
+        var tokenBearer = headerValues.FirstOrDefault();
+        var token = tokenBearer.Substring(7);
+        if (getCookiesResult == false || _jwtHelper.ValidateToken(token) == false)
+        {
+            return Unauthorized();
+        }
+
+
+        // Validate that user guid is in claims
+        var userGuidClaim = claims.FirstOrDefault(c => c.Type == "user_guid");
+        if (userGuidClaim == null || !Guid.TryParse(userGuidClaim.Value, out Guid authenticatedUserGuid))
+        {
+            // The owner GUID is missing or invalid.
+            return Unauthorized();
+        }
+
+        // Validate if the user guid in claims matches the given guid
+        if (ownerGuid != authenticatedUserGuid)
+        {
+            // The owner GUID doesn't match the claim
+            return Forbid();
+        }
+
+        return null;
     }
 }
