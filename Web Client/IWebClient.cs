@@ -8,7 +8,7 @@ public interface IWebClient
     Task<Guid?> CreateUserAsync(UserDto user);
     Task<byte[]> GetSaltAsync(string username);
     Task<Guid> GetUserIdByEmailAsync(string email);
-    Task<string> GetEmailByUserIdAsync(Guid userId);
+    Task<string> GetEmailByUserIdAsync(Guid ownerId, Guid userId);
 
     // File
     Task<IEnumerable<EncryptedFileDto>> GetUserFilesAsync(Guid ownerGuid);

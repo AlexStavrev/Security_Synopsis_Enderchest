@@ -222,7 +222,7 @@ public partial class FileListPage : UserControl, IFileListPage
                 {
                     var folder = passwordDialogBox.ResultFolder;
                     var shareCode = passwordDialogBox.ResultShareCode;
-                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folderGuid, folder);
+                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folderGuid, folder, _userId);
                     _parent.SetPage(openedFolderListPage);
                 }
                 else

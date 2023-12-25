@@ -136,7 +136,7 @@ internal class WebClient : IWebClient
         // TODO: Change this to a single request
         foreach(var file in files)
         {
-            await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/Share/{userGuid}/folder/{createdGuid}", file, jwt: _jwt);
+            await _client.RequestAsync<bool>(Method.Post, $"EncryptedFile/Share/{ownerGuid}/folder/{createdGuid}", file.EncryptedFile, jwt: _jwt);
         }
 
         return createdGuid;
@@ -170,13 +170,13 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<string> GetEmailByUserIdAsync(Guid userId)
+    public async Task<string> GetEmailByUserIdAsync(Guid ownerId, Guid userId)
     {
         if (_jwt == null)
         {
             throw new Exception("You need to be authentificated to call this endpoint!");
         }
-        var response = await _client.RequestAsync<string>(Method.Get, $"Login/getEmailByUserId/{userId}", jwt: _jwt);
+        var response = await _client.RequestAsync<string>(Method.Get, $"Login/getEmailByUserId/{ownerId}", userId, jwt: _jwt);
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
         return response.Data!;
     }

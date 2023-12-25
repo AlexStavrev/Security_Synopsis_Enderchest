@@ -107,21 +107,21 @@ public class LoginController : ControllerBase
         return BadRequest();
     }
 
-    [HttpGet("getEmailByUserId/{userId}")]
+    [HttpGet("getEmailByUserId/{ownerId}")]
     [Authorize]
-    public async Task<ActionResult<string>> GetEmailByUserId(Guid userId)
+    public async Task<ActionResult<string>> GetEmailByUserId(Guid ownerId, [FromBody] Guid userId)
     {
         var validationErrors = GetValidationErrors(userId, User.Claims, Request.Headers);
         if (validationErrors != null)
         {
             return validationErrors;
         }
-        if (userId == Guid.Empty || userId == Guid.Empty)
+        if (ownerId == Guid.Empty || ownerId == Guid.Empty)
         {
             return BadRequest("Could not create a shared folder, user or owner guid is empty");
         }
 
-        var email = await _userRepo.GetEmailByUserId(userId);
+        var email = await _userRepo.GetEmailByUserId(ownerId);
         if (email != null)
         {
             return Ok(email);

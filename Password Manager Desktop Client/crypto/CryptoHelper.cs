@@ -80,13 +80,12 @@ public class CryptoHelper : ICryptoHelper
             var salt = RetrieveSalt(folder.EncryptedFiles.FirstOrDefault().EncryptedFile);
             var secretKey = DeriveSecterKey(ownerUsername, shareCode, salt);
             var decryptedFiles = new List<DecryptedFileDto>();
-            for (var i = 0; i < folder.DecryptedFiles.Count(); i++)
+            for (var i = 0; i < folder.EncryptedFiles.Count(); i++)
             {
-                
                 var deryptedFileDto = new DecryptedFileDto
                 {
-                    Guid = folder.DecryptedFiles.ElementAt(i).Guid,
-                    OwnerGuid = folder.DecryptedFiles.ElementAt(i).OwnerGuid,
+                    Guid = folder.EncryptedFiles.ElementAt(i).Guid,
+                    OwnerGuid = folder.EncryptedFiles.ElementAt(i).OwnerGuid,
                     EncryptedFile = Encoding.UTF8.GetString(DecryptFile(folder.EncryptedFiles.ElementAt(i).EncryptedFile, secretKey))
                 };
 

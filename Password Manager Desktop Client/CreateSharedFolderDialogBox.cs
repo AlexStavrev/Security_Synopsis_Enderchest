@@ -186,7 +186,7 @@ namespace Password_Manager_Desktop_Client
             }
             try
             {
-                string ownerEmail = await _client.GetEmailByUserIdAsync(_userId);
+                string ownerEmail = await _client.GetEmailByUserIdAsync(_userId, _userId);
                 Guid sharedWith = await _client.GetUserIdByEmailAsync(email);
                 if (ownerEmail == string.Empty || sharedWith == Guid.Empty)
                 {

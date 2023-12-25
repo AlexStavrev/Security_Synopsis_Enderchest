@@ -9,6 +9,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
 {
     private string _shareCode;
     private Guid _folderGuid;
+    private Guid _userId;
     private IWebClient _client;
     private List<DecryptedFileDto?> _folderFiles;
     private SharedFolderDto _sharedFolder;
@@ -16,7 +17,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
     private ICryptoHelper _vaultCryptoService;
     private Form1 _parent;
 
-    public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, string shareCode, Guid folderGuid, SharedFolderDto sharedFolder)
+    public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, string shareCode, Guid folderGuid, SharedFolderDto sharedFolder, Guid userId)
     {
         _shareCode = shareCode;
         _folderGuid = folderGuid;
@@ -25,6 +26,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         _vaultCryptoService = vaultCryptoService;
         _parent = parent;
         _sharedFolder = sharedFolder;
+        _userId = userId;
         InitializeComponent();
         listView1.Columns.Add("Id");
         listView1.Columns.Add("Name");
@@ -40,20 +42,27 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
     {
         try
         {
-            DecryptFiles();
+            await DecryptFiles();
             UpdateListView();
         }
-        catch
+        catch (Exception ex)
         {
-            _ = _parent.ShowError("Error getting and decrypting files");
+            _ = _parent.ShowError($"Error getting and decrypting files {ex.Message}");
         }
     }
 
-    private async void DecryptFiles()
+    private async Task DecryptFiles()
     {
-        var userEmail = await _client.GetEmailByUserIdAsync(_sharedFolder.OwenerGuid);
-        var decryptedFolder = _vaultCryptoService.DecryptSharedFolder(_sharedFolder, userEmail, _shareCode);
-        _sharedFolder = decryptedFolder;
+        try
+        {
+            var userEmail = await _client.GetEmailByUserIdAsync(_sharedFolder.OwenerGuid, _userId);
+            var decryptedFolder = _vaultCryptoService.DecryptSharedFolder(_sharedFolder, userEmail, _shareCode);
+            _sharedFolder = decryptedFolder;
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Failed to decrypt files", ex);
+        }
     }
 
     private void UpdateListView()

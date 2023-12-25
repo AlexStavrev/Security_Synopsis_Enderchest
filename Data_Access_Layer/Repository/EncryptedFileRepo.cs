@@ -94,9 +94,12 @@ internal class EncryptedFileRepo : IEncryptedFileRepo
     {
         try
         {
+            Guid generatedGuid = Guid.NewGuid();
+
             var parameters = new DynamicParameters();
             parameters.Add("EncryptedFile", file);
             parameters.Add("FolderGuid", sharedFolderGuid);
+            parameters.Add("FileGuid", generatedGuid);
 
             await _connection.QueryAsync("ADD_FILE_TO_SHARED_FOLDER", parameters, commandType: CommandType.StoredProcedure);
 
