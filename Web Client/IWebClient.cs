@@ -8,6 +8,7 @@ public interface IWebClient
     Task<Guid?> CreateUserAsync(UserDto user);
     Task<byte[]> GetSaltAsync(string username);
     Task<Guid> GetUserIdByEmailAsync(string email);
+    Task<string> GetEmailByUserIdAsync(Guid userId);
 
     // File
     Task<IEnumerable<EncryptedFileDto>> GetUserFilesAsync(Guid ownerGuid);
@@ -16,5 +17,5 @@ public interface IWebClient
     Task<Guid> CreateFileAsync(EncryptedFileDto file, Guid userGuid);
     Task<bool> ShareFileAsync(Guid userGuid, Guid fileGuid);
     Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode);
-    Task<IEnumerable<EncryptedFileDto>> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode);
+    Task<SharedFolderDto> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode);
 }

@@ -8,8 +8,8 @@ namespace Password_Manager_Desktop_Client;
 public partial class InputShareFolderPasswordDialogBox : Form
 {
     private Size _formSize;
-    public IEnumerable<EncryptedFileDto> ResultFiles { get; set; }
-    public byte[] ResultShareCode { get; set; }
+    public SharedFolderDto ResultFolder { get; set; }
+    public string ResultShareCode { get; set; }
     private readonly IWebClient _client;
     private Guid _folderId;
     private Guid _userId;
@@ -19,8 +19,7 @@ public partial class InputShareFolderPasswordDialogBox : Form
 
     public InputShareFolderPasswordDialogBox(IWebClient client, Guid folderId, Guid userId, FileListPage parent)
     {
-        ResultFiles = Enumerable.Empty<EncryptedFileDto>();
-        ResultShareCode = new byte[] { };
+        ResultShareCode = string.Empty;
         _borderSize = 2;
         _folderId = folderId;
         _client = client;
@@ -265,16 +264,16 @@ public partial class InputShareFolderPasswordDialogBox : Form
 
     private async void button2_Click(object sender, EventArgs e)
     {
-        if(ResultShareCode != null && ResultFiles != null)
+        if(passwordTextBox.Text != string.Empty)
         {
             var password = passwordTextBox.Text;
             try
             {
                 var salt = await _client.GetFolderSaltAsync(_folderId);
                 var derivedPassword = MasterPasswrodHelper.DerivePasswordKey(password: password, salt: salt);
-                var files = await _client.GetSharedFolderAsync(_userId, _folderId, derivedPassword);
-                ResultFiles = files;
-                ResultShareCode = derivedPassword;
+                var folder = await _client.GetSharedFolderAsync(_userId, _folderId, derivedPassword);
+                ResultFolder = folder;
+                ResultShareCode = password;
                 DialogResult = DialogResult.OK;
             }
             catch

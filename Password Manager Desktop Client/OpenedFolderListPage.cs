@@ -7,16 +7,16 @@ namespace Password_Manager_Desktop_Client;
 
 public partial class OpenedFolderListPage : UserControl, IFileListPage
 {
-    private byte[] _shareCode;
+    private string _shareCode;
     private Guid _folderGuid;
     private IWebClient _client;
     private List<DecryptedFileDto?> _folderFiles;
-    private IEnumerable<EncryptedFileDto?> _encryptedFiles;
+    private SharedFolderDto _sharedFolder;
     private FileListPage _backPage;
     private ICryptoHelper _vaultCryptoService;
     private Form1 _parent;
 
-    public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, byte[] shareCode, Guid folderGuid, IEnumerable<EncryptedFileDto?> encryptedFiles)
+    public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, string shareCode, Guid folderGuid, SharedFolderDto sharedFolder)
     {
         _shareCode = shareCode;
         _folderGuid = folderGuid;
@@ -24,7 +24,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         _client = client;
         _vaultCryptoService = vaultCryptoService;
         _parent = parent;
-        _encryptedFiles = encryptedFiles;
+        _sharedFolder = sharedFolder;
         InitializeComponent();
         listView1.Columns.Add("Id");
         listView1.Columns.Add("Name");
@@ -38,40 +38,39 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
 
     private async void CreateVaultPage_Load(object sender, EventArgs e)
     {
-        //var decryptedFiles = _vaultCryptoService.DecryptSingleFile(_encryptedFiles, _shareCode);
-        // TODO: Get files of the shared folders and decrypt them, then store in _folderFiles using _shareCode and _folderGuid
-    }
-
-    private void DecryptFiles()
-    {
-        foreach (var file in _encryptedFiles)
+        try
         {
-            //var decryptedFile = _vaultCryptoService.DecryptSingleFile(file, _shareCode);
+            DecryptFiles();
+            UpdateListView();
+        }
+        catch
+        {
+            _ = _parent.ShowError("Error getting and decrypting files");
         }
     }
 
-    private void UpdateListView(DecryptedFileDto decryptedFileDto)
+    private async void DecryptFiles()
     {
-        _folderFiles.Add(decryptedFileDto);
-        ListViewItem item = new ListViewItem(decryptedFileDto.Guid.ToString());
-        item.SubItems.Add(GetFileName(decryptedFileDto.EncryptedFile));
-        // Set item image to icon from resources
-        item.ImageIndex = 0;
-        listView1.Items.Add(item);
+        var userEmail = await _client.GetEmailByUserIdAsync(_sharedFolder.OwenerGuid);
+        var decryptedFolder = _vaultCryptoService.DecryptSharedFolder(_sharedFolder, userEmail, _shareCode);
+        _sharedFolder = decryptedFolder;
+    }
+
+    private void UpdateListView()
+    {
+        foreach (var decryptedFileDto in _sharedFolder.DecryptedFiles)
+        {
+            ListViewItem item = new ListViewItem(decryptedFileDto.Guid.ToString());
+            item.SubItems.Add(GetFileName(decryptedFileDto.EncryptedFile));
+            // Set item image to icon from resources
+            item.ImageIndex = 0;
+            listView1.Items.Add(item);
+        }
     }
 
     private void ClearListView()
     {
         listView1.Items.Clear();
-    }
-
-    private void InitListView()
-    {
-        foreach (var file in _folderFiles)
-        {
-            if (file != null) { UpdateListView(file); }
-        }
-
     }
 
     private async void Back_Button_Click(object sender, EventArgs e)

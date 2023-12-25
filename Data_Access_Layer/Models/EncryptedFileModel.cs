@@ -3,5 +3,6 @@
 public sealed record EncryptedFileModel
 {
     public Guid Guid { get; set; }
+    public Guid? OwnerGuid { get; set; }
     public byte[]? EncryptedFile { get; set; }
 }

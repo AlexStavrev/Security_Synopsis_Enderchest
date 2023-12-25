@@ -213,16 +213,16 @@ public partial class FileListPage : UserControl, IFileListPage
         if (listView2.SelectedItems.Count > 0)
         {
             var selectedGuid = listView2.SelectedItems[0].Text;
-            var folder = _sharedFolders.FirstOrDefault(f => f.ToString() == selectedGuid);
-            if (folder != Guid.Empty)
+            var folderGuid = _sharedFolders.FirstOrDefault(f => f.ToString() == selectedGuid);
+            if (folderGuid != Guid.Empty)
             {
-                using var passwordDialogBox = new InputShareFolderPasswordDialogBox(_client, folder, _userId, this);
+                using var passwordDialogBox = new InputShareFolderPasswordDialogBox(_client, folderGuid, _userId, this);
                 DialogResult result = passwordDialogBox.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    var files = passwordDialogBox.ResultFiles;
+                    var folder = passwordDialogBox.ResultFolder;
                     var shareCode = passwordDialogBox.ResultShareCode;
-                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folder, files);
+                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folderGuid, folder);
                     _parent.SetPage(openedFolderListPage);
                 }
                 else

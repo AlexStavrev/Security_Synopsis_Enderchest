@@ -134,7 +134,7 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<IEnumerable<EncryptedFileDto>> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode)
+    public async Task<SharedFolderDto> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode)
     {
         if (_jwt == null)
         {
@@ -142,7 +142,13 @@ internal class WebClient : IWebClient
         }
         var response = await _client.RequestAsync<IEnumerable<EncryptedFileDto>>(Method.Get, $"EncryptedFile/GetShared/{userGuid}/folder/{folderGuid}", shareCode, jwt: _jwt);
         if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
-        return response.Data!;
+        var sharedFolder = new SharedFolderDto
+        {
+            EncryptedFiles = response.Data!,
+            Guid = folderGuid,
+            OwenerGuid = response.Data!.FirstOrDefault().OwnerGuid,
+        };
+        return sharedFolder;
     }
 
     public async Task<Guid> GetUserIdByEmailAsync(string email)
