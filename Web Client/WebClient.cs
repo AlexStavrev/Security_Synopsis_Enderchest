@@ -80,6 +80,15 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
+    public async Task<byte[]> GetFolderSaltAsync(Guid folderId)
+    {
+        var response = await _client.RequestAsync<byte[]>(Method.Get, $"EncryptedFile/Salt/{folderId}");
+
+        if (!response.IsSuccessful) throw new Exception($"Error getting salt for {folderId}");
+
+        return response.Data!;
+    }
+
     public async Task<IEnumerable<Guid>> GetSharedFoldersAsync(Guid userGuid)
     {
         if (_jwt == null)
@@ -114,7 +123,7 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<Guid> CreateSharedFolder(Guid userGuid, Guid ownerGuid, byte[] shareCode)
+    public async Task<Guid> CreateSharedFolderAsync(Guid userGuid, Guid ownerGuid, byte[] shareCode)
     {
         if (_jwt == null)
         {
@@ -125,7 +134,18 @@ internal class WebClient : IWebClient
         return response.Data!;
     }
 
-    public async Task<Guid> GetUserIdByEmail(string email)
+    public async Task<IEnumerable<EncryptedFileDto>> GetSharedFolderAsync(Guid userGuid, Guid folderGuid, byte[] shareCode)
+    {
+        if (_jwt == null)
+        {
+            throw new Exception("You need to be authentificated to call this endpoint!");
+        }
+        var response = await _client.RequestAsync<IEnumerable<EncryptedFileDto>>(Method.Get, $"EncryptedFile/GetShared/{userGuid}/folder/{folderGuid}", shareCode, jwt: _jwt);
+        if (!response.IsSuccessful) throw new Exception($"Error retreiving user shared files.");
+        return response.Data!;
+    }
+
+    public async Task<Guid> GetUserIdByEmailAsync(string email)
     {
         if (_jwt == null)
         {

@@ -39,11 +39,11 @@ public class EncryptedFileController : ControllerBase
     }
 
     // GET api/EncryptedFile/getShared/<guid>
-    [HttpGet("GetShared/{ownerGuid}/folder/{folderGuid}")]
+    [HttpGet("GetShared/{userGuid}/folder/{folderGuid}")]
     [Authorize]
-    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid ownerGuid, Guid folderGuid,[FromBody] byte[] shareCode)
+    public async Task<ActionResult<EncryptedFileDto>> GetShared(Guid userGuid, Guid folderGuid,[FromBody] byte[] shareCode)
     {
-        var validationErrors = GetValidationErrors(ownerGuid, User.Claims, Request.Headers);
+        var validationErrors = GetValidationErrors(userGuid, User.Claims, Request.Headers);
         if (validationErrors != null)
         {
             return validationErrors;
@@ -121,15 +121,15 @@ public class EncryptedFileController : ControllerBase
     }
     
     
-    [HttpGet("Salt/{Guid}")]
-    public async Task<ActionResult<byte[]>> GetSaltAsync(Guid sharedFolderGuid)
+    [HttpGet("Salt/{folderId}")]
+    public async Task<ActionResult<byte[]>> GetSaltAsync(Guid folderId)
     {
-        if (sharedFolderGuid == Guid.Empty)
+        if (folderId == Guid.Empty)
         {
             return BadRequest("shared folder guid cannot be null");
         }
 
-        byte[]? returnedSalt = await _encryptedFileRepo.GetSaltAsync(sharedFolderGuid);
+        byte[]? returnedSalt = await _encryptedFileRepo.GetSaltAsync(folderId);
         if (returnedSalt != null && returnedSalt.Length == 16)
         {
             return Ok(returnedSalt);

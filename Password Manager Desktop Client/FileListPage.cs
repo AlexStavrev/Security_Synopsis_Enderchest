@@ -12,6 +12,7 @@ public partial class FileListPage : UserControl, IFileListPage
     private IWebClient _client;
     private Guid _userId;
     private List<EncryptedFileDto?> _encryptedFiles;
+    private List<EncryptedFileDto?> _sharedEncryptedFiles;
     private List<DecryptedFileDto?> _decryptedFiles;
     private List<Guid> _sharedFolders;
 
@@ -34,6 +35,7 @@ public partial class FileListPage : UserControl, IFileListPage
         listView1.SmallImageList = imageList;
         _decryptedFiles = new List<DecryptedFileDto?> { };
         _encryptedFiles = new List<EncryptedFileDto?> { };
+        _sharedEncryptedFiles = new List<EncryptedFileDto?> { };
         _sharedFolders = new List<Guid> { };
 
         listView1.Columns[0].Width = 100;
@@ -201,6 +203,11 @@ public partial class FileListPage : UserControl, IFileListPage
         return firstLine;
     }
 
+    public void StoreSharedFiles(IEnumerable<EncryptedFileDto> files) 
+    {
+        _sharedEncryptedFiles = files.ToList();
+    }
+
     private void listView2_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (listView2.SelectedItems.Count > 0)
@@ -209,12 +216,13 @@ public partial class FileListPage : UserControl, IFileListPage
             var folder = _sharedFolders.FirstOrDefault(f => f.ToString() == selectedGuid);
             if (folder != Guid.Empty)
             {
-                using var passwordDialogBox = new InputShareFolderPasswordDialogBox();
+                using var passwordDialogBox = new InputShareFolderPasswordDialogBox(_client, folder, _userId, this);
                 DialogResult result = passwordDialogBox.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    string shareCode = passwordDialogBox.Result;
-                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folder);
+                    var files = passwordDialogBox.ResultFiles;
+                    var shareCode = passwordDialogBox.ResultShareCode;
+                    var openedFolderListPage = new OpenedFolderListPage(_client, _vaultCryptoService, _parent, this, shareCode, folder, files);
                     _parent.SetPage(openedFolderListPage);
                 }
                 else

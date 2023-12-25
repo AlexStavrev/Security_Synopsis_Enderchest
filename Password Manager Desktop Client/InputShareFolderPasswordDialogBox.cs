@@ -1,18 +1,31 @@
+using Password_Manager_Desktop_Client.crypto;
 using System.Runtime.InteropServices;
+using Web_Client;
+using Web_Client.DTOs;
 
 namespace Password_Manager_Desktop_Client;
 
 public partial class InputShareFolderPasswordDialogBox : Form
 {
     private Size _formSize;
-    public string Result { get; set; }
+    public IEnumerable<EncryptedFileDto> ResultFiles { get; set; }
+    public byte[] ResultShareCode { get; set; }
+    private readonly IWebClient _client;
+    private Guid _folderId;
+    private Guid _userId;
+    private FileListPage _parent;
 
     private readonly int _borderSize;
 
-    public InputShareFolderPasswordDialogBox()
+    public InputShareFolderPasswordDialogBox(IWebClient client, Guid folderId, Guid userId, FileListPage parent)
     {
-        Result = "";
+        ResultFiles = Enumerable.Empty<EncryptedFileDto>();
+        ResultShareCode = new byte[] { };
         _borderSize = 2;
+        _folderId = folderId;
+        _client = client;
+        _userId = userId;
+        _parent = parent;
         InitializeComponent();
     }
 
@@ -250,11 +263,26 @@ public partial class InputShareFolderPasswordDialogBox : Form
         Close();
     }
 
-    private void button2_Click(object sender, EventArgs e)
+    private async void button2_Click(object sender, EventArgs e)
     {
-        if(Result != "" && Result != null)
+        if(ResultShareCode != null && ResultFiles != null)
         {
-            DialogResult = DialogResult.OK;
+            var password = passwordTextBox.Text;
+            try
+            {
+                var salt = await _client.GetFolderSaltAsync(_folderId);
+                var derivedPassword = MasterPasswrodHelper.DerivePasswordKey(password: password, salt: salt);
+                var files = await _client.GetSharedFolderAsync(_userId, _folderId, derivedPassword);
+                ResultFiles = files;
+                ResultShareCode = derivedPassword;
+                DialogResult = DialogResult.OK;
+            }
+            catch
+            {
+                _ = this.ShowError("Error getting the files!");
+            }
+            
+           
         } else
         {
             _ = this.ShowError("Please enter a password");
@@ -263,6 +291,5 @@ public partial class InputShareFolderPasswordDialogBox : Form
 
     private void passwordTextBox_TextChanged(object sender, EventArgs e)
     {
-        Result = passwordTextBox.Text;
     }
 }

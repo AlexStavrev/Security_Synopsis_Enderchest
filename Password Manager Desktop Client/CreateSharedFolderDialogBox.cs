@@ -148,7 +148,7 @@ namespace Password_Manager_Desktop_Client
             }
             try
             {
-                Guid sharedWith = await _client.GetUserIdByEmail(email);
+                Guid sharedWith = await _client.GetUserIdByEmailAsync(email);
                 if (sharedWith == Guid.Empty)
                 {
                     _ = ShowError("User not found!");
@@ -159,7 +159,7 @@ namespace Password_Manager_Desktop_Client
                     var salt = _vaultCryptoHelper.GenerateSalt();
                     var passwordKey = MasterPasswrodHelper.DerivePasswordKey(salt, password);
 
-                    Guid isCreated = await _client.CreateSharedFolder(sharedWith, _userId, passwordKey);
+                    Guid isCreated = await _client.CreateSharedFolderAsync(sharedWith, _userId, passwordKey);
                     if (isCreated != Guid.Empty)
                     {
                         _ = ShowSuccess("Shared folder created!");

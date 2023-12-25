@@ -7,15 +7,16 @@ namespace Password_Manager_Desktop_Client;
 
 public partial class OpenedFolderListPage : UserControl, IFileListPage
 {
-    private string _shareCode;
+    private byte[] _shareCode;
     private Guid _folderGuid;
     private IWebClient _client;
     private List<DecryptedFileDto?> _folderFiles;
+    private IEnumerable<EncryptedFileDto?> _encryptedFiles;
     private FileListPage _backPage;
     private ICryptoHelper _vaultCryptoService;
     private Form1 _parent;
 
-    public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, string shareCode, Guid folderGuid)
+    public OpenedFolderListPage(IWebClient client, ICryptoHelper vaultCryptoService, Form1 parent, FileListPage backPage, byte[] shareCode, Guid folderGuid, IEnumerable<EncryptedFileDto?> encryptedFiles)
     {
         _shareCode = shareCode;
         _folderGuid = folderGuid;
@@ -23,6 +24,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         _client = client;
         _vaultCryptoService = vaultCryptoService;
         _parent = parent;
+        _encryptedFiles = encryptedFiles;
         InitializeComponent();
         listView1.Columns.Add("Id");
         listView1.Columns.Add("Name");
@@ -36,7 +38,16 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
 
     private async void CreateVaultPage_Load(object sender, EventArgs e)
     {
+        //var decryptedFiles = _vaultCryptoService.DecryptSingleFile(_encryptedFiles, _shareCode);
         // TODO: Get files of the shared folders and decrypt them, then store in _folderFiles using _shareCode and _folderGuid
+    }
+
+    private void DecryptFiles()
+    {
+        foreach (var file in _encryptedFiles)
+        {
+            //var decryptedFile = _vaultCryptoService.DecryptSingleFile(file, _shareCode);
+        }
     }
 
     private void UpdateListView(DecryptedFileDto decryptedFileDto)
