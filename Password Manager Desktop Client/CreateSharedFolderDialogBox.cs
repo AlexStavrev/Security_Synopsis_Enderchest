@@ -160,11 +160,18 @@ namespace Password_Manager_Desktop_Client
 
         private List<DecryptedFileDto> GetSelectedFiles()
         {
-            var result = _files.Where(file => listView1.SelectedItems
-                .Cast<ListViewItem>().Where(item => item.Checked)
-                .Select(item => item.SubItems[0].Text)
-                .Contains(file.Guid.ToString())).ToList();
-            return result;
+            List<DecryptedFileDto> selectedFiles = new();
+
+            foreach(ListViewItem item in listView1.CheckedItems)
+            {
+                var file = _files.Where(x => x.Guid == Guid.Parse(item.SubItems[0].Text)).FirstOrDefault();
+                if (file != null)
+                {
+                    selectedFiles.Add(file);
+                }
+            }
+
+            return selectedFiles;
         }
 
         private async void button2_Click_1(object sender, EventArgs e)
