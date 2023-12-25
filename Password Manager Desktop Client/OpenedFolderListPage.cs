@@ -54,8 +54,11 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
         try
         {
             var userEmail = await _client.GetEmailByUserIdAsync(_sharedFolder.OwenerGuid, _userId);
-            var decryptedFolder = _vaultCryptoService.DecryptSharedFolder(_sharedFolder, userEmail, _shareCode);
-            _sharedFolder = decryptedFolder;
+            foreach (var file in _sharedFolder.EncryptedFiles)
+            {
+                var decryptedFile = _vaultCryptoService.DecryptSingleFile(file, userEmail, _shareCode);
+                _folderFiles.Add(decryptedFile);
+            }
         }
         catch(Exception ex)
         {
@@ -65,7 +68,7 @@ public partial class OpenedFolderListPage : UserControl, IFileListPage
 
     private void UpdateListView()
     {
-        foreach (var decryptedFileDto in _sharedFolder.DecryptedFiles)
+        foreach (var decryptedFileDto in _folderFiles)
         {
             ListViewItem item = new ListViewItem(decryptedFileDto.Guid.ToString());
             item.SubItems.Add(GetFileName(decryptedFileDto.EncryptedFile));
