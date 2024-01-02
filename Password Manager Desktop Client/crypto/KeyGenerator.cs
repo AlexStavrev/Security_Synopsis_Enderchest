@@ -23,9 +23,9 @@ internal static class KeyGenerator
     {
         var argon2id = new Argon2id(key);
         argon2id.Salt = salt;
-        argon2id.DegreeOfParallelism = 4;
+        argon2id.DegreeOfParallelism = 2;
         argon2id.Iterations = 4;
-        argon2id.MemorySize = 128;
+        argon2id.MemorySize = 40000;
 
         return argon2id.GetBytes(32);
     }
